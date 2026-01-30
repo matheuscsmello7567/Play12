@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Organização de Jogos Airsoft MilSim</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Sistema de Organização - Airsoft MilSim</h1>
+            <p class="subtitle">Gerencie jogos, jogadores, regras e logística</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-button" data-tab="players">Jogadores</button>
+            <button class="tab-button" data-tab="games">Jogos</button>
+            <button class="tab-button" data-tab="rules">Regras</button>
+            <button class="tab-button" data-tab="logistics">Logística</button>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <h2>Dashboard do Organizador</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total de Jogadores</h3>
+                    <p class="stat-number" id="total-players">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Jogos Agendados</h3>
+                    <p class="stat-number" id="total-games">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Regras Ativas</h3>
+                    <p class="stat-number" id="total-rules">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Itens de Logística</h3>
+                    <p class="stat-number" id="total-logistics">0</p>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h3>Próximos Jogos</h3>
+                <div id="upcoming-games" class="list-container">
+                    <p class="empty-message">Nenhum jogo agendado</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Players Tab -->
+        <div class="tab-content" id="players">
+            <h2>Gerenciamento de Jogadores</h2>
+            
+            <div class="action-bar">
+                <button class="btn-primary" onclick="showAddPlayerModal()">+ Adicionar Jogador</button>
+                <input type="text" id="player-search" placeholder="Buscar jogador..." class="search-input">
+                <select id="player-team-filter" class="filter-select">
+                    <option value="">Todos os Times</option>
+                    <option value="Alpha">Alpha</option>
+                    <option value="Bravo">Bravo</option>
+                    <option value="Charlie">Charlie</option>
+                    <option value="Delta">Delta</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table id="players-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Callsign</th>
+                            <th>Time</th>
+                            <th>Função</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="players-tbody">
+                        <tr>
+                            <td colspan="6" class="empty-message">Nenhum jogador cadastrado</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Games Tab -->
+        <div class="tab-content" id="games">
+            <h2>Gerenciamento de Jogos</h2>
+            
+            <div class="action-bar">
+                <button class="btn-primary" onclick="showAddGameModal()">+ Criar Novo Jogo</button>
+            </div>
+
+            <div id="games-list" class="cards-container">
+                <p class="empty-message">Nenhum jogo criado</p>
+            </div>
+        </div>
+
+        <!-- Rules Tab -->
+        <div class="tab-content" id="rules">
+            <h2>Gerenciamento de Regras</h2>
+            
+            <div class="action-bar">
+                <button class="btn-primary" onclick="showAddRuleModal()">+ Adicionar Regra</button>
+            </div>
+
+            <div id="rules-list" class="list-container">
+                <p class="empty-message">Nenhuma regra cadastrada</p>
+            </div>
+        </div>
+
+        <!-- Logistics Tab -->
+        <div class="tab-content" id="logistics">
+            <h2>Gerenciamento de Logística</h2>
+            
+            <div class="action-bar">
+                <button class="btn-primary" onclick="showAddLogisticsModal()">+ Adicionar Item</button>
+            </div>
+
+            <div class="logistics-grid">
+                <div class="logistics-section">
+                    <h3>Equipamentos</h3>
+                    <div id="equipment-list" class="list-container">
+                        <p class="empty-message">Nenhum equipamento cadastrado</p>
+                    </div>
+                </div>
+                
+                <div class="logistics-section">
+                    <h3>Locais</h3>
+                    <div id="locations-list" class="list-container">
+                        <p class="empty-message">Nenhum local cadastrado</p>
+                    </div>
+                </div>
+                
+                <div class="logistics-section">
+                    <h3>Transporte</h3>
+                    <div id="transport-list" class="list-container">
+                        <p class="empty-message">Nenhum transporte cadastrado</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Player -->
+    <div id="player-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('player-modal')">&times;</span>
+            <h2>Adicionar Jogador</h2>
+            <form id="player-form">
+                <div class="form-group">
+                    <label for="player-name">Nome Completo*</label>
+                    <input type="text" id="player-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-callsign">Callsign*</label>
+                    <input type="text" id="player-callsign" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-team">Time*</label>
+                    <select id="player-team" required>
+                        <option value="">Selecione...</option>
+                        <option value="Alpha">Alpha</option>
+                        <option value="Bravo">Bravo</option>
+                        <option value="Charlie">Charlie</option>
+                        <option value="Delta">Delta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="player-role">Função*</label>
+                    <select id="player-role" required>
+                        <option value="">Selecione...</option>
+                        <option value="Líder">Líder</option>
+                        <option value="Atirador">Atirador</option>
+                        <option value="Suporte">Suporte</option>
+                        <option value="Médico">Médico</option>
+                        <option value="Engenheiro">Engenheiro</option>
+                        <option value="Sniper">Sniper</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="player-contact">Contato</label>
+                    <input type="text" id="player-contact">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Salvar</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('player-modal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Game -->
+    <div id="game-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('game-modal')">&times;</span>
+            <h2>Criar Novo Jogo</h2>
+            <form id="game-form">
+                <div class="form-group">
+                    <label for="game-name">Nome do Jogo*</label>
+                    <input type="text" id="game-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="game-date">Data*</label>
+                    <input type="date" id="game-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="game-time">Horário*</label>
+                    <input type="time" id="game-time" required>
+                </div>
+                <div class="form-group">
+                    <label for="game-location">Local*</label>
+                    <input type="text" id="game-location" required>
+                </div>
+                <div class="form-group">
+                    <label for="game-max-players">Número Máximo de Jogadores*</label>
+                    <input type="number" id="game-max-players" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="game-scenario">Cenário/Missão*</label>
+                    <textarea id="game-scenario" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="game-objectives">Objetivos</label>
+                    <textarea id="game-objectives" rows="4"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Criar Jogo</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('game-modal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Rule -->
+    <div id="rule-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('rule-modal')">&times;</span>
+            <h2>Adicionar Regra</h2>
+            <form id="rule-form">
+                <div class="form-group">
+                    <label for="rule-title">Título da Regra*</label>
+                    <input type="text" id="rule-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="rule-category">Categoria*</label>
+                    <select id="rule-category" required>
+                        <option value="">Selecione...</option>
+                        <option value="Segurança">Segurança</option>
+                        <option value="Combate">Combate</option>
+                        <option value="Equipamento">Equipamento</option>
+                        <option value="Comportamento">Comportamento</option>
+                        <option value="Eliminação">Eliminação</option>
+                        <option value="Respawn">Respawn</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rule-description">Descrição*</label>
+                    <textarea id="rule-description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rule-priority">Prioridade*</label>
+                    <select id="rule-priority" required>
+                        <option value="">Selecione...</option>
+                        <option value="Alta">Alta</option>
+                        <option value="Média">Média</option>
+                        <option value="Baixa">Baixa</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Adicionar</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('rule-modal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Logistics -->
+    <div id="logistics-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('logistics-modal')">&times;</span>
+            <h2>Adicionar Item de Logística</h2>
+            <form id="logistics-form">
+                <div class="form-group">
+                    <label for="logistics-type">Tipo*</label>
+                    <select id="logistics-type" required>
+                        <option value="">Selecione...</option>
+                        <option value="equipment">Equipamento</option>
+                        <option value="location">Local</option>
+                        <option value="transport">Transporte</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="logistics-name">Nome/Descrição*</label>
+                    <input type="text" id="logistics-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="logistics-quantity">Quantidade</label>
+                    <input type="number" id="logistics-quantity" min="1" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="logistics-responsible">Responsável</label>
+                    <input type="text" id="logistics-responsible">
+                </div>
+                <div class="form-group">
+                    <label for="logistics-notes">Observações</label>
+                    <textarea id="logistics-notes" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Adicionar</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('logistics-modal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
