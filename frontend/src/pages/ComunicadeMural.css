@@ -34,6 +34,8 @@
   height: 220px;
   width: 220px;
   overflow: hidden;
+  border: none;
+  cursor: pointer;
 }
 
 .mural-photo img {
@@ -41,4 +43,46 @@
   height: 100%;
   border-radius: 8px;
   object-fit: cover;
+}
+
+.mural-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.mural-modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  background: #000;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.mural-modal-content img {
+  width: 100%;
+  height: auto;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.mural-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: #111;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
