@@ -1,0 +1,337 @@
+.games-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.games-header {
+  background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(31, 41, 55, 0.85)), url('../../public/images/MilSim_5.webp') center/cover no-repeat;
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+  border-bottom: 4px solid #D4AF37;
+  background-attachment: fixed;
+}
+
+.games-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.games-header p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #D4AF37;
+}
+
+.games-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Calendário */
+.calendar-section {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+.games-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+  top: 100px;
+}
+
+.calendar {
+  width: 100%;
+}
+
+.calendar-header h2 {
+  color: #121212;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #D4AF37;
+}
+
+.nav-btn {
+  background-color: #121212;
+  color: #D4AF37;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover {
+  background-color: #D4AF37;
+  color: #121212;
+  transform: scale(1.05);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.weekdays div {
+  text-align: center;
+  font-weight: bold;
+  color: #121212;
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #eee;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.calendar-day.empty {
+  background-color: transparent;
+  border: none;
+  cursor: default;
+}
+
+.calendar-day.active {
+  color: #121212;
+  font-weight: 500;
+}
+
+.calendar-day.active:hover {
+  background-color: #121212;
+  color: #D4AF37;
+  border-color: #D4AF37;
+}
+
+.calendar-day.has-event {
+  border-color: #D4AF37;
+  background-color: #fef8f0;
+}
+
+.day-number {
+  font-weight: bold;
+}
+
+.event-indicator {
+  position: absolute;
+  bottom: 3px;
+  color: #D4AF37;
+  font-size: 0.8rem;
+}
+
+/* Lista de Jogos */
+.games-list-section {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 1100px;
+  width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
+  }
+
+.games-list-section h2 {
+  color: #121212;
+  margin: 0 0 2rem 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #D4AF37;
+}
+
+.games-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.game-card {
+  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+  gap: 2rem;
+  width: 90vw;
+  max-width: 1100px;
+  }
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-color: #d4af7a;
+}
+
+.game-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.game-type {
+  background-color: #121212;
+  color: #D4AF37;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.game-status {
+  background-color: #D4AF37;
+  color: #121212;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.game-card h3 {
+  color: #121212;
+  margin: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex-grow: 1;
+  align-items: flex-start;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.info-row .icon {
+  font-size: 1.2rem;
+}
+
+.game-btn {
+  background-color: #121212;
+  color: #D4AF37;
+  border: 2px solid #D4AF37;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+  font-size: 0.9rem;
+    align-self: flex-end;
+    margin-top: auto;
+    height: 48px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    min-width: 180px;
+  }
+
+.game-btn:hover {
+  background-color: #D4AF37;
+  color: #121212;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 1024px) {
+  .games-container {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-section {
+    position: relative;
+    top: 0;
+    sticky: none;
+  }
+
+  .games-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .games-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .games-container {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-section {
+    padding: 1rem;
+  }
+
+  .games-list-section {
+    padding: 1rem;
+  }
+}

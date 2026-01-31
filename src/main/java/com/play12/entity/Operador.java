@@ -1,0 +1,44 @@
+package com.play12.entity;
+
+import com.play12.enumeracao.TipoOperador;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "operadores")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Operador {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(unique = true, nullable = false)
+	private String email;
+
+	@Column(unique = true, nullable = false)
+	private String nickname;
+
+	@Column(nullable = false)
+	private String senha;
+
+	@Column(nullable = false)
+	private String nomeCompleto;
+
+	@Column
+	private String telefone;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private TipoOperador tipo = TipoOperador.JOGADOR;
+
+	@Column(nullable = false)
+	private Integer totalJogos = 0;
+
+}
