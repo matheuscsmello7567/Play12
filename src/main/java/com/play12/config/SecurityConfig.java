@@ -17,19 +17,14 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-			.csrf(csrf -> csrf.disable())
-			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/h2-console/**").permitAll()
-				.requestMatchers("/operadores/cadastro", "/operadores/login").permitAll()
-				.requestMatchers(HttpMethod.GET, "/jogos/**", "/squads/**", "/produtos/**", "/comunidade/fotos/**", "/admin/**").permitAll()
-				.anyRequest().authenticated()
-			)
-			.headers(headers -> headers.frameOptions(frame -> frame.disable()))
-			.httpBasic(httpBasic -> {});
-		return http.build();
-	}
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .anyRequest().permitAll() // Isso libera TUDO para o cliente avaliar
+        );
+    return http.build();
+}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
