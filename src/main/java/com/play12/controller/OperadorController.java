@@ -2,6 +2,7 @@ package com.play12.controller;
 
 import com.play12.dto.CadastroDTO;
 import com.play12.dto.LoginDTO;
+import com.play12.dto.OperadorAdminUpdateDTO;
 import com.play12.dto.OperadorDTO;
 import com.play12.service.OperadorService;
 import jakarta.validation.Valid;
@@ -97,6 +98,22 @@ public class OperadorController {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			OperadorDTO operador = operadorService.atualizar(id, dto);
+			response.put("success", true);
+			response.put("message", "Operador atualizado com sucesso!");
+			response.put("data", operador);
+			return ResponseEntity.ok(response);
+		} catch (IllegalArgumentException e) {
+			response.put("success", false);
+			response.put("message", e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+	}
+
+	@PutMapping("/{id}/admin")
+	public ResponseEntity<Map<String, Object>> atualizarAdmin(@PathVariable Long id, @RequestBody OperadorAdminUpdateDTO dto) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			OperadorDTO operador = operadorService.atualizarAdmin(id, dto);
 			response.put("success", true);
 			response.put("message", "Operador atualizado com sucesso!");
 			response.put("data", operador);

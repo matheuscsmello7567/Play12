@@ -1,0 +1,233 @@
+.admin-page {
+  min-height: 100vh;
+  background: linear-gradient(rgba(245, 245, 245, 0.92), rgba(245, 245, 245, 0.92)), url('../../public/images/MilSim_1.jpeg') center/cover no-repeat;
+  background-attachment: fixed;
+  padding-bottom: 3rem;
+}
+
+.admin-header {
+  background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(31, 41, 55, 0.85)), url('../../public/images/MilSim_2.jpg') center/cover no-repeat;
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+  border-bottom: 4px solid #D4AF37;
+  background-attachment: fixed;
+}
+
+.admin-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.admin-header p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #D4AF37;
+}
+
+.admin-tabs {
+  max-width: 1100px;
+  margin: 2rem auto 0 auto;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.admin-tabs button {
+  background: #121212;
+  color: #D4AF37;
+  border: 2px solid #D4AF37;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.admin-tabs button.active,
+.admin-tabs button:hover {
+  background: #D4AF37;
+  color: #121212;
+}
+
+.admin-section {
+  max-width: 1100px;
+  margin: 2rem auto 0 auto;
+  padding: 0 1.5rem;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.2rem;
+  border: 2px solid #D4AF37;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.stat-card strong {
+  font-size: 1.8rem;
+  color: #121212;
+}
+
+.admin-panel {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.admin-panel h2 {
+  margin: 0 0 1.2rem 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #121212;
+}
+
+.admin-game-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+
+.admin-game-info {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.admin-badge {
+  background: #121212;
+  color: #D4AF37;
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.players-table {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.players-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr 0.7fr;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.players-row.header {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #121212;
+}
+
+.players-row select,
+.players-row input {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.players-row .danger {
+  background: #c62828;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.game-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.game-form input,
+.game-form select {
+  padding: 0.6rem 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.game-form button {
+  background: #121212;
+  color: #D4AF37;
+  border: 2px solid #D4AF37;
+  border-radius: 6px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.games-admin-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.games-admin-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.games-admin-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.6rem;
+}
+
+.games-admin-fields input,
+.games-admin-fields select {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.games-admin-meta {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.logistics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.logistics-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  .players-row {
+    grid-template-columns: 1fr;
+  }
+  .players-row.header {
+    display: none;
+  }
+}

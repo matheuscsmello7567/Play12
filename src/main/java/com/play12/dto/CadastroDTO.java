@@ -26,4 +26,6 @@ public class CadastroDTO {
 
 	private String telefone;
 
+	private Boolean admin = false;
+
 }

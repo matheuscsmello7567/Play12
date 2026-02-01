@@ -120,6 +120,14 @@ export default function Eventos() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
+            <button
+              type="button"
+              className="clear-filters-btn"
+              onClick={() => setSearch('')}
+              disabled={!search.trim()}
+            >
+              Limpar filtros
+            </button>
           </div>
 
           <h2>PRÓXIMOS JOGOS</h2>

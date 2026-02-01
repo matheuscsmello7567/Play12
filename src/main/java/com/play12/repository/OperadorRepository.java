@@ -15,4 +15,6 @@ public interface OperadorRepository extends JpaRepository<Operador, Long> {
 	boolean existsByEmail(String email);
 
 	boolean existsByNickname(String nickname);
+
+	Long countByPagoTrue();
 }

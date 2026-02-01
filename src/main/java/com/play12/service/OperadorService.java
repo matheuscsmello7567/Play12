@@ -2,12 +2,17 @@ package com.play12.service;
 
 import com.play12.dto.CadastroDTO;
 import com.play12.dto.LoginDTO;
+import com.play12.dto.OperadorAdminUpdateDTO;
 import com.play12.dto.OperadorDTO;
 import com.play12.entity.Operador;
+import com.play12.entity.Squad;
+import com.play12.enumeracao.FuncaoOperador;
 import com.play12.enumeracao.TipoOperador;
 import com.play12.repository.OperadorRepository;
+import com.play12.repository.SquadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +26,8 @@ import java.util.stream.Collectors;
 public class OperadorService {
 
 	private final OperadorRepository operadorRepository;
+	private final SquadRepository squadRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	public OperadorDTO cadastrar(CadastroDTO dto) {
 		log.info("Cadastrando novo operador: {}", dto.getEmail());
@@ -36,10 +43,11 @@ public class OperadorService {
 		Operador operador = Operador.builder()
 				.email(dto.getEmail())
 				.nickname(dto.getNickname())
-				.senha(dto.getSenha())
+				.senha(passwordEncoder.encode(dto.getSenha()))
 				.nomeCompleto(dto.getNomeCompleto())
 				.telefone(dto.getTelefone())
-				.tipo(TipoOperador.JOGADOR)
+				.tipo(Boolean.TRUE.equals(dto.getAdmin()) ? TipoOperador.ADMIN : TipoOperador.JOGADOR)
+				.funcao(FuncaoOperador.OPERADOR)
 				.totalJogos(0)
 				.build();
 
@@ -53,7 +61,7 @@ public class OperadorService {
 		Operador operador = operadorRepository.findByEmail(dto.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-		if (!operador.getSenha().equals(dto.getSenha())) {
+		if (!passwordEncoder.matches(dto.getSenha(), operador.getSenha())) {
 			throw new IllegalArgumentException("Senha incorreta");
 		}
 
@@ -84,6 +92,32 @@ public class OperadorService {
 		return mapToDTO(operador);
 	}
 
+	public OperadorDTO atualizarAdmin(Long id, OperadorAdminUpdateDTO dto) {
+		Operador operador = operadorRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Operador não encontrado"));
+
+		if (dto.getTipo() != null) {
+			operador.setTipo(dto.getTipo());
+		}
+		if (dto.getFuncao() != null) {
+			operador.setFuncao(dto.getFuncao());
+			if (dto.getFuncao() == FuncaoOperador.AVULSO) {
+				operador.setSquad(null);
+			}
+		}
+		if (dto.getPago() != null) {
+			operador.setPago(dto.getPago());
+		}
+		if (dto.getSquadId() != null) {
+			Squad squad = squadRepository.findById(dto.getSquadId())
+					.orElseThrow(() -> new IllegalArgumentException("Squad não encontrado"));
+			operador.setSquad(squad);
+		}
+
+		operador = operadorRepository.save(operador);
+		return mapToDTO(operador);
+	}
+
 	public void deletar(Long id) {
 		if (!operadorRepository.existsById(id)) {
 			throw new IllegalArgumentException("Operador não encontrado");
@@ -99,6 +133,10 @@ public class OperadorService {
 				.nomeCompleto(operador.getNomeCompleto())
 				.telefone(operador.getTelefone())
 				.tipo(operador.getTipo())
+				.funcao(operador.getFuncao())
+				.squadId(operador.getSquad() != null ? operador.getSquad().getId() : null)
+				.squadNome(operador.getSquad() != null ? operador.getSquad().getNome() : null)
+				.pago(operador.getPago())
 				.totalJogos(operador.getTotalJogos())
 				.build();
 	}

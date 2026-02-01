@@ -1,6 +1,8 @@
 package com.play12.entity;
 
+import com.play12.enumeracao.FuncaoOperador;
 import com.play12.enumeracao.TipoOperador;
+import com.play12.entity.Squad;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +39,17 @@ public class Operador {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private TipoOperador tipo = TipoOperador.JOGADOR;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private FuncaoOperador funcao = FuncaoOperador.OPERADOR;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "squad_id")
+	private Squad squad;
+
+	@Column(nullable = false)
+	private Boolean pago = false;
 
 	@Column(nullable = false)
 	private Integer totalJogos = 0;

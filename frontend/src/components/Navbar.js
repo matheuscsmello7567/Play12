@@ -11,7 +11,7 @@ export default function Navbar({ user, onLogout }) {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          PLAY12
+          Milsim Commander
         </Link>
 
         <ul className="nav-menu">
@@ -33,6 +33,11 @@ export default function Navbar({ user, onLogout }) {
           <li className="nav-item">
             <Link to="/loja" className="nav-link">LOJA</Link>
           </li>
+          {user && user.isAdmin && (
+            <li className="nav-item">
+              <Link to="/admin" className="nav-link">PAINEL</Link>
+            </li>
+          )}
         </ul>
 
         {/* Se usuário logado, mostra nome e foto, senão botão login */}

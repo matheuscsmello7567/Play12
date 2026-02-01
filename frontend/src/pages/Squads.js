@@ -13,6 +13,9 @@ export default function Squads() {
   return (
     <div className="squads-page">
       <h1 className="squads-title">Squads</h1>
+      <div style={{display: 'flex', justifyContent: 'center', marginBottom: '1.5rem'}}>
+        <button className="hero-btn nav-login">Criar Squad</button>
+      </div>
       <div className="squads-table">
         <div className="squads-row squads-header">
           <div>Nome</div>

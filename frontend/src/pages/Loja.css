@@ -1,6 +1,7 @@
 .loja-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: linear-gradient(rgba(245, 245, 245, 0.92), rgba(245, 245, 245, 0.92)), url('../../public/images/MilSim_4.jpeg') center/cover no-repeat;
+  background-attachment: fixed;
   padding: 2.5rem 1.5rem;
 }
 

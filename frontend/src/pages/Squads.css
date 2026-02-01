@@ -1,6 +1,8 @@
+
 .squads-page {
   min-height: 100vh;
-  background: #f7f7f7;
+  background: linear-gradient(rgba(245, 245, 245, 0.92), rgba(245, 245, 245, 0.92)), url('../../public/images/MilSim_7_License.webp') center/cover no-repeat;
+  background-attachment: fixed;
   padding: 2.5rem 1.5rem;
 }
 
@@ -20,6 +22,7 @@
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   overflow: hidden;
+  border: 2px solid #D4AF37;
 }
 
 .squads-row {
@@ -36,8 +39,8 @@
 }
 
 .squads-header {
-  background: #0a3d91;
-  color: #fff;
+  background: #121212;
+  color: #D4AF37;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -48,7 +51,7 @@
 }
 
 .squad-points {
-  color: #0a3d91;
+  color: #121212;
   font-weight: bold;
 }
 

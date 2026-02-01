@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import ComunicadeMural from './pages/ComunicadeMural';
 import Squads from './pages/Squads';
 import Loja from './pages/Loja';
+import AdminPanel from './pages/AdminPanel';
 
 import { useLocation } from 'react-router-dom';
 
@@ -44,6 +45,10 @@ function App() {
           <Route path="/comunidade" element={<ComunicadeMural />} />
           <Route path="/squads" element={<Squads />} />
           <Route path="/loja" element={<Loja />} />
+          <Route
+            path="/admin"
+            element={user && user.isAdmin ? <AdminPanel user={user} onLogout={handleLogout} /> : <Navigate to="/login" />}
+          />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
         </Routes>
       </main>
