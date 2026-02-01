@@ -1,5 +1,6 @@
 package com.play12.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.play12.enumeracao.TipoJogo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameDTO {
 	private Long id;
 	private String titulo;

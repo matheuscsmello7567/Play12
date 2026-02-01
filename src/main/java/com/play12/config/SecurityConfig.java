@@ -22,8 +22,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/h2-console/**").permitAll()
 				.requestMatchers("/operadores/cadastro", "/operadores/login").permitAll()
-				.requestMatchers(HttpMethod.GET, "/jogos/**", "/squads/**", "/produtos/**", "/comunidade/fotos/**").permitAll()
-				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/jogos/**", "/squads/**", "/produtos/**", "/comunidade/fotos/**", "/admin/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			.headers(headers -> headers.frameOptions(frame -> frame.disable()))
