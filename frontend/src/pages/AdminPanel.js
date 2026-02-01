@@ -1,21 +1,18 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './AdminPanel.css';
-import { games as initialGames } from '../data/gamesData';
+import { apiFetch } from '../services/api';
 
-const initialPlayers = [
-  { id: 1, name: 'Carlos Silva', email: 'carlos@play12.com', role: 'Líder', squad: 'Alpha Wolves', paid: true },
-  { id: 2, name: 'Fernanda Lima', email: 'fernanda@play12.com', role: 'Operador', squad: 'Bravo Ghosts', paid: true },
-  { id: 3, name: 'João Mendes', email: 'joao@play12.com', role: 'Avulso', squad: '', paid: false },
-  { id: 4, name: 'Marina Costa', email: 'marina@play12.com', role: 'Operador', squad: 'Crimson Vipers', paid: true }
-];
-
-const roles = ['Líder', 'Operador', 'Avulso'];
+const roles = ['LIDER', 'OPERADOR', 'AVULSO'];
 
 export default function AdminPanel({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [players, setPlayers] = useState(initialPlayers);
-  const [games, setGames] = useState(initialGames);
-  const [editingId, setEditingId] = useState(null);
+  const [players, setPlayers] = useState([]);
+  const [games, setGames] = useState([]);
+  const [dashboard, setDashboard] = useState({ totalJogadores: 0, confirmados: 0, jogosAgendados: 0, proximosJogos: [] });
+  const [squads, setSquads] = useState([]);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(true);
   const [newGame, setNewGame] = useState({
     title: '',
     type: 'Milsim',
@@ -24,45 +21,131 @@ export default function AdminPanel({ user, onLogout }) {
     location: ''
   });
 
-  const totalPlayers = players.length;
-  const confirmedPlayers = players.filter(p => p.paid).length;
-  const scheduledGames = games.filter(g => new Date(g.date) >= new Date()).length;
+  const totalPlayers = dashboard.totalJogadores;
+  const confirmedPlayers = dashboard.confirmados;
+  const scheduledGames = dashboard.jogosAgendados;
 
-  const upcomingGames = useMemo(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return games
-      .filter(g => new Date(g.date) >= today)
-      .sort((a, b) => new Date(a.date) - new Date(b.date))
-      .slice(0, 5);
-  }, [games]);
+  const upcomingGames = useMemo(() => dashboard.proximosJogos || [], [dashboard]);
 
-  const handleRoleChange = (id, role) => {
-    setPlayers(prev => prev.map(p => (p.id === id ? { ...p, role, squad: role === 'Avulso' ? '' : p.squad } : p)));
-  };
-
-  const handleSquadChange = (id, squad) => {
-    setPlayers(prev => prev.map(p => (p.id === id ? { ...p, squad } : p)));
-  };
-
-  const handleRemovePlayer = (id) => {
-    const removed = players.find(p => p.id === id);
-    setPlayers(prev => prev.filter(p => p.id !== id));
-    if (removed && user && removed.email === user.email) {
-      onLogout();
+  const refreshAll = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const [dash, playersData, gamesData, squadsData] = await Promise.all([
+        apiFetch('/admin/dashboard'),
+        apiFetch('/operadores'),
+        apiFetch('/jogos'),
+        apiFetch('/squads')
+      ]);
+      setDashboard(dash);
+      setPlayers(playersData);
+      setGames(gamesData);
+      setSquads(squadsData);
+    } catch (err) {
+      setError(err.message || 'Erro ao carregar dados');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleCreateGame = (e) => {
-    e.preventDefault();
-    if (!newGame.title || !newGame.date || !newGame.time || !newGame.location) return;
-    const id = Math.max(0, ...games.map(g => g.id)) + 1;
-    setGames(prev => [...prev, { id, players: '0/0', status: 'Próximo', ...newGame }]);
-    setNewGame({ title: '', type: 'Milsim', date: '', time: '', location: '' });
+  useEffect(() => {
+    refreshAll();
+  }, []);
+
+  const handleRoleChange = async (id, role) => {
+    try {
+      const payload = { funcao: role, squadId: null };
+      if (role !== 'AVULSO') {
+        const player = players.find(p => p.id === id);
+        payload.squadId = player?.squadId || null;
+      }
+      const updated = await apiFetch(`/operadores/${id}/admin`, {
+        method: 'PUT',
+        body: JSON.stringify(payload)
+      });
+      setPlayers(prev => prev.map(p => (p.id === id ? updated : p)));
+    } catch (err) {
+      setError(err.message || 'Erro ao atualizar jogador');
+    }
   };
 
-  const handleEditGame = (id, field, value) => {
-    setGames(prev => prev.map(g => (g.id === id ? { ...g, [field]: value } : g)));
+  const handleSquadChange = async (id, squadId) => {
+    try {
+      const updated = await apiFetch(`/operadores/${id}/admin`, {
+        method: 'PUT',
+        body: JSON.stringify({ squadId })
+      });
+      setPlayers(prev => prev.map(p => (p.id === id ? updated : p)));
+    } catch (err) {
+      setError(err.message || 'Erro ao atualizar squad');
+    }
+  };
+
+  const handleRemovePlayer = async (id) => {
+    try {
+      const removed = players.find(p => p.id === id);
+      await apiFetch(`/operadores/${id}`, { method: 'DELETE' });
+      setPlayers(prev => prev.filter(p => p.id !== id));
+      if (removed && user && removed.email === user.email) {
+        onLogout();
+      }
+    } catch (err) {
+      setError(err.message || 'Erro ao remover jogador');
+    }
+  };
+
+  const handleCreateGame = async (e) => {
+    e.preventDefault();
+    if (!newGame.title || !newGame.date || !newGame.time || !newGame.location) return;
+    try {
+      const mapsUrl = newGame.location.startsWith('http')
+        ? newGame.location
+        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(newGame.location)}`;
+      const created = await apiFetch('/jogos', {
+        method: 'POST',
+        body: JSON.stringify({
+          titulo: newGame.title,
+          tipo: newGame.type.toUpperCase() === '4FUN' ? 'FUN4' : newGame.type.toUpperCase(),
+          data: newGame.date,
+          horario: newGame.time,
+          local: mapsUrl,
+          confirmados: 0,
+          status: 'Próximo'
+        })
+      });
+      setGames(prev => [...prev, created]);
+      setNewGame({ title: '', type: 'Milsim', date: '', time: '', location: '' });
+      setSuccess('Jogo criado com sucesso!');
+      refreshAll();
+    } catch (err) {
+      setError(err.message || 'Erro ao criar jogo');
+    }
+  };
+
+  const handleEditGame = async (id, field, value) => {
+    try {
+      const target = games.find(g => g.id === id);
+      if (!target) return;
+      const updatedLocation = field === 'location'
+        ? (value.startsWith('http') ? value : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`)
+        : target.local;
+      const updated = await apiFetch(`/jogos/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          titulo: field === 'title' ? value : target.titulo,
+          tipo: field === 'type' ? value : target.tipo,
+          data: field === 'date' ? value : target.data,
+          horario: field === 'time' ? value : target.horario,
+          local: updatedLocation,
+          confirmados: target.confirmados,
+          status: target.status
+        })
+      });
+      setGames(prev => prev.map(g => (g.id === id ? updated : g)));
+      setSuccess('Jogo atualizado com sucesso!');
+    } catch (err) {
+      setError(err.message || 'Erro ao atualizar jogo');
+    }
   };
 
   return (
@@ -81,6 +164,9 @@ export default function AdminPanel({ user, onLogout }) {
 
       {activeTab === 'dashboard' && (
         <div className="admin-section">
+          {error && <div className="admin-error">{error}</div>}
+          {success && <div className="admin-success">{success}</div>}
+          {loading && <div className="admin-loading">Carregando...</div>}
           <div className="admin-stats">
             <div className="stat-card">
               <span>Total de Jogadores</span>
@@ -98,18 +184,26 @@ export default function AdminPanel({ user, onLogout }) {
 
           <div className="admin-panel">
             <h2>Próximos Jogos</h2>
+            {error && <p>{error}</p>}
             {upcomingGames.length === 0 && <p>Nenhum jogo agendado.</p>}
             {upcomingGames.map(game => (
               <div key={game.id} className="admin-game-item">
                 <div>
-                  <strong>{game.title}</strong>
+                  <strong>{game.titulo}</strong>
                   <div className="admin-game-info">
-                    <span>Data: {new Date(game.date).toLocaleDateString('pt-BR')}</span>
-                    <span>Horário: {game.time}</span>
-                    <span>Local: {game.location}</span>
+                    <span>Data: {new Date(game.data).toLocaleDateString('pt-BR')}</span>
+                    <span>Horário: {game.horario}</span>
+                    <span>
+                      Local:{' '}
+                      {String(game.local || '').startsWith('http') ? (
+                        <a href={game.local} target="_blank" rel="noreferrer">Abrir no mapa</a>
+                      ) : (
+                        game.local
+                      )}
+                    </span>
                   </div>
                 </div>
-                <span className="admin-badge">{game.type}</span>
+                <span className="admin-badge">{game.tipo}</span>
               </div>
             ))}
           </div>
@@ -118,6 +212,9 @@ export default function AdminPanel({ user, onLogout }) {
 
       {activeTab === 'players' && (
         <div className="admin-section">
+          {error && <div className="admin-error">{error}</div>}
+          {success && <div className="admin-success">{success}</div>}
+          {loading && <div className="admin-loading">Carregando...</div>}
           <div className="admin-panel">
             <h2>Gerenciamento de Jogadores</h2>
             <div className="players-table">
@@ -130,21 +227,24 @@ export default function AdminPanel({ user, onLogout }) {
               </div>
               {players.map(player => (
                 <div className="players-row" key={player.id}>
-                  <div>{player.name}</div>
+                  <div>{player.nomeCompleto}</div>
                   <div>{player.email}</div>
                   <div>
-                    <select value={player.role} onChange={(e) => handleRoleChange(player.id, e.target.value)}>
+                    <select value={player.funcao} onChange={(e) => handleRoleChange(player.id, e.target.value)}>
                       {roles.map(r => <option key={r} value={r}>{r}</option>)}
                     </select>
                   </div>
                   <div>
-                    <input
-                      type="text"
-                      value={player.squad}
-                      disabled={player.role === 'Avulso'}
-                      onChange={(e) => handleSquadChange(player.id, e.target.value)}
-                      placeholder={player.role === 'Avulso' ? 'Sem squad' : 'Nome do squad'}
-                    />
+                    <select
+                      value={player.squadId || ''}
+                      disabled={player.funcao === 'AVULSO'}
+                      onChange={(e) => handleSquadChange(player.id, e.target.value ? Number(e.target.value) : null)}
+                    >
+                      <option value="">{player.funcao === 'AVULSO' ? 'Sem squad' : 'Selecionar squad'}</option>
+                      {squads.map((s) => (
+                        <option key={s.id} value={s.id}>{s.nome}</option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <button className="danger" onClick={() => handleRemovePlayer(player.id)}>Remover</button>
@@ -158,6 +258,9 @@ export default function AdminPanel({ user, onLogout }) {
 
       {activeTab === 'games' && (
         <div className="admin-section">
+          {error && <div className="admin-error">{error}</div>}
+          {success && <div className="admin-success">{success}</div>}
+          {loading && <div className="admin-loading">Carregando...</div>}
           <div className="admin-panel">
             <h2>Gerenciamento de Jogos</h2>
 
@@ -188,7 +291,7 @@ export default function AdminPanel({ user, onLogout }) {
               />
               <input
                 type="text"
-                placeholder="Local"
+                placeholder="URL do Google Maps ou endereço"
                 value={newGame.location}
                 onChange={(e) => setNewGame({ ...newGame, location: e.target.value })}
               />
@@ -201,17 +304,17 @@ export default function AdminPanel({ user, onLogout }) {
                   <div className="games-admin-fields">
                     <input
                       type="text"
-                      value={game.title}
+                      value={game.titulo}
                       onChange={(e) => handleEditGame(game.id, 'title', e.target.value)}
                     />
-                    <select value={game.type} onChange={(e) => handleEditGame(game.id, 'type', e.target.value)}>
-                      <option value="Milsim">Milsim</option>
-                      <option value="Treino">Treino</option>
-                      <option value="4Fun">4Fun</option>
+                    <select value={game.tipo} onChange={(e) => handleEditGame(game.id, 'type', e.target.value)}>
+                      <option value="MILSIM">Milsim</option>
+                      <option value="TREINO">Treino</option>
+                      <option value="FUN4">4Fun</option>
                     </select>
-                    <input type="date" value={game.date} onChange={(e) => handleEditGame(game.id, 'date', e.target.value)} />
-                    <input type="time" value={game.time} onChange={(e) => handleEditGame(game.id, 'time', e.target.value)} />
-                    <input type="text" value={game.location} onChange={(e) => handleEditGame(game.id, 'location', e.target.value)} />
+                    <input type="date" value={game.data} onChange={(e) => handleEditGame(game.id, 'date', e.target.value)} />
+                    <input type="time" value={game.horario} onChange={(e) => handleEditGame(game.id, 'time', e.target.value)} />
+                    <input type="text" value={game.local} onChange={(e) => handleEditGame(game.id, 'location', e.target.value)} />
                   </div>
                   <div className="games-admin-meta">
                     <span>Confirmados (pagos): {confirmedPlayers}</span>

@@ -184,6 +184,24 @@
   font-size: 0.95rem;
 }
 
+.events-error {
+  background: #ffe4e6;
+  color: #9f1239;
+  border: 1px solid #fda4af;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.events-loading {
+  background: #fff3cd;
+  color: #664d03;
+  border: 1px solid #ffecb5;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
 .clear-filters-btn {
   background: #121212;
   color: #D4AF37;

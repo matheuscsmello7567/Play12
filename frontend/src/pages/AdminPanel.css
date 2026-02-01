@@ -88,6 +88,33 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
+.admin-error {
+  background: #ffe4e6;
+  color: #9f1239;
+  border: 1px solid #fda4af;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.admin-success {
+  background: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.admin-loading {
+  background: #fff3cd;
+  color: #664d03;
+  border: 1px solid #ffecb5;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
 .admin-panel h2 {
   margin: 0 0 1.2rem 0;
   text-transform: uppercase;

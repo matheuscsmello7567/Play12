@@ -38,10 +38,12 @@ public class Operador {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
+	@lombok.Builder.Default
 	private TipoOperador tipo = TipoOperador.JOGADOR;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
+	@lombok.Builder.Default
 	private FuncaoOperador funcao = FuncaoOperador.OPERADOR;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -49,9 +51,11 @@ public class Operador {
 	private Squad squad;
 
 	@Column(nullable = false)
+	@lombok.Builder.Default
 	private Boolean pago = false;
 
 	@Column(nullable = false)
+	@lombok.Builder.Default
 	private Integer totalJogos = 0;
 
 }

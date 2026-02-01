@@ -66,6 +66,21 @@
   background: #b89c2c;
 }
 
+.login-error {
+  color: #b00020;
+  font-size: 0.9rem;
+  margin-top: -0.2rem;
+}
+
+.login-success {
+  color: #0f5132;
+  background: #d1e7dd;
+  border: 1px solid #badbcc;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
 .toggle-btn {
   background: none;
   border: none;

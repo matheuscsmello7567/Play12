@@ -1,10 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './Games.css';
-import { games } from '../data/gamesData';
+import { apiFetch } from '../services/api';
 
 export default function Eventos() {
   const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 27));
   const [search, setSearch] = useState('');
+  const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const months = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -49,6 +52,34 @@ export default function Eventos() {
 
   const upcomingGames = filteredGames.filter((g) => new Date(g.date) >= today);
   const pastGames = filteredGames.filter((g) => new Date(g.date) < today);
+
+  const refreshGames = () => {
+    setLoading(true);
+    setError('');
+    apiFetch('/jogos')
+      .then((data) => {
+        const mapped = data.map((g) => ({
+          id: g.id,
+          title: g.titulo,
+          type: g.tipo,
+          date: g.data,
+          time: g.horario,
+          location: g.local,
+          players: g.confirmados ? `${g.confirmados} confirmados` : '0 confirmados',
+          status: g.status || 'Próximo'
+        }));
+        setGames(mapped);
+      })
+      .catch((err) => {
+        setGames([]);
+        setError(err.message || 'Erro ao carregar jogos');
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    refreshGames();
+  }, []);
 
   const calendarDays = [];
   const totalDays = daysInMonth(currentDate);
@@ -113,6 +144,8 @@ export default function Eventos() {
 
         {/* Lista de Jogos */}
         <div className="games-list-section">
+          {error && <div className="events-error">{error === 'Servidor offline' ? 'Servidor offline. Tente novamente mais tarde.' : error}</div>}
+          {loading && <div className="events-loading">Carregando jogos...</div>}
           <div className="events-search">
             <input
               type="text"
@@ -127,6 +160,14 @@ export default function Eventos() {
               disabled={!search.trim()}
             >
               Limpar filtros
+            </button>
+            <button
+              type="button"
+              className="clear-filters-btn"
+              onClick={refreshGames}
+              disabled={loading}
+            >
+              Atualizar
             </button>
           </div>
 
@@ -153,11 +194,15 @@ export default function Eventos() {
                   </div>
                   <div className="info-row">
                     <span className="icon">📍</span>
-                    <span>{game.location}</span>
+                    {game.location?.startsWith('http') ? (
+                      <a href={game.location} target="_blank" rel="noreferrer">Abrir no mapa</a>
+                    ) : (
+                      <span>{game.location}</span>
+                    )}
                   </div>
                   <div className="info-row">
                     <span className="icon">👥</span>
-                    <span>{game.players} inscritos</span>
+                    <span>{game.players}</span>
                   </div>
                 </div>
                 <button className="hero-btn nav-login">INSCREVER-SE</button>
@@ -188,11 +233,15 @@ export default function Eventos() {
                   </div>
                   <div className="info-row">
                     <span className="icon">📍</span>
-                    <span>{game.location}</span>
+                    {game.location?.startsWith('http') ? (
+                      <a href={game.location} target="_blank" rel="noreferrer">Abrir no mapa</a>
+                    ) : (
+                      <span>{game.location}</span>
+                    )}
                   </div>
                   <div className="info-row">
                     <span className="icon">👥</span>
-                    <span>{game.players} inscritos</span>
+                    <span>{game.players}</span>
                   </div>
                 </div>
               </div>

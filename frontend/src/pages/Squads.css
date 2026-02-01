@@ -25,6 +25,26 @@
   border: 2px solid #D4AF37;
 }
 
+.squads-error {
+  background: #ffe4e6;
+  color: #9f1239;
+  border: 1px solid #fda4af;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.squads-loading {
+  background: #fff3cd;
+  color: #664d03;
+  border: 1px solid #ffecb5;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
 .squads-row {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;

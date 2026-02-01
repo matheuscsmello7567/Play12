@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { clearBasicAuth } from './services/api';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -31,6 +32,7 @@ function App() {
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('play12_user');
+    clearBasicAuth();
   };
 
   return (

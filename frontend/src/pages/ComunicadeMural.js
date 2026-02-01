@@ -1,15 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './ComunicadeMural.css';
-
-const images = [
-  '/images/MilSim_1.jpeg',
-  '/images/MilSim_2.jpg',
-  '/images/MilSim_3.jpg',
-  '/images/MilSim_4.jpeg',
-  '/images/MilSim_5.webp',
-  '/images/MilSim_6_License.jpg',
-  '/images/MilSim_7_License.webp'
-];
+import { apiFetch } from '../services/api';
 
 const videos = [
   { id: 'dQw4w9WgXcQ', title: 'Highlights Play12' },
@@ -20,6 +11,9 @@ const videos = [
 
 export default function ComunicadeMural() {
   const [selected, setSelected] = useState(null);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const carouselRef = useRef(null);
 
   const scrollCarousel = (direction) => {
@@ -27,9 +21,23 @@ export default function ComunicadeMural() {
     const amount = direction === 'left' ? -360 : 360;
     carouselRef.current.scrollBy({ left: amount, behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    setLoading(true);
+    setError('');
+    apiFetch('/comunidade/fotos')
+      .then((data) => setImages(data.map((p) => p.imagemUrl)))
+      .catch((err) => {
+        setImages([]);
+        setError(err.message || 'Erro ao carregar fotos');
+      })
+      .finally(() => setLoading(false));
+  }, []);
   return (
     <div className="mural-page">
       <h1 className="mural-title">Últimos jogos</h1>
+      {error && <div className="mural-error">{error === 'Servidor offline' ? 'Servidor offline. Tente novamente mais tarde.' : error}</div>}
+      {loading && <div className="mural-loading">Carregando fotos...</div>}
       <div className="mural-grid">
         {images.map((src, idx) => (
           <button className="mural-photo" key={idx} onClick={() => setSelected(src)}>

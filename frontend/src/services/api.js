@@ -1,0 +1,53 @@
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+
+const getAuthHeader = () => {
+  const auth = localStorage.getItem('play12_auth');
+  return auth ? { Authorization: `Basic ${auth}` } : {};
+};
+
+export async function apiFetch(path, options = {}) {
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(options.headers || {}),
+    ...getAuthHeader()
+  };
+  let response;
+  try {
+    response = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      headers
+    });
+  } catch (err) {
+    throw new Error('Servidor offline');
+  }
+
+  if (response.status === 204) return null;
+
+  let data = null;
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    data = await response.json().catch(() => null);
+  } else {
+    data = await response.text().catch(() => null);
+  }
+
+  if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      throw new Error('Sessão expirada ou acesso negado. Faça login novamente.');
+    }
+    const message = typeof data === 'string'
+      ? (data || 'Erro na requisição')
+      : (data?.message || data?.error || 'Erro na requisição');
+    throw new Error(message);
+  }
+  return data;
+}
+
+export function setBasicAuth(email, password) {
+  const token = btoa(`${email}:${password}`);
+  localStorage.setItem('play12_auth', token);
+}
+
+export function clearBasicAuth() {
+  localStorage.removeItem('play12_auth');
+}
