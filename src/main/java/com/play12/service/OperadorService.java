@@ -108,12 +108,39 @@ public class OperadorService {
 		if (dto.getPago() != null) {
 			operador.setPago(dto.getPago());
 		}
+		if (dto.getPontos() != null) {
+			operador.setPontos(dto.getPontos());
+		}
 		if (dto.getSquadId() != null) {
 			Squad squad = squadRepository.findById(dto.getSquadId())
 					.orElseThrow(() -> new IllegalArgumentException("Squad não encontrado"));
 			operador.setSquad(squad);
 		}
 
+		operador = operadorRepository.save(operador);
+		return mapToDTO(operador);
+	}
+
+	public OperadorDTO atualizarPontos(Long id, Integer pontos) {
+		Operador operador = operadorRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Operador não encontrado"));
+
+		if (pontos != null) {
+			operador.setPontos(pontos);
+		}
+
+		operador = operadorRepository.save(operador);
+		return mapToDTO(operador);
+	}
+
+	public OperadorDTO adicionarAoSquad(Long operadorId, Long squadId) {
+		Operador operador = operadorRepository.findById(operadorId)
+				.orElseThrow(() -> new IllegalArgumentException("Operador não encontrado"));
+
+		Squad squad = squadRepository.findById(squadId)
+				.orElseThrow(() -> new IllegalArgumentException("Squad não encontrado"));
+
+		operador.setSquad(squad);
 		operador = operadorRepository.save(operador);
 		return mapToDTO(operador);
 	}
@@ -138,6 +165,7 @@ public class OperadorService {
 				.squadNome(operador.getSquad() != null ? operador.getSquad().getNome() : null)
 				.pago(operador.getPago())
 				.totalJogos(operador.getTotalJogos())
+				.pontos(operador.getPontos())
 				.build();
 	}
 

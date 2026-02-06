@@ -26,6 +26,7 @@ public class SquadService {
 				.qtdOperadores(dto.getQtdOperadores() != null ? dto.getQtdOperadores() : 0)
 				.jogosJogados(dto.getJogosJogados() != null ? dto.getJogosJogados() : 0)
 				.pontuacaoTotal(dto.getPontuacaoTotal() != null ? dto.getPontuacaoTotal() : 0)
+				.descricao(dto.getDescricao())
 				.build();
 		squad = squadRepository.save(squad);
 		return mapToDTO(squad);
@@ -42,6 +43,7 @@ public class SquadService {
 		squad.setQtdOperadores(dto.getQtdOperadores() != null ? dto.getQtdOperadores() : squad.getQtdOperadores());
 		squad.setJogosJogados(dto.getJogosJogados() != null ? dto.getJogosJogados() : squad.getJogosJogados());
 		squad.setPontuacaoTotal(dto.getPontuacaoTotal() != null ? dto.getPontuacaoTotal() : squad.getPontuacaoTotal());
+		squad.setDescricao(dto.getDescricao() != null ? dto.getDescricao() : squad.getDescricao());
 		return mapToDTO(squadRepository.save(squad));
 	}
 
@@ -59,6 +61,7 @@ public class SquadService {
 				.qtdOperadores(squad.getQtdOperadores())
 				.jogosJogados(squad.getJogosJogados())
 				.pontuacaoTotal(squad.getPontuacaoTotal())
+				.descricao(squad.getDescricao())
 				.build();
 	}
 }

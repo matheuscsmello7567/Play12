@@ -18,7 +18,8 @@ export async function apiFetch(path, options = {}) {
       headers
     });
   } catch (err) {
-    throw new Error('Servidor offline');
+    console.error('Erro de conexão:', err);
+    throw new Error(`Servidor offline - ${err.message}`);
   }
 
   if (response.status === 204) return null;
@@ -36,8 +37,9 @@ export async function apiFetch(path, options = {}) {
       throw new Error('Sessão expirada ou acesso negado. Faça login novamente.');
     }
     const message = typeof data === 'string'
-      ? (data || 'Erro na requisição')
-      : (data?.message || data?.error || 'Erro na requisição');
+      ? (data || `Erro na requisição (${response.status})`)
+      : (data?.message || data?.error || `Erro na requisição (${response.status})`);
+    console.error('Erro na API:', { status: response.status, data, message });
     throw new Error(message);
   }
   return data;

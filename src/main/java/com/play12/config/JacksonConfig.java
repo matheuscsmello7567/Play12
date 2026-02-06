@@ -1,0 +1,39 @@
+package com.play12.config;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+
+@Configuration
+public class JacksonConfig {
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        
+        // Configurar serialização de LocalDate no formato yyyy-MM-dd
+        javaTimeModule.addSerializer(LocalDate.class, 
+            new LocalDateSerializer(DateTimeFormatter.ISO_LOCAL_DATE));
+        
+        // Configurar serialização de LocalTime no formato HH:mm
+        javaTimeModule.addSerializer(LocalTime.class,
+            new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm")));
+        
+        mapper.registerModule(javaTimeModule);
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        
+        return mapper;
+    }
+}
+

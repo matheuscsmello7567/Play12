@@ -19,6 +19,22 @@ public class GameService {
 	private final GameRepository gameRepository;
 
 	public GameDTO criar(GameDTO dto) {
+		if (dto.getTitulo() == null || dto.getTitulo().isEmpty()) {
+			throw new IllegalArgumentException("Título do jogo é obrigatório");
+		}
+		if (dto.getData() == null) {
+			throw new IllegalArgumentException("Data do jogo é obrigatória");
+		}
+		if (dto.getHorario() == null) {
+			throw new IllegalArgumentException("Horário do jogo é obrigatório");
+		}
+		if (dto.getLocal() == null || dto.getLocal().isEmpty()) {
+			throw new IllegalArgumentException("Local do jogo é obrigatório");
+		}
+		if (dto.getTipo() == null) {
+			throw new IllegalArgumentException("Tipo do jogo é obrigatório");
+		}
+		
 		Game game = Game.builder()
 				.titulo(dto.getTitulo())
 				.tipo(dto.getTipo())

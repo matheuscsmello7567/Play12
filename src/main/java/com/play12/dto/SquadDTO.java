@@ -15,4 +15,5 @@ public class SquadDTO {
 	private Integer qtdOperadores;
 	private Integer jogosJogados;
 	private Integer pontuacaoTotal;
+	private String descricao;
 }

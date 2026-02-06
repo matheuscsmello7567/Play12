@@ -19,16 +19,19 @@ export default function Navbar({ user, onLogout }) {
             <Link to="/" className="nav-link">HOME</Link>
           </li>
           <li className="nav-item">
-            <Link to="/regras" className="nav-link">REGRAS</Link>
+            <Link to="/operadores" className="nav-link">OPERADORES</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/times" className="nav-link">TIMES</Link>
           </li>
           <li className="nav-item">
             <Link to="/eventos" className="nav-link">EVENTOS</Link>
           </li>
           <li className="nav-item">
-            <Link to="/squads" className="nav-link">SQUADS</Link>
+            <Link to="/ranking-times" className="nav-link">RANKING DE TIMES</Link>
           </li>
           <li className="nav-item">
-            <Link to="/comunidade" className="nav-link">COMUNIDADE</Link>
+            <Link to="/manual-airsoft" className="nav-link">MANUAL DO AIRSOFT</Link>
           </li>
           <li className="nav-item">
             <Link to="/loja" className="nav-link">LOJA</Link>

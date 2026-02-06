@@ -38,9 +38,12 @@ export default function AdminPanel({ user, onLogout }) {
         apiFetch('/squads')
       ]);
       setDashboard(dash);
-      setPlayers(playersData);
-      setGames(gamesData);
-      setSquads(squadsData);
+      // Extrair data do players (operadores retorna {success: true, data: [...]})
+      const operadores = Array.isArray(playersData) ? playersData : (playersData.data || []);
+      setPlayers(operadores);
+      // Games e Squads retornam direto a lista
+      setGames(Array.isArray(gamesData) ? gamesData : []);
+      setSquads(Array.isArray(squadsData) ? squadsData : []);
     } catch (err) {
       setError(err.message || 'Erro ao carregar dados');
     } finally {
@@ -59,10 +62,11 @@ export default function AdminPanel({ user, onLogout }) {
         const player = players.find(p => p.id === id);
         payload.squadId = player?.squadId || null;
       }
-      const updated = await apiFetch(`/operadores/${id}/admin`, {
+      const response = await apiFetch(`/operadores/${id}/admin`, {
         method: 'PUT',
         body: JSON.stringify(payload)
       });
+      const updated = response.data || response;
       setPlayers(prev => prev.map(p => (p.id === id ? updated : p)));
     } catch (err) {
       setError(err.message || 'Erro ao atualizar jogador');
@@ -71,10 +75,11 @@ export default function AdminPanel({ user, onLogout }) {
 
   const handleSquadChange = async (id, squadId) => {
     try {
-      const updated = await apiFetch(`/operadores/${id}/admin`, {
+      const response = await apiFetch(`/operadores/${id}/admin`, {
         method: 'PUT',
         body: JSON.stringify({ squadId })
       });
+      const updated = response.data || response;
       setPlayers(prev => prev.map(p => (p.id === id ? updated : p)));
     } catch (err) {
       setError(err.message || 'Erro ao atualizar squad');
@@ -101,11 +106,19 @@ export default function AdminPanel({ user, onLogout }) {
       const mapsUrl = newGame.location.startsWith('http')
         ? newGame.location
         : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(newGame.location)}`;
-      const created = await apiFetch('/jogos', {
+      
+      // Converter tipo para o enum correto
+      const tipoMapping = {
+        'Milsim': 'MILSIM',
+        'Treino': 'TREINO',
+        '4Fun': 'FUN4'
+      };
+      
+      const response = await apiFetch('/jogos', {
         method: 'POST',
         body: JSON.stringify({
           titulo: newGame.title,
-          tipo: newGame.type.toUpperCase() === '4FUN' ? 'FUN4' : newGame.type.toUpperCase(),
+          tipo: tipoMapping[newGame.type] || 'MILSIM',
           data: newGame.date,
           horario: newGame.time,
           local: mapsUrl,
@@ -113,6 +126,7 @@ export default function AdminPanel({ user, onLogout }) {
           status: 'Próximo'
         })
       });
+      const created = response.data || response;
       setGames(prev => [...prev, created]);
       setNewGame({ title: '', type: 'Milsim', date: '', time: '', location: '' });
       setSuccess('Jogo criado com sucesso!');
@@ -129,11 +143,26 @@ export default function AdminPanel({ user, onLogout }) {
       const updatedLocation = field === 'location'
         ? (value.startsWith('http') ? value : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`)
         : target.local;
-      const updated = await apiFetch(`/jogos/${id}`, {
+      
+      // Mapear tipo se necessário
+      let tipo = target.tipo;
+      if (field === 'type') {
+        const tipoMapping = {
+          'MILSIM': 'MILSIM',
+          'TREINO': 'TREINO',
+          'FUN4': 'FUN4',
+          'Milsim': 'MILSIM',
+          'Treino': 'TREINO',
+          '4Fun': 'FUN4'
+        };
+        tipo = tipoMapping[value] || value;
+      }
+      
+      const response = await apiFetch(`/jogos/${id}`, {
         method: 'PUT',
         body: JSON.stringify({
           titulo: field === 'title' ? value : target.titulo,
-          tipo: field === 'type' ? value : target.tipo,
+          tipo: field === 'type' ? tipo : target.tipo,
           data: field === 'date' ? value : target.data,
           horario: field === 'time' ? value : target.horario,
           local: updatedLocation,
@@ -141,6 +170,7 @@ export default function AdminPanel({ user, onLogout }) {
           status: target.status
         })
       });
+      const updated = response.data || response;
       setGames(prev => prev.map(g => (g.id === id ? updated : g)));
       setSuccess('Jogo atualizado com sucesso!');
     } catch (err) {
@@ -157,7 +187,8 @@ export default function AdminPanel({ user, onLogout }) {
 
       <div className="admin-tabs">
         <button className={activeTab === 'dashboard' ? 'active' : ''} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
-        <button className={activeTab === 'players' ? 'active' : ''} onClick={() => setActiveTab('players')}>Jogadores</button>
+        <button className={activeTab === 'operadores' ? 'active' : ''} onClick={() => setActiveTab('operadores')}>Operadores</button>
+        <button className={activeTab === 'times' ? 'active' : ''} onClick={() => setActiveTab('times')}>Times</button>
         <button className={activeTab === 'games' ? 'active' : ''} onClick={() => setActiveTab('games')}>Jogos</button>
         <button className={activeTab === 'logistics' ? 'active' : ''} onClick={() => setActiveTab('logistics')}>Logística</button>
       </div>
@@ -318,6 +349,148 @@ export default function AdminPanel({ user, onLogout }) {
                   </div>
                   <div className="games-admin-meta">
                     <span>Confirmados (pagos): {confirmedPlayers}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'operadores' && (
+        <div className="admin-section">
+          {error && <div className="admin-error">{error}</div>}
+          {success && <div className="admin-success">{success}</div>}
+          {loading && <div className="admin-loading">Carregando...</div>}
+          <div className="admin-panel">
+            <h2>Gerenciamento de Operadores</h2>
+            <div className="players-table">
+              <div className="players-row header">
+                <div>Apelido</div>
+                <div>Nome</div>
+                <div>Squad</div>
+                <div>Pontos</div>
+                <div>Ações</div>
+              </div>
+              {players.map(player => (
+                <div className="players-row" key={player.id}>
+                  <div>{player.nickname}</div>
+                  <div>{player.nomeCompleto}</div>
+                  <div>{player.squadNome || 'Sem squad'}</div>
+                  <div>
+                    <input
+                      type="number"
+                      value={player.pontos || 0}
+                      onChange={(e) => {
+                        const updated = players.map(p =>
+                          p.id === player.id ? { ...p, pontos: parseInt(e.target.value) } : p
+                        );
+                        setPlayers(updated);
+                      }}
+                      style={{ width: '80px' }}
+                    />
+                  </div>
+                  <div>
+                    <button
+                      className="success"
+                      onClick={() => {
+                        setError('');
+                        setSuccess('');
+                        const pontosValue = parseInt(player.pontos || 0);
+                        
+                        console.log(`Enviando para /operadores/${player.id}/pontos:`, { pontos: pontosValue });
+                        
+                        apiFetch(`/operadores/${player.id}/pontos`, {
+                          method: 'PUT',
+                          body: JSON.stringify({ pontos: pontosValue })
+                        }).then((response) => {
+                          console.log('Resposta:', response);
+                          setSuccess('Pontos atualizados com sucesso!');
+                          setTimeout(() => {
+                            refreshAll();
+                            setSuccess('');
+                          }, 1000);
+                        }).catch(err => {
+                          console.error('Erro completo:', err);
+                          setError(err.message || 'Erro ao atualizar pontos');
+                        });
+                      }}
+                    >
+                      Salvar
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'times' && (
+        <div className="admin-section">
+          {error && <div className="admin-error">{error}</div>}
+          {success && <div className="admin-success">{success}</div>}
+          {loading && <div className="admin-loading">Carregando...</div>}
+          <div className="admin-panel">
+            <h2>Gerenciamento de Times</h2>
+            <div className="times-admin-list">
+              {squads.map(squad => (
+                <div key={squad.id} className="times-admin-card">
+                  <div className="times-admin-fields">
+                    <h3>{squad.nome}</h3>
+                    <p>Operadores: {squad.qtdOperadores || 0}</p>
+                    <p>Jogos: {squad.jogosJogados || 0}</p>
+                    <p>
+                      Pontos:
+                      <input
+                        type="number"
+                        value={squad.pontuacaoTotal || 0}
+                        onChange={(e) => {
+                          const updated = squads.map(s =>
+                            s.id === squad.id ? { ...s, pontuacaoTotal: parseInt(e.target.value) } : s
+                          );
+                          setSquads(updated);
+                        }}
+                        style={{ width: '80px', marginLeft: '0.5rem' }}
+                      />
+                    </p>
+                    <p>
+                      <strong>Descrição:</strong>
+                    </p>
+                    <textarea
+                      value={squad.descricao || ''}
+                      onChange={(e) => {
+                        const updated = squads.map(s =>
+                          s.id === squad.id ? { ...s, descricao: e.target.value } : s
+                        );
+                        setSquads(updated);
+                      }}
+                      style={{ width: '100%', minHeight: '100px' }}
+                    />
+                    <button
+                      className="success"
+                      onClick={() => {
+                        setError('');
+                        apiFetch(`/squads/${squad.id}`, {
+                          method: 'PUT',
+                          body: JSON.stringify({
+                            nome: squad.nome,
+                            pontuacaoTotal: squad.pontuacaoTotal,
+                            descricao: squad.descricao,
+                            qtdOperadores: squad.qtdOperadores,
+                            jogosJogados: squad.jogosJogados
+                          })
+                        }).then(() => {
+                          setSuccess('Time atualizado!');
+                          setTimeout(() => setSuccess(''), 3000);
+                        }).catch(err => {
+                          setError(err.message || 'Erro ao atualizar time');
+                        });
+                      }}
+                      style={{ marginTop: '1rem' }}
+                    >
+                      Salvar
+                    </button>
                   </div>
                 </div>
               ))}

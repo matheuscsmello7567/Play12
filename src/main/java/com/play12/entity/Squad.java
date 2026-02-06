@@ -29,4 +29,7 @@ public class Squad {
 
 	@Column(nullable = false)
 	private Integer pontuacaoTotal = 0;
+
+	@Column(length = 500)
+	private String descricao;
 }

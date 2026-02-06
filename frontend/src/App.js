@@ -4,13 +4,16 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import Rules from './pages/Rules';
+import ManualAirsoft from './pages/ManualAirsoft';
 import Games from './pages/Games';
 import './App.css';
 import Eventos from './pages/Eventos';
+import ScoreboardPage from './pages/ScoreboardPage';
 import Login from './pages/Login';
-import ComunicadeMural from './pages/ComunicadeMural';
-import Squads from './pages/Squads';
+import Operadores from './pages/Operadores';
+import RankingTimes from './pages/RankingTimes';
+import Times from './pages/Times';
+import CreateTeam from './pages/CreateTeam';
 import Loja from './pages/Loja';
 import AdminPanel from './pages/AdminPanel';
 
@@ -41,11 +44,14 @@ function App() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/regras" element={<Rules />} />
-          <Route path="/jogos" element={<Games />} />
+          <Route path="/operadores" element={<Operadores />} />
+          <Route path="/times" element={<Times />} />
+          <Route path="/criar-time" element={<CreateTeam />} />
           <Route path="/eventos" element={<Eventos />} />
-          <Route path="/comunidade" element={<ComunicadeMural />} />
-          <Route path="/squads" element={<Squads />} />
+          <Route path="/eventos/:gameId/scoreboard" element={<ScoreboardPage />} />
+          <Route path="/ranking-times" element={<RankingTimes />} />
+          <Route path="/manual-airsoft" element={<ManualAirsoft />} />
+          <Route path="/jogos" element={<Games />} />
           <Route path="/loja" element={<Loja />} />
           <Route
             path="/admin"

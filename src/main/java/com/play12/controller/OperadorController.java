@@ -4,6 +4,7 @@ import com.play12.dto.CadastroDTO;
 import com.play12.dto.LoginDTO;
 import com.play12.dto.OperadorAdminUpdateDTO;
 import com.play12.dto.OperadorDTO;
+import com.play12.dto.OperadorUpdatePontosDTO;
 import com.play12.service.OperadorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -116,6 +117,38 @@ public class OperadorController {
 			OperadorDTO operador = operadorService.atualizarAdmin(id, dto);
 			response.put("success", true);
 			response.put("message", "Operador atualizado com sucesso!");
+			response.put("data", operador);
+			return ResponseEntity.ok(response);
+		} catch (IllegalArgumentException e) {
+			response.put("success", false);
+			response.put("message", e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+	}
+
+	@PutMapping("/{id}/pontos")
+	public ResponseEntity<Map<String, Object>> atualizarPontos(@PathVariable Long id, @RequestBody OperadorUpdatePontosDTO dto) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			OperadorDTO operador = operadorService.atualizarPontos(id, dto.getPontos());
+			response.put("success", true);
+			response.put("message", "Pontos atualizados com sucesso!");
+			response.put("data", operador);
+			return ResponseEntity.ok(response);
+		} catch (IllegalArgumentException e) {
+			response.put("success", false);
+			response.put("message", e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+	}
+
+	@PutMapping("/{operadorId}/squad/{squadId}")
+	public ResponseEntity<Map<String, Object>> adicionarAoSquad(@PathVariable Long operadorId, @PathVariable Long squadId) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			OperadorDTO operador = operadorService.adicionarAoSquad(operadorId, squadId);
+			response.put("success", true);
+			response.put("message", "Operador adicionado ao squad com sucesso!");
 			response.put("data", operador);
 			return ResponseEntity.ok(response);
 		} catch (IllegalArgumentException e) {

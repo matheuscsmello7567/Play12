@@ -58,4 +58,8 @@ public class Operador {
 	@lombok.Builder.Default
 	private Integer totalJogos = 0;
 
+	@Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
+	@lombok.Builder.Default
+	private Integer pontos = 0;
+
 }

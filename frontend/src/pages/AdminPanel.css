@@ -250,11 +250,172 @@
   padding: 1.2rem;
 }
 
+/* Operadores Tab Styles */
+.operadores-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.operadores-table thead {
+  background: #121212;
+  color: #D4AF37;
+}
+
+.operadores-table th {
+  padding: 0.8rem;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  border-bottom: 2px solid #D4AF37;
+}
+
+.operadores-table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #eee;
+}
+
+.operadores-table tbody tr:hover {
+  background: #f5f5f5;
+}
+
+.operador-pontosInput {
+  width: 80px;
+  padding: 0.5rem;
+  border: 1px solid #D4AF37;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.operador-saveBtn {
+  background: #121212;
+  color: #D4AF37;
+  border: 1px solid #D4AF37;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.operador-saveBtn:hover {
+  background: #D4AF37;
+  color: #121212;
+}
+
+/* Times Tab Styles */
+.times-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.squad-admin-card {
+  border: 2px solid #D4AF37;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.squad-admin-card h3 {
+  margin: 0;
+  color: #121212;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #D4AF37;
+  padding-bottom: 0.5rem;
+}
+
+.squad-admin-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.squad-admin-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.squad-admin-field label {
+  font-weight: bold;
+  color: #121212;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+
+.squad-admin-field input,
+.squad-admin-field textarea {
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.squad-admin-field textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-size: 0.9rem;
+}
+
+.squad-admin-save {
+  background: #121212;
+  color: #D4AF37;
+  border: 2px solid #D4AF37;
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+
+.squad-admin-save:hover {
+  background: #D4AF37;
+  color: #121212;
+}
+
+/* Search Filter Styles */
+.admin-search {
+  margin-bottom: 1.5rem;
+}
+
+.admin-search input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.7rem 1rem;
+  border: 2px solid #D4AF37;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.admin-search input::placeholder {
+  color: #999;
+}
+
 @media (max-width: 900px) {
   .players-row {
     grid-template-columns: 1fr;
   }
   .players-row.header {
     display: none;
+  }
+  
+  .operadores-table {
+    font-size: 0.9rem;
+  }
+  
+  .operadores-table th,
+  .operadores-table td {
+    padding: 0.5rem;
+  }
+  
+  .times-grid {
+    grid-template-columns: 1fr;
   }
 }

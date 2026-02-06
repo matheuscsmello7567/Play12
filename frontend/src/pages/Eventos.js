@@ -1,11 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import './Games.css';
 import { apiFetch } from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import Scoreboard from '../components/Scoreboard';
 
 export default function Eventos() {
+  const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 27));
   const [search, setSearch] = useState('');
   const [games, setGames] = useState([]);
+  const [operadores, setOperadores] = useState([]);
+  const [squads, setSquads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -32,7 +37,17 @@ export default function Eventos() {
 
   const gamesByDate = (day) => {
     const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    return games.filter(g => g.date === dateStr);
+    return games.filter(g => {
+      // Garantir que g.date está em formato string YYYY-MM-DD
+      let gameDate = g.date;
+      if (typeof gameDate === 'object' && gameDate !== null) {
+        // Se for um objeto, converter para string
+        if (gameDate.year && gameDate.month && gameDate.day) {
+          gameDate = `${gameDate.year}-${String(gameDate.month).padStart(2, '0')}-${String(gameDate.day).padStart(2, '0')}`;
+        }
+      }
+      return gameDate === dateStr;
+    });
   };
 
   const today = new Date();
@@ -48,31 +63,77 @@ export default function Eventos() {
         g.type.toLowerCase().includes(term)
       );
     });
-  }, [search]);
+  }, [search, games]);
 
-  const upcomingGames = filteredGames.filter((g) => new Date(g.date) >= today);
-  const pastGames = filteredGames.filter((g) => new Date(g.date) < today);
+  const upcomingGames = filteredGames.filter((g) => {
+    try {
+      const gameDate = new Date(g.date);
+      return gameDate >= today;
+    } catch {
+      return false;
+    }
+  });
+  
+  const pastGames = filteredGames.filter((g) => {
+    try {
+      const gameDate = new Date(g.date);
+      return gameDate < today;
+    } catch {
+      return false;
+    }
+  });
 
   const refreshGames = () => {
     setLoading(true);
     setError('');
-    apiFetch('/jogos')
-      .then((data) => {
-        const mapped = data.map((g) => ({
-          id: g.id,
-          title: g.titulo,
-          type: g.tipo,
-          date: g.data,
-          time: g.horario,
-          location: g.local,
-          players: g.confirmados ? `${g.confirmados} confirmados` : '0 confirmados',
-          status: g.status || 'Próximo'
-        }));
+    Promise.all([
+      apiFetch('/jogos'),
+      apiFetch('/operadores'),
+      apiFetch('/squads')
+    ])
+      .then(([jogosData, opData, squadsData]) => {
+        const mapped = jogosData.map((g) => {
+          // Converter data para string no formato YYYY-MM-DD se necessário
+          let dateStr = g.data;
+          if (typeof g.data === 'object' && g.data !== null) {
+            // Se for um objeto com year, month, day
+            if (g.data.year && g.data.month && g.data.day) {
+              dateStr = `${g.data.year}-${String(g.data.month).padStart(2, '0')}-${String(g.data.day).padStart(2, '0')}`;
+            } else {
+              // Se for um objeto Date, converter
+              dateStr = new Date(g.data).toISOString().split('T')[0];
+            }
+          }
+          
+          // Converter horario para string no formato HH:mm se necessário
+          let timeStr = g.horario;
+          if (typeof g.horario === 'object' && g.horario !== null) {
+            // Se for um objeto com hour, minute, second
+            if (g.horario.hour !== undefined) {
+              timeStr = `${String(g.horario.hour).padStart(2, '0')}:${String(g.horario.minute).padStart(2, '0')}`;
+            }
+          }
+          
+          return {
+            id: g.id,
+            title: g.titulo,
+            type: g.tipo,
+            date: dateStr,
+            time: timeStr,
+            location: g.local,
+            players: g.confirmados ? `${g.confirmados} confirmados` : '0 confirmados',
+            status: g.status || 'Próximo'
+          };
+        });
         setGames(mapped);
+        // Extrair dados do operadores (que é {success: true, data: [...]})
+        const opsArray = Array.isArray(opData) ? opData : (opData.data || []);
+        setOperadores(opsArray);
+        setSquads(Array.isArray(squadsData) ? squadsData : []);
       })
       .catch((err) => {
         setGames([]);
-        setError(err.message || 'Erro ao carregar jogos');
+        setError(err.message || 'Erro ao carregar dados');
       })
       .finally(() => setLoading(false));
   };
@@ -205,7 +266,18 @@ export default function Eventos() {
                     <span>{game.players}</span>
                   </div>
                 </div>
-                <button className="hero-btn nav-login">INSCREVER-SE</button>
+
+                <div className="game-actions">
+                  {operadores.length > 0 && squads.length > 0 && (
+                    <button 
+                      className="hero-btn nav-login"
+                      onClick={() => navigate(`/eventos/${game.id}/scoreboard`)}
+                    >
+                      SCOREBOARD
+                    </button>
+                  )}
+                  <button className="hero-btn nav-login">INSCREVER-SE</button>
+                </div>
               </div>
             ))}
           </div>
@@ -244,6 +316,15 @@ export default function Eventos() {
                     <span>{game.players}</span>
                   </div>
                 </div>
+
+                {/* Scoreboard para jogos finalizados */}
+                {game.status === 'Finalizado' && operadores.length > 0 && squads.length > 0 && (
+                  <Scoreboard 
+                    gameId={game.id}
+                    operadores={operadores}
+                    squads={squads}
+                  />
+                )}
               </div>
             ))}
           </div>

@@ -1,0 +1,148 @@
+.scoreboard-page {
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+  padding: 1rem;
+  position: relative;
+}
+
+.back-btn {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  background: #c9a137;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  z-index: 100;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(201, 161, 55, 0.3);
+}
+
+.back-btn:hover {
+  background: #e6b800;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(201, 161, 55, 0.4);
+}
+
+.scoreboard-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 0.5rem;
+  padding: 1.5rem 1rem;
+  background: rgba(18, 18, 18, 0.6);
+  border-radius: 8px;
+  border-bottom: 3px solid #c9a137;
+  margin-top: 0.5rem;
+}
+
+.scoreboard-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 1.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.game-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 1.1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c9a137;
+  font-weight: 500;
+}
+
+.scoreboard-container {
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.scoreboard-loading,
+.scoreboard-error,
+.no-data {
+  text-align: center;
+  color: white;
+  padding: 3rem;
+  font-size: 1.2rem;
+  background: rgba(18, 18, 18, 0.6);
+  border-radius: 8px;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scoreboard-error {
+  background: rgba(200, 100, 100, 0.3);
+  border: 1px solid rgba(255, 100, 100, 0.5);
+}
+
+.no-data {
+  color: #c9a137;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .scoreboard-page {
+    padding: 1rem;
+  }
+
+  .back-btn {
+    top: 80px;
+    left: 10px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .scoreboard-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .game-meta {
+    gap: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .scoreboard-container {
+    padding: 1rem;
+  }
+
+  .meta-item {
+    flex: 0 0 calc(50% - 0.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .scoreboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .game-meta {
+    gap: 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .meta-item {
+    flex: 0 0 100%;
+  }
+
+  .back-btn {
+    top: 70px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}

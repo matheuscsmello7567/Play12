@@ -57,6 +57,40 @@
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
 }
 
+/* Próximo Jogo Section */
+.proximo-jogo-hero {
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid #D4AF37;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 500px;
+  color: white;
+}
+
+.proximo-jogo-hero h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  color: #D4AF37;
+  text-transform: uppercase;
+}
+
+.jogo-info h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.8rem;
+  color: white;
+}
+
+.jogo-info p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.jogo-info strong {
+  color: #D4AF37;
+}
+
 /* About Section */
 .about {
   background: linear-gradient(rgba(255, 255, 255, 0.93), rgba(255, 255, 255, 0.93)), url('../../public/images/MilSim_2.jpg') right/cover no-repeat;

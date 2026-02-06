@@ -24,5 +24,6 @@ public class OperadorDTO {
 	private String squadNome;
 	private Boolean pago;
 	private Integer totalJogos;
+	private Integer pontos;
 
 }

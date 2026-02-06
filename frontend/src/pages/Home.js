@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaMapPin, FaUsers, FaBook } from 'react-icons/fa';
+import { apiFetch } from '../services/api';
 import './Home.css';
 
 export default function Home() {
   const navigate = useNavigate();
+  const [proximoJogo, setProximoJogo] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleStartClick = () => {
-    navigate('/jogos');
+  useEffect(() => {
+    apiFetch('/jogos/proximos')
+      .then((data) => {
+        if (data && data.length > 0) {
+          setProximoJogo(data[0]);
+        }
+      })
+      .catch((err) => {
+        console.error('Erro ao carregar próximo jogo:', err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleInscreverClick = () => {
+    if (proximoJogo) {
+      navigate('/eventos');
+    }
   };
+
   return (
     <div className="home">
       {/* Hero Section */}
@@ -16,7 +35,27 @@ export default function Home() {
         <div className="hero-content">
           <h1>PLAY12</h1>
           <p>Um site destinado a jogadores de airsoft</p>
-          <button className="hero-btn" onClick={handleStartClick}>COMEÇAR</button>
+          {proximoJogo ? (
+            <div className="proximo-jogo-hero">
+              <h2>Próximo Jogo</h2>
+              <div className="jogo-info">
+                <h3>{proximoJogo.titulo}</h3>
+                <p>
+                  <strong>Data:</strong> {new Date(proximoJogo.data).toLocaleDateString('pt-BR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </p>
+                <p><strong>Horário:</strong> {proximoJogo.horario}</p>
+                <p><strong>Tipo:</strong> {proximoJogo.tipo}</p>
+              </div>
+              <button className="hero-btn" onClick={handleInscreverClick}>INSCREVER-SE</button>
+            </div>
+          ) : (
+            <button className="hero-btn" onClick={() => navigate('/eventos')}>VER EVENTOS</button>
+          )}
         </div>
       </section>
 
