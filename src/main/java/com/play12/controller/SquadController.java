@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/squads")
+@RequestMapping("/api/squads")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class SquadController {

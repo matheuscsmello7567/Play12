@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comunidade/fotos")
+@RequestMapping("/api/comunidade/fotos")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class CommunityController {
