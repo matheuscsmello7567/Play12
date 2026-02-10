@@ -9,9 +9,22 @@ public class CorsConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
+		String[] allowedOrigins;
+		String renderUrl = System.getenv("RENDER_EXTERNAL_URL");
+		
+		if (renderUrl != null && !renderUrl.isEmpty()) {
+			// Em produção (Render)
+			allowedOrigins = new String[]{renderUrl};
+		} else {
+			// Em desenvolvimento (localhost)
+			allowedOrigins = new String[]{"http://localhost:3000", "http://localhost:8080"};
+		}
+		
 		registry.addMapping("/**")
-				.allowedOrigins("*") // Em produção, colocar a URL do site
-				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+				.allowedOrigins(allowedOrigins)
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+				.allowCredentials(true)
+				.maxAge(3600);
 	}
 
 }
