@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@SuppressWarnings("unused")
 public class Product {
 
 	@Id

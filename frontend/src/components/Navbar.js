@@ -11,7 +11,7 @@ export default function Navbar({ user, onLogout }) {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          Milsim Commander
+          Airsoft Manager
         </Link>
 
         <ul className="nav-menu">
@@ -25,7 +25,7 @@ export default function Navbar({ user, onLogout }) {
             <Link to="/times" className="nav-link">TIMES</Link>
           </li>
           <li className="nav-item">
-            <Link to="/eventos" className="nav-link">EVENTOS</Link>
+            <Link to="/eventos" className="nav-link">AGENDA 2026</Link>
           </li>
           <li className="nav-item">
             <Link to="/ranking-times" className="nav-link">RANKING DE TIMES</Link>
@@ -38,7 +38,7 @@ export default function Navbar({ user, onLogout }) {
           </li>
           {user && user.isAdmin && (
             <li className="nav-item">
-              <Link to="/admin" className="nav-link">PAINEL</Link>
+              <Link to="/admin" className="nav-link">DASHBOARD</Link>
             </li>
           )}
         </ul>

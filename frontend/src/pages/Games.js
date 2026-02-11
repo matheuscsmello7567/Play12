@@ -126,7 +126,7 @@ export default function Games() {
                   </div>
                 </div>
 
-                <button className="hero-btn nav-login">INSCREVER-SE</button>
+                <button className="hero-btn">INSCREVER-SE</button>
               </div>
             ))}
           </div>

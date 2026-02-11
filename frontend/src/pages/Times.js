@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Times.css';
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../services/api';
+import { mockSquads, mockOperadores } from '../data/mockData';
 
 export default function Times() {
   const navigate = useNavigate();
@@ -16,12 +17,17 @@ export default function Times() {
     setError('');
     apiFetch('/squads')
       .then((data) => {
+        if (!data) {
+          setSquads(mockSquads);
+          setError('Usando dados locais (servidor indisponível)');
+          return;
+        }
         const dataArray = Array.isArray(data) ? data : (data.data || []);
         setSquads(dataArray);
       })
       .catch((err) => {
-        setSquads([]);
-        setError(err.message || 'Erro ao carregar times');
+        setSquads(mockSquads);
+        setError('Usando dados locais (servidor indisponível)');
       })
       .finally(() => setLoading(false));
   }, []);
@@ -30,11 +36,17 @@ export default function Times() {
     setSelectedSquad(squad);
     try {
       const response = await apiFetch('/operadores');
+      if (!response) {
+        const filtered = mockOperadores.filter((op) => op.squadId === squad.id || op.squadNome === squad.nome);
+        setOperadoresSquad(filtered);
+        return;
+      }
       const oprs = response.data || response || [];
       const filtered = (Array.isArray(oprs) ? oprs : []).filter((op) => op.squadId === squad.id);
       setOperadoresSquad(filtered);
     } catch (err) {
-      setOperadoresSquad([]);
+      const filtered = mockOperadores.filter((op) => op.squadId === squad.id || op.squadNome === squad.nome);
+      setOperadoresSquad(filtered);
     }
   };
 

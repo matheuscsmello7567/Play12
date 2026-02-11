@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Operadores.css';
 import { apiFetch } from '../services/api';
+import { mockOperadores } from '../data/mockData';
 
 export default function Operadores() {
   const [operadores, setOperadores] = useState([]);
@@ -13,12 +14,18 @@ export default function Operadores() {
     setError('');
     apiFetch('/operadores')
       .then((response) => {
+        // Se API retornar null, usar dados mock
+        if (!response) {
+          setOperadores(mockOperadores);
+          return;
+        }
         const dataArray = response.data || response || [];
-        setOperadores(Array.isArray(dataArray) ? dataArray : []);
+        setOperadores(Array.isArray(dataArray) ? dataArray : mockOperadores);
       })
       .catch((err) => {
-        setOperadores([]);
-        setError(err.message || 'Erro ao carregar operadores');
+        console.warn('Erro ao carregar operadores, usando dados locais:', err.message);
+        setError('Usando dados locais (servidor indisponível)');
+        setOperadores(mockOperadores);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -63,7 +70,6 @@ export default function Operadores() {
         <div className="operadores-table">
           <div className="operadores-row operadores-header">
             <div>Apelido</div>
-            <div>Nome Completo</div>
             <div>Squad</div>
             <div>Jogos</div>
             <div>Pontos</div>
@@ -76,7 +82,6 @@ export default function Operadores() {
             filteredOperadores.map((operador) => (
               <div className="operadores-row" key={operador.id}>
                 <div className="operador-nickname"><strong>{operador.nickname}</strong></div>
-                <div>{operador.nomeCompleto}</div>
                 <div>{operador.squadNome || 'Sem squad'}</div>
                 <div>{operador.totalJogos || 0}</div>
                 <div className="operador-points">{operador.pontos || 0}</div>

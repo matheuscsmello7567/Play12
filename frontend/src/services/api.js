@@ -1,4 +1,5 @@
-const API_BASE = process.env.REACT_APP_API_URL || '/api';
+const isDevelopment = process.env.NODE_ENV === 'development';
+const API_BASE = process.env.REACT_APP_API_URL || (isDevelopment ? 'http://localhost:8080/api' : '/api');
 
 const getAuthHeader = () => {
   const auth = localStorage.getItem('play12_auth');
@@ -19,6 +20,11 @@ export async function apiFetch(path, options = {}) {
     });
   } catch (err) {
     console.error('Erro de conexão:', err);
+    // Em desenvolvimento, retornar null para permitir fallback
+    if (isDevelopment && !options.method) {
+      console.warn(`API ${API_BASE}${path} indisponível. Usando dados locais como fallback.`);
+      return null;
+    }
     throw new Error(`Servidor offline - ${err.message}`);
   }
 

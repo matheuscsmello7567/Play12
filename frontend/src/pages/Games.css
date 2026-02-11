@@ -303,7 +303,7 @@
 .game-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border-color: #d4af7a;
+  border-color: #D4AF37;
 }
 
 .game-card-header {
@@ -374,14 +374,14 @@
   letter-spacing: 0.5px;
   transition: all 0.3s;
   font-size: 0.9rem;
-    align-self: flex-end;
-    margin-top: auto;
-    height: 48px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    min-width: 180px;
-  }
+  align-self: flex-end;
+  margin-top: auto;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+}
 
 .game-btn:hover {
   background-color: #D4AF37;

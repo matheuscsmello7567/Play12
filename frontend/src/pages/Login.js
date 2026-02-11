@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { apiFetch, setBasicAuth } from '../services/api';
 import './Login.css';
 
+const ADMIN_PASSWORD = 'Play12Eventos@2026';
+
 export default function Login({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
-  const [form, setForm] = useState({ email: '', password: '', name: '', nickname: '', telefone: '', isAdmin: false });
+  const [accountType, setAccountType] = useState('operador'); // 'operador' or 'admin'
+  const [form, setForm] = useState({ email: '', password: '', name: '', nickname: '', telefone: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -40,28 +43,62 @@ export default function Login({ onLogin }) {
         setSuccess('Login realizado com sucesso!');
         navigate('/');
       } else {
-        const response = await apiFetch('/operadores/cadastro', {
-          method: 'POST',
-          body: JSON.stringify({
-            email: form.email,
-            senha: form.password,
-            nomeCompleto: form.name,
-            nickname: form.nickname,
-            telefone: form.telefone,
-            admin: form.isAdmin
-          })
-        });
-        setBasicAuth(form.email, form.password);
-        const operador = response.data;
-        if (onLogin) {
-          onLogin({
-            name: operador.nomeCompleto,
-            email: operador.email,
-            tipo: operador.tipo,
-            isAdmin: operador.tipo === 'ADMIN',
-            photo: null
+        // Validação para Admin
+        if (accountType === 'admin') {
+          if (form.password !== ADMIN_PASSWORD) {
+            setError('Senha de admin inválida. Verifique a chave de acesso.');
+            setLoading(false);
+            return;
+          }
+          
+          // Cadastro de Admin - sem email nem nickname
+          const response = await apiFetch('/operadores/cadastro', {
+            method: 'POST',
+            body: JSON.stringify({
+              nomeCompleto: form.name,
+              senha: form.password,
+              admin: true
+            })
           });
+          
+          setBasicAuth('', form.password); // Admin sem email padrão
+          const operador = response.data;
+          if (onLogin) {
+            onLogin({
+              name: operador.nomeCompleto,
+              email: operador.email || 'admin@play12.local',
+              tipo: 'ADMIN',
+              isAdmin: true,
+              photo: null
+            });
+          }
+        } else {
+          // Cadastro normal de Operador
+          const response = await apiFetch('/operadores/cadastro', {
+            method: 'POST',
+            body: JSON.stringify({
+              email: form.email,
+              senha: form.password,
+              nomeCompleto: form.name,
+              nickname: form.nickname,
+              telefone: form.telefone,
+              admin: false
+            })
+          });
+          
+          setBasicAuth(form.email, form.password);
+          const operador = response.data;
+          if (onLogin) {
+            onLogin({
+              name: operador.nomeCompleto,
+              email: operador.email,
+              tipo: operador.tipo,
+              isAdmin: operador.tipo === 'ADMIN',
+              photo: null
+            });
+          }
         }
+        
         setSuccess('Cadastro realizado com sucesso!');
         navigate('/');
       }
@@ -76,6 +113,29 @@ export default function Login({ onLogin }) {
     <div className="login-page">
       <div className="login-container">
         <h2>{isLogin ? 'Login' : 'Cadastro'}</h2>
+        
+        {!isLogin && (
+          <div className="account-type-toggle">
+            <span className="toggle-label">Tipo de Conta:</span>
+            <div className="toggle-switch">
+              <button
+                type="button"
+                className={`toggle-option ${accountType === 'operador' ? 'active' : ''}`}
+                onClick={() => setAccountType('operador')}
+              >
+                Operador
+              </button>
+              <button
+                type="button"
+                className={`toggle-option ${accountType === 'admin' ? 'active' : ''}`}
+                onClick={() => setAccountType('admin')}
+              >
+                Admin
+              </button>
+            </div>
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <>
@@ -87,50 +147,60 @@ export default function Login({ onLogin }) {
                 onChange={handleChange}
                 required
               />
-              <input
-                type="text"
-                name="nickname"
-                placeholder="Nickname"
-                value={form.nickname}
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="tel"
-                name="telefone"
-                placeholder="Telefone (opcional)"
-                value={form.telefone}
-                onChange={handleChange}
-              />
+              
+              {accountType === 'operador' && (
+                <>
+                  <input
+                    type="text"
+                    name="nickname"
+                    placeholder="Nickname"
+                    value={form.nickname}
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    type="tel"
+                    name="telefone"
+                    placeholder="Telefone (opcional)"
+                    value={form.telefone}
+                    onChange={handleChange}
+                  />
+                </>
+              )}
+
+              {accountType === 'operador' && (
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+              )}
             </>
           )}
-          {!isLogin && (
-            <label className="admin-toggle">
-              <input
-                type="checkbox"
-                name="isAdmin"
-                checked={form.isAdmin}
-                onChange={(e) => setForm({ ...form, isAdmin: e.target.checked })}
-              />
-              Sou ADM
-            </label>
+
+          {isLogin && (
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
           )}
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
+
           <input
             type="password"
             name="password"
-            placeholder="Senha"
+            placeholder={accountType === 'admin' ? 'Chave de acesso admin' : 'Senha'}
             value={form.password}
             onChange={handleChange}
             required
           />
+
           {error && <div className="login-error">{error}</div>}
           {success && <div className="login-success">{success}</div>}
           <button type="submit" disabled={loading}>

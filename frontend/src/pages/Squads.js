@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Squads.css';
 import { apiFetch } from '../services/api';
+import { mockSquads } from '../data/mockData';
 
 export default function Squads() {
   const [squads, setSquads] = useState([]);
@@ -11,18 +12,29 @@ export default function Squads() {
     setLoading(true);
     setError('');
     apiFetch('/squads')
-      .then((data) => setSquads(data))
+      .then((data) => {
+        if (!data) {
+          setSquads(mockSquads);
+          setError('Usando dados locais (servidor indisponível)');
+          return;
+        }
+        setSquads(data);
+      })
       .catch((err) => {
-        setSquads([]);
-        setError(err.message || 'Erro ao carregar squads');
+        setSquads(mockSquads);
+        setError('Usando dados locais (servidor indisponível)');
       })
       .finally(() => setLoading(false));
   }, []);
   return (
     <div className="squads-page">
-      <h1 className="squads-title">Squads</h1>
+      <div className="squads-header-section">
+        <h1>Squads</h1>
+        <p>Conheça as esquadras do grupo</p>
+      </div>
+      <div className="squads-content">
       <div style={{display: 'flex', justifyContent: 'center', marginBottom: '1.5rem'}}>
-        <button className="hero-btn nav-login">Criar Squad</button>
+        <button className="hero-btn">Criar Squad</button>
       </div>
       {error && <div className="squads-error">{error === 'Servidor offline' ? 'Servidor offline. Tente novamente mais tarde.' : error}</div>}
       {loading && <div className="squads-loading">Carregando squads...</div>}
@@ -41,6 +53,7 @@ export default function Squads() {
             <div className="squad-points">{squad.pontuacaoTotal}</div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

@@ -34,7 +34,12 @@ export default function Loja() {
 
   return (
     <div className="loja-page">
-      <h1 className="loja-title">Loja</h1>
+      <div className="loja-header">
+        <h1>Loja</h1>
+        <p>Equipamentos e acessórios para operadores</p>
+      </div>
+
+      <div className="loja-content">
 
       <div className="loja-filters">
         <input
@@ -61,9 +66,10 @@ export default function Loja() {
             <h3>{p.nome}</h3>
             <span className="product-category">{p.categoria}</span>
             <span className="product-price">R$ {Number(p.preco).toFixed(2)}</span>
-            <button className="hero-btn nav-login">Ver produto</button>
+            <button className="hero-btn">Ver produto</button>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

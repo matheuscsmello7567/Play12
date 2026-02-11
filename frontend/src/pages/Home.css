@@ -131,7 +131,22 @@
 
 /* Unifica about-btn com hero-btn */
 .about-btn {
-  /* Herda tudo de hero-btn */
+  align-self: flex-start;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  background-color: #D4AF37;
+  color: #121212;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.about-btn:hover {
+  background-color: #f5d547;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
 }
 
 /* Features Section */
@@ -194,16 +209,6 @@
 
 /* CTA Section */
 .cta {
-  background: linear-gradient(rgba(212, 175, 55, 0.92), rgba(245, 213, 71, 0.92)), url('../../public/images/MilSim_3.jpg') center/cover no-repeat;
-  padding: 5rem 2rem;
-  text-align: center;
-  color: #121212;
-  background-attachment: fixed;
-  min-height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   display: none;
 }
 

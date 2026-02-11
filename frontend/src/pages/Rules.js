@@ -30,15 +30,7 @@ export default function Rules() {
         "Violações graves: banimento permanente"
       ]
     },
-    {
-      title: "Informações",
-      items: [
-        "Pistola até 350 (sem limite mínimo de distância)",
-        "Rifles até 400 (Sem limite mínimo de distância)",
-        "DMR até 450 (Mínimo de 10m+)",
-        "Sniper até 500 (Mínimo de 20m+)"
-      ]
-    }
+
   ];
 
   return (
@@ -71,15 +63,7 @@ export default function Rules() {
             </p>
           </div>
 
-          <div className="info-box">
-            <h3>Limites de Energia</h3>
-            <p>
-              <strong>Pistola:</strong> até 350 (Sem limite mínimo de distância)<br/>
-              <strong>Rifles:</strong> até 400 (Sem limite mínimo de distância)<br/>
-              <strong>DMR:</strong> até 450 (Mínimo de 10m+)<br/>
-              <strong>Sniper:</strong> até 500 (Mínimo de 20m+)
-            </p>
-          </div>
+
 
           <div className="info-box">
             <h3>Processo de Reclamação</h3>

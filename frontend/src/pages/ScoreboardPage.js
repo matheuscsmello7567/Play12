@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './ScoreboardPage.css';
 import Scoreboard from '../components/Scoreboard';
 import { apiFetch } from '../services/api';
+import { mockGames, mockOperadores } from '../data/mockData';
 
 export default function ScoreboardPage() {
   const { gameId } = useParams();
@@ -17,12 +18,16 @@ export default function ScoreboardPage() {
     setError('');
 
     Promise.all([
-      apiFetch('/jogos'),
-      apiFetch('/operadores')
+      apiFetch('/jogos').catch(() => null),
+      apiFetch('/operadores').catch(() => null)
     ])
       .then(([jogosData, opData]) => {
+        // Usar mockData como fallback se API falhar
+        const games = jogosData && Array.isArray(jogosData) ? jogosData : mockGames;
+        const ops = opData && Array.isArray(opData) ? opData : mockOperadores;
+        
         // Encontrar o jogo específico
-        const foundGame = jogosData.find(g => g.id === parseInt(gameId));
+        const foundGame = games.find(g => g.id === parseInt(gameId));
         
         if (!foundGame) {
           setError('Jogo não encontrado');
@@ -58,8 +63,7 @@ export default function ScoreboardPage() {
         };
 
         setGame(mappedGame);
-        const opsArray = Array.isArray(opData) ? opData : (opData.data || []);
-        setOperadores(opsArray);
+        setOperadores(ops);
       })
       .catch((err) => {
         setError(err.message || 'Erro ao carregar dados');

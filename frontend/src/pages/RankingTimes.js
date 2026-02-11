@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './RankingTimes.css';
 import { apiFetch } from '../services/api';
+import { mockSquads } from '../data/mockData';
 
 export default function RankingTimes() {
   const [squads, setSquads] = useState([]);
@@ -12,14 +13,21 @@ export default function RankingTimes() {
     setError('');
     apiFetch('/squads')
       .then((data) => {
+        if (!data) {
+          const sorted = mockSquads.sort((a, b) => (b.pontuacaoTotal || 0) - (a.pontuacaoTotal || 0));
+          setSquads(sorted);
+          setError('Usando dados locais (servidor indisponível)');
+          return;
+        }
         // Ordenar por pontuacao total (descendente)
         const dataArray = Array.isArray(data) ? data : (data.data || []);
         const sorted = dataArray.sort((a, b) => (b.pontuacaoTotal || 0) - (a.pontuacaoTotal || 0));
         setSquads(sorted);
       })
       .catch((err) => {
-        setSquads([]);
-        setError(err.message || 'Erro ao carregar ranking');
+        const sorted = mockSquads.sort((a, b) => (b.pontuacaoTotal || 0) - (a.pontuacaoTotal || 0));
+        setSquads(sorted);
+        setError('Usando dados locais (servidor indisponível)');
       })
       .finally(() => setLoading(false));
   }, []);

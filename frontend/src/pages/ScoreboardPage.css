@@ -8,8 +8,8 @@
   position: fixed;
   top: 100px;
   left: 20px;
-  background: #c9a137;
-  color: white;
+  background: #D4AF37;
+  color: #121212;
   border: none;
   padding: 0.8rem 1.5rem;
   border-radius: 4px;
@@ -18,13 +18,13 @@
   font-size: 1rem;
   z-index: 100;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(201, 161, 55, 0.3);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
 }
 
 .back-btn:hover {
-  background: #e6b800;
+  background: #f5d547;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(201, 161, 55, 0.4);
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
 }
 
 .scoreboard-header {
@@ -34,7 +34,7 @@
   padding: 1.5rem 1rem;
   background: rgba(18, 18, 18, 0.6);
   border-radius: 8px;
-  border-bottom: 3px solid #c9a137;
+  border-bottom: 3px solid #D4AF37;
   margin-top: 0.5rem;
 }
 
@@ -58,7 +58,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #c9a137;
+  color: #D4AF37;
   font-weight: 500;
 }
 
@@ -92,7 +92,7 @@
 }
 
 .no-data {
-  color: #c9a137;
+  color: #D4AF37;
 }
 
 /* Responsive */

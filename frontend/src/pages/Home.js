@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaMapPin, FaUsers, FaBook } from 'react-icons/fa';
 import { apiFetch } from '../services/api';
+import { mockGames } from '../data/mockData';
 import './Home.css';
 
 export default function Home() {
@@ -12,12 +13,21 @@ export default function Home() {
   useEffect(() => {
     apiFetch('/jogos/proximos')
       .then((data) => {
-        if (data && data.length > 0) {
+        // Se API retornar null, usar dados mock
+        if (!data || data.length === 0) {
+          if (mockGames.length > 0) {
+            setProximoJogo(mockGames[0]);
+          }
+        } else if (data.length > 0) {
           setProximoJogo(data[0]);
         }
       })
       .catch((err) => {
         console.error('Erro ao carregar próximo jogo:', err);
+        // Usar dados mock como fallback
+        if (mockGames.length > 0) {
+          setProximoJogo(mockGames[0]);
+        }
       })
       .finally(() => setLoading(false));
   }, []);
@@ -49,7 +59,8 @@ export default function Home() {
                   })}
                 </p>
                 <p><strong>Horário:</strong> {proximoJogo.horario}</p>
-                <p><strong>Tipo:</strong> {proximoJogo.tipo}</p>
+                <p><strong>Local:</strong> {proximoJogo.local || 'A definir'}</p>
+                <p><strong>Duração:</strong> {proximoJogo.tipo}</p>
               </div>
               <button className="hero-btn" onClick={handleInscreverClick}>INSCREVER-SE</button>
             </div>

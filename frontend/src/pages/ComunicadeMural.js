@@ -35,7 +35,11 @@ export default function ComunicadeMural() {
   }, []);
   return (
     <div className="mural-page">
-      <h1 className="mural-title">Últimos jogos</h1>
+      <div className="mural-header">
+        <h1>Últimos Jogos</h1>
+        <p>Galeria de fotos e novidades</p>
+      </div>
+      <div className="mural-content">
       {error && <div className="mural-error">{error === 'Servidor offline' ? 'Servidor offline. Tente novamente mais tarde.' : error}</div>}
       {loading && <div className="mural-loading">Carregando fotos...</div>}
       <div className="mural-grid">
@@ -80,6 +84,7 @@ export default function ComunicadeMural() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

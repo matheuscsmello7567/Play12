@@ -3,6 +3,7 @@ import './Games.css';
 import { apiFetch } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import Scoreboard from '../components/Scoreboard';
+import { mockGames, mockOperadores, mockSquads } from '../data/mockData';
 
 export default function Eventos() {
   const navigate = useNavigate();
@@ -38,12 +39,15 @@ export default function Eventos() {
   const gamesByDate = (day) => {
     const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     return games.filter(g => {
-      // Garantir que g.date está em formato string YYYY-MM-DD
+      // Normalizar g.date para string YYYY-MM-DD
       let gameDate = g.date;
-      if (typeof gameDate === 'object' && gameDate !== null) {
-        // Se for um objeto, converter para string
-        if (gameDate.year && gameDate.month && gameDate.day) {
-          gameDate = `${gameDate.year}-${String(gameDate.month).padStart(2, '0')}-${String(gameDate.day).padStart(2, '0')}`;
+      if (typeof gameDate !== 'string') {
+        if (typeof gameDate === 'object' && gameDate !== null) {
+          if (gameDate.year && gameDate.month && gameDate.day) {
+            gameDate = `${gameDate.year}-${String(gameDate.month).padStart(2, '0')}-${String(gameDate.day).padStart(2, '0')}`;
+          } else {
+            gameDate = new Date(gameDate).toISOString().split('T')[0];
+          }
         }
       }
       return gameDate === dateStr;
@@ -52,6 +56,22 @@ export default function Eventos() {
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
+  // Função auxiliar para parsear data seguramente
+  const parseDate = (dateStr) => {
+    if (!dateStr) return null;
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  };
+
+  // Função auxiliar para formatar data
+  const formatDate = (dateStr) => {
+    const date = parseDate(dateStr);
+    if (!date) return '';
+    return date.toLocaleDateString('pt-BR');
+  };
 
   const filteredGames = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -67,8 +87,8 @@ export default function Eventos() {
 
   const upcomingGames = filteredGames.filter((g) => {
     try {
-      const gameDate = new Date(g.date);
-      return gameDate >= today;
+      const gameDate = parseDate(g.date);
+      return gameDate && gameDate >= today;
     } catch {
       return false;
     }
@@ -76,8 +96,8 @@ export default function Eventos() {
   
   const pastGames = filteredGames.filter((g) => {
     try {
-      const gameDate = new Date(g.date);
-      return gameDate < today;
+      const gameDate = parseDate(g.date);
+      return gameDate && gameDate < today;
     } catch {
       return false;
     }
@@ -92,6 +112,26 @@ export default function Eventos() {
       apiFetch('/squads')
     ])
       .then(([jogosData, opData, squadsData]) => {
+        // Se API retornar null (offline em dev), usar dados mock
+        if (!jogosData) {
+          console.warn('Usando dados locais (modo offline)');
+          const mappedMock = mockGames.map((g) => ({
+            id: g.id,
+            title: g.titulo,
+            type: g.tipo,
+            date: g.data,
+            time: g.horario,
+            location: g.local,
+            players: g.confirmados ? `${g.confirmados} confirmados` : '0 confirmados',
+            status: g.status || 'Próximo'
+          }));
+          setGames(mappedMock);
+          setOperadores(mockOperadores);
+          setSquads(mockSquads);
+          setLoading(false);
+          return;
+        }
+
         const mapped = jogosData.map((g) => {
           // Converter data para string no formato YYYY-MM-DD se necessário
           let dateStr = g.data;
@@ -127,13 +167,27 @@ export default function Eventos() {
         });
         setGames(mapped);
         // Extrair dados do operadores (que é {success: true, data: [...]})
-        const opsArray = Array.isArray(opData) ? opData : (opData.data || []);
+        const opsArray = Array.isArray(opData) ? opData : (opData?.data || []);
         setOperadores(opsArray);
         setSquads(Array.isArray(squadsData) ? squadsData : []);
       })
       .catch((err) => {
-        setGames([]);
-        setError(err.message || 'Erro ao carregar dados');
+        // Em caso de erro, usar dados mock
+        console.warn('Erro ao carregar dados da API, usando dados locais:', err.message);
+        const mappedMock = mockGames.map((g) => ({
+          id: g.id,
+          title: g.titulo,
+          type: g.tipo,
+          date: g.data,
+          time: g.horario,
+          location: g.local,
+          players: g.confirmados ? `${g.confirmados} confirmados` : '0 confirmados',
+          status: g.status || 'Próximo'
+        }));
+        setGames(mappedMock);
+        setOperadores(mockOperadores);
+        setSquads(mockSquads);
+        setError('Usando dados locais (servidor indisponível)');
       })
       .finally(() => setLoading(false));
   };
@@ -247,7 +301,7 @@ export default function Eventos() {
                 <div className="game-info">
                   <div className="info-row">
                     <span className="icon">📅</span>
-                    <span>{new Date(game.date).toLocaleDateString('pt-BR')}</span>
+                    <span>{formatDate(game.date)}</span>
                   </div>
                   <div className="info-row">
                     <span className="icon">🕐</span>
@@ -270,13 +324,13 @@ export default function Eventos() {
                 <div className="game-actions">
                   {operadores.length > 0 && squads.length > 0 && (
                     <button 
-                      className="hero-btn nav-login"
+                      className="hero-btn"
                       onClick={() => navigate(`/eventos/${game.id}/scoreboard`)}
                     >
                       SCOREBOARD
                     </button>
                   )}
-                  <button className="hero-btn nav-login">INSCREVER-SE</button>
+                  <button className="hero-btn">INSCREVER-SE</button>
                 </div>
               </div>
             ))}
@@ -297,7 +351,7 @@ export default function Eventos() {
                 <div className="game-info">
                   <div className="info-row">
                     <span className="icon">📅</span>
-                    <span>{new Date(game.date).toLocaleDateString('pt-BR')}</span>
+                    <span>{formatDate(game.date)}</span>
                   </div>
                   <div className="info-row">
                     <span className="icon">🕐</span>
