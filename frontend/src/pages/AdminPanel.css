@@ -1128,6 +1128,32 @@ button.danger:hover {
   margin: 0;
 }
 
+.search-players-section {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search-players-section .search-input {
+  flex: 1;
+  padding: 0.7rem;
+  border: 1px solid #D4AF37;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #121212;
+  background: white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-players-section .search-input::placeholder {
+  color: #999;
+}
+
+.search-players-section .search-input:focus {
+  outline: none;
+  border-color: #D4AF37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+}
+
 .checkbox-list {
   display: flex;
   flex-direction: column;

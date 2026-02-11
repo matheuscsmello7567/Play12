@@ -1,7 +1,9 @@
 .scoreboard-page {
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+  min-height: 100vh;
+  background: linear-gradient(rgba(18, 18, 18, 0.95), rgba(18, 18, 18, 0.95)),
+    url('../../public/images/MilSim_3.jpg') center/cover no-repeat;
+  background-attachment: fixed;
   padding: 1rem;
-  position: relative;
 }
 
 .back-btn {
@@ -19,6 +21,8 @@
   z-index: 100;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .back-btn:hover {
@@ -27,23 +31,24 @@
   box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
 }
 
-.scoreboard-header {
+.scoreboard-game-header {
   text-align: center;
   color: white;
-  margin-bottom: 0.5rem;
-  padding: 1.5rem 1rem;
-  background: rgba(18, 18, 18, 0.6);
+  margin-bottom: 1.5rem;
+  padding: 2rem 1rem;
+  background: rgba(18, 18, 18, 0.7);
   border-radius: 8px;
-  border-bottom: 3px solid #D4AF37;
+  border-bottom: 4px solid #D4AF37;
   margin-top: 0.5rem;
 }
 
-.scoreboard-header h1 {
+.scoreboard-game-header h1 {
   font-size: 2.5rem;
   margin: 0 0 1.5rem 0;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   font-weight: bold;
+  color: #D4AF37;
 }
 
 .game-meta {
@@ -58,17 +63,26 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #D4AF37;
+  color: #ccc;
   font-weight: 500;
 }
 
-.scoreboard-container {
+.meta-item a,
+.location-link {
+  color: #D4AF37;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.meta-item a:hover,
+.location-link:hover {
+  color: #f5d547;
+}
+
+.scoreboard-wrapper {
   margin: 0 auto;
   padding: 0;
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  border: none;
 }
 
 .scoreboard-loading,
@@ -82,17 +96,26 @@
   border-radius: 8px;
   min-height: 300px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
 }
 
 .scoreboard-error {
-  background: rgba(200, 100, 100, 0.3);
-  border: 1px solid rgba(255, 100, 100, 0.5);
+  background: rgba(200, 100, 100, 0.2);
+  border: 1px solid rgba(255, 100, 100, 0.3);
 }
 
 .no-data {
   color: #D4AF37;
+  border: 2px dashed rgba(212, 175, 55, 0.3);
+}
+
+.no-data-hint {
+  font-size: 0.9rem;
+  color: #888;
+  font-style: italic;
 }
 
 /* Responsive */
@@ -108,7 +131,7 @@
     font-size: 0.9rem;
   }
 
-  .scoreboard-header h1 {
+  .scoreboard-game-header h1 {
     font-size: 1.8rem;
   }
 
@@ -117,17 +140,13 @@
     font-size: 0.95rem;
   }
 
-  .scoreboard-container {
-    padding: 1rem;
-  }
-
   .meta-item {
     flex: 0 0 calc(50% - 0.5rem);
   }
 }
 
 @media (max-width: 480px) {
-  .scoreboard-header h1 {
+  .scoreboard-game-header h1 {
     font-size: 1.5rem;
   }
 

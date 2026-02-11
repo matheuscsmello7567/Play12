@@ -59,7 +59,14 @@ export default function Home() {
                   })}
                 </p>
                 <p><strong>Horário:</strong> {proximoJogo.horario}</p>
-                <p><strong>Local:</strong> {proximoJogo.local || 'A definir'}</p>
+                <p>
+                  <strong>Local:</strong>{' '}
+                  {String(proximoJogo.local || '').startsWith('http') ? (
+                    <a href={proximoJogo.local} target="_blank" rel="noreferrer" className="location-link">Abrir no mapa</a>
+                  ) : (
+                    proximoJogo.local || 'A definir'
+                  )}
+                </p>
                 <p><strong>Duração:</strong> {proximoJogo.tipo}</p>
               </div>
               <button className="hero-btn" onClick={handleInscreverClick}>INSCREVER-SE</button>

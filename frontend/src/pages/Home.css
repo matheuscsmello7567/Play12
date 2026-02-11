@@ -91,6 +91,17 @@
   color: #D4AF37;
 }
 
+.jogo-info .location-link {
+  color: #D4AF37;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.jogo-info .location-link:hover {
+  color: #f5d547;
+}
+
 /* About Section */
 .about {
   background: linear-gradient(rgba(255, 255, 255, 0.93), rgba(255, 255, 255, 0.93)), url('../../public/images/MilSim_2.jpg') right/cover no-repeat;

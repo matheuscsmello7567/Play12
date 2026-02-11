@@ -10,6 +10,7 @@ export default function ScoreboardPage() {
   const navigate = useNavigate();
   const [game, setGame] = useState(null);
   const [operadores, setOperadores] = useState([]);
+  const [gameOperadores, setGameOperadores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -19,14 +20,14 @@ export default function ScoreboardPage() {
 
     Promise.all([
       apiFetch('/jogos').catch(() => null),
-      apiFetch('/operadores').catch(() => null)
+      apiFetch('/operadores').catch(() => null),
+      apiFetch(`/jogos/${gameId}/operadores`).catch(() => null)
     ])
-      .then(([jogosData, opData]) => {
-        // Usar mockData como fallback se API falhar
+      .then(([jogosData, opData, gameOpsData]) => {
         const games = jogosData && Array.isArray(jogosData) ? jogosData : mockGames;
         const ops = opData && Array.isArray(opData) ? opData : mockOperadores;
+        const gameOps = gameOpsData && Array.isArray(gameOpsData) ? gameOpsData : [];
         
-        // Encontrar o jogo específico
         const foundGame = games.find(g => g.id === parseInt(gameId));
         
         if (!foundGame) {
@@ -34,7 +35,6 @@ export default function ScoreboardPage() {
           return;
         }
 
-        // Mapear dados do jogo
         let dateStr = foundGame.data;
         if (typeof foundGame.data === 'object' && foundGame.data !== null) {
           if (foundGame.data.year && foundGame.data.month && foundGame.data.day) {
@@ -64,6 +64,7 @@ export default function ScoreboardPage() {
 
         setGame(mappedGame);
         setOperadores(ops);
+        setGameOperadores(gameOps);
       })
       .catch((err) => {
         setError(err.message || 'Erro ao carregar dados');
@@ -97,29 +98,39 @@ export default function ScoreboardPage() {
     );
   }
 
+  const locationUrl = game.location?.startsWith('http') ? game.location : null;
+
   return (
     <div className="scoreboard-page">
       <button className="back-btn" onClick={() => navigate('/eventos')}>← Voltar</button>
 
-      <div className="scoreboard-header">
+      <div className="scoreboard-game-header">
         <h1>{game.title}</h1>
         <div className="game-meta">
           <span className="meta-item">📅 {new Date(game.date).toLocaleDateString('pt-BR')}</span>
           <span className="meta-item">🕐 {game.time}</span>
-          <span className="meta-item">📍 {game.location}</span>
+          <span className="meta-item">
+            📍 {locationUrl ? (
+              <a href={locationUrl} target="_blank" rel="noreferrer" className="location-link">Abrir no mapa</a>
+            ) : (
+              game.location
+            )}
+          </span>
           <span className="meta-item">👥 {game.players}</span>
         </div>
       </div>
 
-      <div className="scoreboard-container">
-        {operadores.length > 0 ? (
+      <div className="scoreboard-wrapper">
+        {gameOperadores.length > 0 || operadores.length > 0 ? (
           <Scoreboard
             gameId={game.id}
             operadores={operadores}
+            gameOperadores={gameOperadores}
           />
         ) : (
           <div className="no-data">
             <p>Sem operadores associados ao jogo</p>
+            <p className="no-data-hint">Adicione operadores pelo Dashboard</p>
           </div>
         )}
       </div>

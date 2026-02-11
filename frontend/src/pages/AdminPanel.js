@@ -40,6 +40,7 @@ export default function AdminPanel({ user, onLogout }) {
   const [selectedPlayersForGame, setSelectedPlayersForGame] = useState({});
   const [playersInGame, setPlayersInGame] = useState({});
   const [selectedTeam, setSelectedTeam] = useState('BLUFOR');
+  const [searchTermForAddPlayers, setSearchTermForAddPlayers] = useState('');
 
   const totalPlayers = dashboard.totalJogadores;
   const confirmedPlayers = dashboard.confirmados;
@@ -240,46 +241,90 @@ export default function AdminPanel({ user, onLogout }) {
     return teamsWithPlayers.size;
   };
 
-  // Adicionar jogadores selecionados ao jogo
-  const handleAddPlayersToGame = (gameId) => {
-    const selectedPlayers = Object.entries(selectedPlayersForGame)
-      .filter(([_, selected]) => selected)
-      .map(([playerId, _]) => {
-        const player = players.find(p => p.id === parseInt(playerId));
-        return {
-          id: player.id,
-          name: player.nomeCompleto,
-          squad: '',
-          time: ''
-        };
-      });
+  // Adicionar jogadores selecionados ao jogo via API
+  const handleAddPlayersToGame = async (gameId) => {
+    const playersToAdd = Object.entries(selectedPlayersForGame)
+      .filter(([key, selected]) => selected === true && !key.includes('_squad'))
+      .map(([playerId]) => ({
+        operadorId: parseInt(playerId),
+        team: selectedTeam,
+        squad: selectedPlayersForGame[`${playerId}_squad`] || ''
+      }));
 
-    setPlayersInGame(prev => ({
-      ...prev,
-      [gameId]: [...(prev[gameId] || []), ...selectedPlayers]
-    }));
+    if (playersToAdd.length === 0) {
+      setError('Selecione pelo menos um jogador');
+      return;
+    }
+
+    try {
+      const response = await apiFetch(`/jogos/${gameId}/operadores`, {
+        method: 'POST',
+        body: JSON.stringify({ players: playersToAdd })
+      });
+      
+      if (response.success) {
+        setSuccess(response.message || `${playersToAdd.length} jogador(es) adicionado(s) com sucesso!`);
+        setError('');
+        // Atualizar lista de jogadores no jogo
+        const gameOps = await apiFetch(`/jogos/${gameId}/operadores`);
+        setPlayersInGame(prev => ({ ...prev, [gameId]: gameOps || [] }));
+        refreshAll();
+      } else {
+        setError(response.message || 'Erro ao adicionar jogadores');
+      }
+    } catch (err) {
+      setError(err.message || 'Erro ao adicionar jogadores ao jogo');
+    }
     
     setSelectedPlayersForGame({});
     setShowAddPlayersModal(false);
   };
 
-  // Remover jogador do jogo
-  const handleRemovePlayerFromGame = (gameId, playerId) => {
-    setPlayersInGame(prev => ({
-      ...prev,
-      [gameId]: prev[gameId].filter(p => p.id !== playerId)
-    }));
+  // Remover jogador do jogo via API
+  const handleRemovePlayerFromGame = async (gameId, operadorId) => {
+    try {
+      const response = await apiFetch(`/jogos/${gameId}/operadores/${operadorId}`, { method: 'DELETE' });
+      if (response.success) {
+        setSuccess(response.message || 'Jogador removido do jogo');
+        setPlayersInGame(prev => ({
+          ...prev,
+          [gameId]: (prev[gameId] || []).filter(p => p.operadorId !== operadorId)
+        }));
+        refreshAll();
+      } else {
+        setError(response.message || 'Erro ao remover jogador');
+      }
+    } catch (err) {
+      setError(err.message || 'Erro ao remover jogador do jogo');
+    }
   };
 
-  // Atualizar assignments (squad/time) de um jogador
+  // Atualizar assignments (squad/time) de um jogador - local only
   const handleUpdatePlayerAssignment = (gameId, playerId, field, value) => {
     setPlayersInGame(prev => ({
       ...prev,
-      [gameId]: prev[gameId].map(p =>
-        p.id === playerId ? { ...p, [field]: value } : p
+      [gameId]: (prev[gameId] || []).map(p =>
+        p.operadorId === playerId ? { ...p, [field]: value } : p
       )
     }));
   };
+
+  // Carregar jogadores do jogo ao expandir
+  const loadGamePlayers = async (gameId) => {
+    try {
+      const gameOps = await apiFetch(`/jogos/${gameId}/operadores`);
+      setPlayersInGame(prev => ({ ...prev, [gameId]: gameOps || [] }));
+    } catch (err) {
+      console.error('Erro ao carregar jogadores do jogo:', err);
+    }
+  };
+
+  // Carregar jogadores do primeiro jogo ao iniciar
+  useEffect(() => {
+    if (upcomingGames.length > 0 && !playersInGame[upcomingGames[0].id]) {
+      loadGamePlayers(upcomingGames[0].id);
+    }
+  }, [upcomingGames]);
 
   return (
     <div className="admin-page">
@@ -355,11 +400,17 @@ export default function AdminPanel({ user, onLogout }) {
 
           {/* Modal para Incluir Jogadores */}
           {showAddPlayersModal && upcomingGames.length > 0 && (
-            <div className="modal-overlay" onClick={() => setShowAddPlayersModal(false)}>
+            <div className="modal-overlay" onClick={() => {
+              setShowAddPlayersModal(false);
+              setSearchTermForAddPlayers('');
+            }}>
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
                   <h3>Selecionar Jogadores</h3>
-                  <button className="close-btn" onClick={() => setShowAddPlayersModal(false)}>✕</button>
+                  <button className="close-btn" onClick={() => {
+                    setShowAddPlayersModal(false);
+                    setSearchTermForAddPlayers('');
+                  }}>✕</button>
                 </div>
 
                 {/* Team Toggle */}
@@ -388,8 +439,24 @@ export default function AdminPanel({ user, onLogout }) {
                     ) : (
                       <>
                         <p className="selection-info">Selecione múltiplos jogadores para incluir no jogo</p>
+                        
+                        {/* Search Input */}
+                        <div className="search-players-section">
+                          <input
+                            type="text"
+                            placeholder="Pesquisar por nome..."
+                            className="search-input"
+                            value={searchTermForAddPlayers}
+                            onChange={(e) => setSearchTermForAddPlayers(e.target.value)}
+                          />
+                        </div>
+
                         <div className="checkbox-list">
-                          {players.map(player => (
+                          {players
+                            .filter(player => 
+                              player.nomeCompleto.toLowerCase().includes(searchTermForAddPlayers.toLowerCase())
+                            )
+                            .map(player => (
                             <label key={player.id} className="checkbox-item">
                               <input 
                                 type="checkbox"
@@ -437,7 +504,10 @@ export default function AdminPanel({ user, onLogout }) {
                 <div className="modal-footer">
                   <button 
                     className="btn-secondary"
-                    onClick={() => setShowAddPlayersModal(false)}
+                    onClick={() => {
+                      setShowAddPlayersModal(false);
+                      setSearchTermForAddPlayers('');
+                    }}
                   >
                     Cancelar
                   </button>

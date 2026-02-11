@@ -2,16 +2,16 @@ import React, { useMemo, useState } from 'react';
 import '../styles/Scoreboard.css';
 
 const SQUAD_NAMES = {
-  blufor: ['ALPHA', 'BRAVO', 'CHARLIE', 'DELTA'],
-  opfor: ['ECHO', 'FOXTROT', 'GOLF', 'HOTEL']
+  BLUFOR: ['ALPHA', 'BRAVO', 'CHARLIE', 'DELTA'],
+  OPFOR: ['ECHO', 'FOXTROT', 'GOLF', 'HOTEL']
 };
 
 const ARMY_NAMES = {
-  blufor: 'BLUFOR\n(Exército Azul)',
-  opfor: 'OPFOR\n(Exército Amarelo)'
+  BLUFOR: 'BLUFOR\n(Exército Azul)',
+  OPFOR: 'OPFOR\n(Exército Amarelo)'
 };
 
-export default function Scoreboard({ gameId, operadores = [] }) {
+export default function Scoreboard({ gameId, operadores = [], gameOperadores = [] }) {
   const [collapsedSquads, setCollapsedSquads] = useState(new Set());
 
   const toggleSquadCollapse = (key) => {
@@ -24,8 +24,33 @@ export default function Scoreboard({ gameId, operadores = [] }) {
     setCollapsedSquads(newCollapsed);
   };
 
-  // Organizar operadores em 2 exércitos e 4 squads cada
+  // Organizar operadores em 2 exércitos e squads
   const { bluforSquads, opforSquads } = useMemo(() => {
+    // Se temos gameOperadores (dados da API com team/squad), usar esses
+    if (gameOperadores && gameOperadores.length > 0) {
+      const createSquadsFromAPI = (teamName) => {
+        const teamOps = gameOperadores.filter(go => go.team === teamName);
+        return SQUAD_NAMES[teamName].map((squadName) => {
+          const squadOps = teamOps.filter(go => go.squad === squadName);
+          return {
+            name: squadName,
+            operadores: squadOps.map(go => ({
+              id: go.operadorId,
+              nickname: go.nickname || go.nomeCompleto,
+              pontos: go.pontos || 0
+            })),
+            points: squadOps.reduce((sum, go) => sum + (go.pontos || 0), 0),
+            count: squadOps.length
+          };
+        });
+      };
+      return {
+        bluforSquads: createSquadsFromAPI('BLUFOR'),
+        opforSquads: createSquadsFromAPI('OPFOR')
+      };
+    }
+
+    // Fallback: distribuir operadores igualmente (comportamento antigo)
     const ops = operadores || [];
     const half = Math.ceil(ops.length / 2);
     
@@ -49,10 +74,10 @@ export default function Scoreboard({ gameId, operadores = [] }) {
     };
 
     return {
-      bluforSquads: createSquads(bluforOps, SQUAD_NAMES.blufor),
-      opforSquads: createSquads(opforOps, SQUAD_NAMES.opfor)
+      bluforSquads: createSquads(bluforOps, SQUAD_NAMES.BLUFOR),
+      opforSquads: createSquads(opforOps, SQUAD_NAMES.OPFOR)
     };
-  }, [operadores]);
+  }, [operadores, gameOperadores]);
 
   const totalBlufor = bluforSquads.reduce((sum, sq) => sum + sq.points, 0);
   const totalOpfor = opforSquads.reduce((sum, sq) => sum + sq.points, 0);
@@ -117,7 +142,7 @@ export default function Scoreboard({ gameId, operadores = [] }) {
   return (
     <div className="scoreboard-container">
       <div className="scoreboard-content">
-        {renderTeam('blufor', ARMY_NAMES.blufor, bluforSquads, totalBlufor, totalBluforOps)}
+        {renderTeam('blufor', ARMY_NAMES.BLUFOR, bluforSquads, totalBlufor, totalBluforOps)}
         
         <div className="scoreboard-divider">
           <div className="divider-line"></div>
@@ -125,7 +150,7 @@ export default function Scoreboard({ gameId, operadores = [] }) {
           <div className="divider-line"></div>
         </div>
 
-        {renderTeam('opfor', ARMY_NAMES.opfor, opforSquads, totalOpfor, totalOpforOps)}
+        {renderTeam('opfor', ARMY_NAMES.OPFOR, opforSquads, totalOpfor, totalOpforOps)}
       </div>
     </div>
   );
