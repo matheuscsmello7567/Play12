@@ -11,11 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CadastroDTO {
 
-	@NotBlank(message = "Email é obrigatório")
 	@Email(message = "Email deve ser válido")
 	private String email;
 
-	@NotBlank(message = "Nickname é obrigatório")
 	private String nickname;
 
 	@NotBlank(message = "Senha é obrigatória")

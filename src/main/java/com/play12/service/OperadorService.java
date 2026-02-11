@@ -30,23 +30,39 @@ public class OperadorService {
 	private final PasswordEncoder passwordEncoder;
 
 	public OperadorDTO cadastrar(CadastroDTO dto) {
-		log.info("Cadastrando novo operador: {}", dto.getEmail());
+		log.info("Cadastrando novo operador: {}", dto.getNomeCompleto());
 
-		if (operadorRepository.existsByEmail(dto.getEmail())) {
-			throw new IllegalArgumentException("Email já cadastrado");
-		}
+		boolean isAdmin = Boolean.TRUE.equals(dto.getAdmin());
+		String email = dto.getEmail();
+		String nickname = dto.getNickname();
 
-		if (operadorRepository.existsByNickname(dto.getNickname())) {
-			throw new IllegalArgumentException("Nickname já cadastrado");
+		// Validação para operador (jogador)
+		if (!isAdmin) {
+			if (email == null || email.isBlank()) {
+				throw new IllegalArgumentException("Email é obrigatório para operadores");
+			}
+			if (nickname == null || nickname.isBlank()) {
+				throw new IllegalArgumentException("Nickname é obrigatório para operadores");
+			}
+			if (operadorRepository.existsByEmail(email)) {
+				throw new IllegalArgumentException("Email já cadastrado");
+			}
+			if (operadorRepository.existsByNickname(nickname)) {
+				throw new IllegalArgumentException("Nickname já cadastrado");
+			}
+		} else {
+			// Para admin, gera email e nickname únicos automaticamente
+			email = "admin-" + System.currentTimeMillis() + "@play12.local";
+			nickname = "admin-" + System.currentTimeMillis();
 		}
 
 		Operador operador = Operador.builder()
-				.email(dto.getEmail())
-				.nickname(dto.getNickname())
+				.email(email)
+				.nickname(nickname)
 				.senha(passwordEncoder.encode(dto.getSenha()))
 				.nomeCompleto(dto.getNomeCompleto())
 				.telefone(dto.getTelefone())
-				.tipo(Boolean.TRUE.equals(dto.getAdmin()) ? TipoOperador.ADMIN : TipoOperador.JOGADOR)
+				.tipo(isAdmin ? TipoOperador.ADMIN : TipoOperador.JOGADOR)
 				.funcao(FuncaoOperador.OPERADOR)
 				.totalJogos(0)
 				.build();
