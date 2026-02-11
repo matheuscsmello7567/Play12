@@ -15,7 +15,7 @@
 }
 
 .admin-page input::placeholder {
-  color: #999;
+  color: #7a8289;
 }
 
 .admin-header {
@@ -23,7 +23,7 @@
   color: white;
   padding: 3rem 2rem;
   text-align: center;
-  border-bottom: 4px solid #D4AF37;
+  border-bottom: 4px solid #ff9900;
   background-attachment: fixed;
 }
 
@@ -37,7 +37,7 @@
 .admin-header p {
   font-size: 1.1rem;
   margin: 0;
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 .admin-tabs {
@@ -51,8 +51,8 @@
 
 .admin-tabs button {
   background: #121212;
-  color: #D4AF37;
-  border: 2px solid #D4AF37;
+  color: #ff9900;
+  border: 2px solid #ff9900;
   padding: 0.7rem 1.2rem;
   border-radius: 6px;
   text-transform: uppercase;
@@ -62,7 +62,7 @@
 
 .admin-tabs button.active,
 .admin-tabs button:hover {
-  background: #D4AF37;
+  background: #ff9900;
   color: #121212;
 }
 
@@ -80,33 +80,42 @@
 }
 
 .stat-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 1.2rem;
-  border: 2px solid #D4AF37;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border-radius: 2px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 153, 0, 0.3);
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 153, 0, 0.2), 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .stat-card strong {
-  font-size: 1.8rem;
-  color: #121212;
+  font-size: 2rem;
+  color: #ff9900;
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
 }
 
 .admin-panel {
-  background: #fff;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border-radius: 2px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
+  border: 1px solid rgba(255, 153, 0, 0.2);
 }
 
 .admin-error {
-  background: #ffe4e6;
+  background: rgba(255, 153, 0, 0.08);
   color: #9f1239;
   border: 2px solid #fda4af;
   padding: 1rem 1.2rem;
-  border-radius: 8px;
+  border-radius: 2px;
   margin-bottom: 1.2rem;
   font-weight: 500;
   font-size: 0.95rem;
@@ -117,18 +126,18 @@
   color: #0f5132;
   border: 2px solid #badbcc;
   padding: 1rem 1.2rem;
-  border-radius: 8px;
+  border-radius: 2px;
   margin-bottom: 1.2rem;
   font-weight: 500;
   font-size: 0.95rem;
 }
 
 .admin-loading {
-  background: #fff3cd;
+  background: rgba(255, 153, 0, 0.08);
   color: #664d03;
   border: 2px solid #ffecb5;
   padding: 1rem 1.2rem;
-  border-radius: 8px;
+  border-radius: 2px;
   margin-bottom: 1.2rem;
   font-weight: 500;
   font-size: 0.95rem;
@@ -146,8 +155,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  border: 1px solid #eee;
-  border-radius: 8px;
+  border: 1px solid rgba(255, 153, 0, 0.1);
+  border-radius: 2px;
   margin-bottom: 0.8rem;
 }
 
@@ -161,8 +170,8 @@
 
 .admin-badge {
   background: #121212;
-  color: #D4AF37;
-  border-radius: 20px;
+  color: #ff9900;
+  border-radius: 50%;
   padding: 0.3rem 0.8rem;
   font-size: 0.8rem;
   text-transform: uppercase;
@@ -171,10 +180,10 @@
 .players-table {
   display: grid;
   gap: 0.8rem;
-  background: white;
+  background: rgba(26, 35, 50, 0.4);
   padding: 1rem;
-  border-radius: 8px;
-  border: 2px solid #e0e0e0;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 153, 0, 0.2);
 }
 
 .players-row {
@@ -183,22 +192,22 @@
   gap: 0.8rem;
   align-items: center;
   padding: 0.75rem;
-  border-radius: 6px;
-  background: #fafafa;
+  border-radius: 2px;
+  background: rgba(42, 63, 95, 0.3);
   transition: all 0.3s ease;
 }
 
 .players-row:hover {
-  background: #f0f0f0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background: rgba(42, 63, 95, 0.5);
+  box-shadow: 0 2px 6px rgba(255, 153, 0, 0.1);
 }
 
 .players-row.header {
   font-weight: bold;
   text-transform: uppercase;
-  color: #121212;
-  background: #e8e8e8;
-  border-bottom: 2px solid #D4AF37;
+  color: #ff9900;
+  background: rgba(26, 35, 50, 0.6);
+  border-bottom: 2px solid #ff9900;
   font-size: 0.9rem;
 }
 
@@ -214,8 +223,8 @@
 .players-row select:focus,
 .players-row input:focus {
   outline: none;
-  border-color: #D4AF37;
-  box-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
+  border-color: #ff9900;
+  box-shadow: 0 0 6px rgba(255, 153, 0, 0.3);
 }
 
 .players-row .danger {
@@ -258,7 +267,7 @@ button.success {
   color: #fff;
   border: none;
   padding: 0.75rem 1.25rem;
-  border-radius: 8px;
+  border-radius: 2px;
   cursor: pointer;
   font-weight: bold;
   font-size: 0.95rem;
@@ -276,7 +285,7 @@ button.danger {
   color: #fff;
   border: none;
   padding: 0.75rem 1.25rem;
-  border-radius: 8px;
+  border-radius: 2px;
   cursor: pointer;
   font-weight: bold;
   font-size: 0.95rem;
@@ -304,7 +313,7 @@ button.danger:hover {
 .game-form select {
   padding: 1rem;
   border: 2px solid #ddd;
-  border-radius: 8px;
+  border-radius: 2px;
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.3s ease;
@@ -313,15 +322,15 @@ button.danger:hover {
 .game-form input:focus,
 .game-form select:focus {
   outline: none;
-  border-color: #D4AF37;
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+  border-color: #ff9900;
+  box-shadow: 0 0 8px rgba(255, 153, 0, 0.3);
 }
 
 .game-form button {
   background: #121212;
-  color: #D4AF37;
-  border: 2px solid #D4AF37;
-  border-radius: 8px;
+  color: #ff9900;
+  border: 2px solid #ff9900;
+  border-radius: 2px;
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
@@ -331,7 +340,7 @@ button.danger:hover {
 }
 
 .game-form button:hover {
-  background: #D4AF37;
+  background: #ff9900;
   color: #121212;
 }
 
@@ -341,17 +350,17 @@ button.danger:hover {
 }
 
 .games-admin-card {
-  border: 2px solid #D4AF37;
-  border-radius: 10px;
-  background: white;
+  border: 2px solid #ff9900;
+  border-radius: 2px;
+  background: rgba(26, 35, 50, 0.5);
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
   overflow: hidden;
   margin-bottom: 1rem;
 }
 
 .games-admin-card:hover {
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 8px 24px rgba(255, 153, 0, 0.2), 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .games-admin-header {
@@ -359,27 +368,27 @@ button.danger:hover {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  background: linear-gradient(135deg, rgba(42, 63, 95, 0.4) 0%, rgba(26, 35, 50, 0.6) 100%);
   cursor: pointer;
-  border-bottom: 2px solid #D4AF37;
+  border-bottom: 2px solid #ff9900;
   user-select: none;
 }
 
 .games-admin-header h4 {
   margin: 0;
   font-size: 1rem;
-  color: #121212;
+  color: #ff9900;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .games-admin-header:hover {
-  background: linear-gradient(135deg, #f0f0f0 0%, #f9f9f9 100%);
+  background: linear-gradient(135deg, rgba(42, 63, 95, 0.6) 0%, rgba(26, 35, 50, 0.8) 100%);
 }
 
 .expand-icon {
   font-size: 0.8rem;
-  color: #D4AF37;
+  color: #ff9900;
   font-weight: bold;
   transition: transform 0.3s ease;
 }
@@ -395,19 +404,19 @@ button.danger:hover {
 .games-admin-fields select {
   padding: 0.9rem;
   border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border-radius: 2px;
   font-size: 0.95rem;
   font-family: inherit;
   transition: all 0.3s ease;
-  background: #fafafa;
+  background: rgba(26, 35, 50, 0.5);
 }
 
 .games-admin-fields input:focus,
 .games-admin-fields select:focus {
   outline: none;
-  border-color: #D4AF37;
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
-  background: white;
+  border-color: #ff9900;
+  box-shadow: 0 0 8px rgba(255, 153, 0, 0.3);
+  background: rgba(42, 63, 95, 0.2);
 }
 
 .games-admin-meta {
@@ -415,13 +424,13 @@ button.danger:hover {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #f5f5f5 0%, #efefef 100%);
-  border-radius: 8px;
-  border-left: 4px solid #D4AF37;
+  background: linear-gradient(135deg, rgba(42, 63, 95, 0.3) 0%, rgba(26, 35, 50, 0.5) 100%);
+  border-radius: 2px;
+  border-left: 4px solid #ff9900;
 }
 
 .games-admin-meta span {
-  color: #666;
+  color: #b0b8c1;
   font-size: 0.95rem;
   font-weight: 500;
 }
@@ -433,8 +442,8 @@ button.danger:hover {
 }
 
 .logistics-card {
-  border: 1px solid #eee;
-  border-radius: 8px;
+  border: 1px solid rgba(255, 153, 0, 0.1);
+  border-radius: 2px;
   padding: 1.2rem;
 }
 
@@ -442,12 +451,12 @@ button.danger:hover {
 .operadores-table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
+  background: rgba(26, 35, 50, 0.4);
 }
 
 .operadores-table thead {
   background: #121212;
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 .operadores-table th {
@@ -455,30 +464,35 @@ button.danger:hover {
   text-align: left;
   text-transform: uppercase;
   font-size: 0.9rem;
-  border-bottom: 2px solid #D4AF37;
+  border-bottom: 2px solid #ff9900;
 }
 
 .operadores-table td {
   padding: 0.8rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+}
+
+.operadores-table tbody tr {
+  transition: all 0.2s ease;
 }
 
 .operadores-table tbody tr:hover {
-  background: #f5f5f5;
+  background: rgba(42, 63, 95, 0.5);
+  box-shadow: 0 0 10px rgba(255, 153, 0, 0.1);
 }
 
 .operador-pontosInput {
   width: 80px;
   padding: 0.5rem;
-  border: 1px solid #D4AF37;
+  border: 1px solid #ff9900;
   border-radius: 4px;
   text-align: center;
 }
 
 .operador-saveBtn {
   background: #121212;
-  color: #D4AF37;
-  border: 1px solid #D4AF37;
+  color: #ff9900;
+  border: 1px solid #ff9900;
   padding: 0.5rem 0.8rem;
   border-radius: 4px;
   cursor: pointer;
@@ -488,7 +502,7 @@ button.danger:hover {
 }
 
 .operador-saveBtn:hover {
-  background: #D4AF37;
+  background: #ff9900;
   color: #121212;
 }
 
@@ -500,22 +514,31 @@ button.danger:hover {
 }
 
 .squad-admin-card {
-  border: 2px solid #D4AF37;
-  border-radius: 8px;
-  padding: 1.5rem;
-  background: #fff;
+  border: 1px solid rgba(255, 153, 0, 0.3);
+  border-radius: 2px;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.squad-admin-card:hover {
+  box-shadow: 0 8px 24px rgba(255, 153, 0, 0.2), 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .squad-admin-card h3 {
   margin: 0;
-  color: #121212;
+  color: #ff9900;
   text-transform: uppercase;
-  font-size: 1.2rem;
-  border-bottom: 2px solid #D4AF37;
-  padding-bottom: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #ff9900;
+  padding-bottom: 0.75rem;
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.2);
 }
 
 .squad-admin-fields {
@@ -553,8 +576,8 @@ button.danger:hover {
 
 .squad-admin-save {
   background: #121212;
-  color: #D4AF37;
-  border: 2px solid #D4AF37;
+  color: #ff9900;
+  border: 2px solid #ff9900;
   padding: 0.7rem 1rem;
   border-radius: 6px;
   cursor: pointer;
@@ -564,7 +587,7 @@ button.danger:hover {
 }
 
 .squad-admin-save:hover {
-  background: #D4AF37;
+  background: #ff9900;
   color: #121212;
 }
 
@@ -577,22 +600,22 @@ button.danger:hover {
   width: 100%;
   max-width: 400px;
   padding: 0.7rem 1rem;
-  border: 2px solid #D4AF37;
+  border: 2px solid #ff9900;
   border-radius: 6px;
   font-size: 1rem;
 }
 
 .admin-search input::placeholder {
-  color: #999;
+  color: #7a8289;
 }
 
 /* Form styling */
 .create-games-section {
   margin-top: 2.5rem;
   padding: 2rem;
-  background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
-  border: 2px solid #D4AF37;
-  border-radius: 10px;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(26, 35, 50, 0.5) 100%);
+  border: 2px solid #ff9900;
+  border-radius: 2px;
   margin-bottom: 2rem;
 }
 
@@ -603,7 +626,7 @@ button.danger:hover {
   font-size: 1.3rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border-bottom: 3px solid #D4AF37;
+  border-bottom: 3px solid #ff9900;
   padding-bottom: 0.75rem;
 }
 
@@ -626,7 +649,7 @@ button.danger:hover {
 .form-group select {
   padding: 1rem;
   border: 2px solid #ddd;
-  border-radius: 8px;
+  border-radius: 2px;
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.3s ease;
@@ -635,12 +658,12 @@ button.danger:hover {
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #D4AF37;
+  border-color: #ff9900;
   box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
 }
 
 .form-group input::placeholder {
-  color: #999;
+  color: #7a8289;
 }
 
 .form-row {
@@ -663,45 +686,52 @@ button.danger:hover {
 .scheduled-games-section {
   margin-top: 2.5rem;
   padding: 2rem;
-  background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
-  border: 2px solid #D4AF37;
-  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border: 1px solid rgba(255, 153, 0, 0.3);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
 }
 
 .scheduled-games-section h3 {
   margin-top: 0;
   margin-bottom: 1.5rem;
-  color: #121212;
-  font-size: 1.3rem;
+  color: #ff9900;
+  font-size: 1.5rem;
+  font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  border-bottom: 3px solid #D4AF37;
+  letter-spacing: 1.5px;
+  border-bottom: 3px solid #ff9900;
   padding-bottom: 0.75rem;
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
 }
 
 .no-games {
   text-align: center;
-  color: #999;
+  color: #7a8289;
   padding: 2rem 1rem;
   font-style: italic;
-  background: white;
-  border-radius: 8px;
-  border: 1px dashed #ddd;
+  background: rgba(42, 63, 95, 0.2);
+  border-radius: 2px;
+  border: 1px dashed rgba(255, 153, 0, 0.2);
 }
 
 /* Logistics section */
 .logistics-section {
   margin: 2rem 0;
-  padding: 1.5rem;
-  background: #f9f9f9;
-  border-radius: 8px;
-  border-left: 4px solid #D4AF37;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.5) 0%, rgba(42, 63, 95, 0.3) 100%);
+  border-radius: 2px;
+  border-left: 4px solid #ff9900;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .logistics-section h3 {
   margin-top: 0;
-  color: #121212;
-  font-size: 1.2rem;
+  color: #ff9900;
+  font-size: 1.3rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.2);
 }
 
 .logistics-form {
@@ -710,43 +740,55 @@ button.danger:hover {
   gap: 1rem;
   margin: 1.2rem 0;
   padding: 1rem;
-  background: white;
-  border-radius: 8px;
+  background: rgba(26, 35, 50, 0.6);
+  border-radius: 2px;
 }
 
 .logistics-form input {
   padding: 1rem;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  border: 2px solid rgba(255, 153, 0, 0.2);
+  border-radius: 2px;
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.3s ease;
 }
 
+.logistics-form input {
+  padding: 1rem;
+  border: 2px solid rgba(255, 153, 0, 0.2);
+  border-radius: 2px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: rgba(26, 35, 50, 0.5);
+  color: #b0b8c1;
+  transition: all 0.3s ease;
+}
+
 .logistics-form input:focus {
   outline: none;
-  border-color: #D4AF37;
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+  border-color: #ff9900;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
+  background: rgba(26, 35, 50, 0.8);
 }
 
 .logistics-form input::placeholder {
-  color: #999;
+  color: #7a8289;
 }
 
 .logistics-form button {
   padding: 1rem;
   font-size: 1rem;
   background: #121212;
-  color: #D4AF37;
-  border: 2px solid #D4AF37;
-  border-radius: 8px;
+  color: #ff9900;
+  border: 2px solid #ff9900;
+  border-radius: 2px;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .logistics-form button:hover {
-  background: #D4AF37;
+  background: #ff9900;
   color: #121212;
 }
 
@@ -755,35 +797,38 @@ button.danger:hover {
 }
 
 .logistics-item {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: rgba(42, 63, 95, 0.3);
+  border-radius: 2px;
+  border: 1px solid rgba(255, 153, 0, 0.15);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  margin: 0.5rem 0;
-  background: white;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .logistics-item:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: rgba(42, 63, 95, 0.5);
+  border-color: rgba(255, 153, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 153, 0, 0.1);
 }
 
 .logistics-item strong {
-  color: #121212;
+  color: #ff9900;
   display: block;
   margin-bottom: 0.25rem;
+  font-weight: 600;
 }
 
 .logistics-item p {
   margin: 0.25rem 0 0 0;
-  color: #666;
+  color: #7a8289;
   font-size: 0.9rem;
 }
 
 .logistics-item a {
-  color: #D4AF37;
+  color: #ff9900;
   text-decoration: none;
   font-weight: bold;
 }
@@ -795,12 +840,12 @@ button.danger:hover {
 /* Times section */
 .times-count {
   font-size: 1rem;
-  color: #666;
+  color: #7a8289;
   margin: 1rem 0;
 }
 
 .times-count strong {
-  color: #D4AF37;
+  color: #ff9900;
   font-size: 1.2rem;
 }
 
@@ -811,8 +856,10 @@ button.danger:hover {
 .times-search input {
   width: 100%;
   padding: 1rem;
-  border: 2px solid #D4AF37;
-  border-radius: 8px;
+  border: 2px solid rgba(255, 153, 0, 0.3);
+  background: rgba(26, 35, 50, 0.5);
+  color: var(--text-primary);
+  border-radius: 2px;
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.3s ease;
@@ -820,12 +867,13 @@ button.danger:hover {
 
 .times-search input:focus {
   outline: none;
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
-  border-color: #b8941f;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
+  border-color: #ff9900;
+  background: rgba(26, 35, 50, 0.8);
 }
 
 .times-search input::placeholder {
-  color: #999;
+  color: #7a8289;
 }
 
 .times-admin-list {
@@ -835,9 +883,9 @@ button.danger:hover {
 }
 
 .times-admin-card-collapsible {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  background: rgba(26, 35, 50, 0.6);
+  border: 1px solid rgba(255, 153, 0, 0.15);
+  border-radius: 2px;
   overflow: hidden;
   transition: all 0.3s ease;
 }
@@ -851,7 +899,7 @@ button.danger:hover {
   justify-content: space-between;
   align-items: center;
   padding: 1.25rem;
-  background: #f5f5f5;
+  background: rgba(26, 35, 50, 0.5);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -868,7 +916,7 @@ button.danger:hover {
 }
 
 .expand-icon {
-  color: #D4AF37;
+  color: #ff9900;
   font-weight: bold;
   font-size: 1rem;
   transition: transform 0.3s ease;
@@ -887,13 +935,13 @@ button.danger:hover {
 }
 
 .times-admin-meta span {
-  color: #666;
+  color: #7a8289;
   font-size: 0.9rem;
 }
 
 .times-admin-content {
   padding: 1.5rem;
-  background: #fafafa;
+  background: rgba(26, 35, 50, 0.5);
   border-top: 1px solid #e0e0e0;
   animation: slideDown 0.3s ease;
 }
@@ -916,10 +964,10 @@ button.danger:hover {
 }
 
 .points-editor {
-  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.5) 0%, #ffffff 100%);
   padding: 1.5rem;
-  border-radius: 8px;
-  border: 2px solid #D4AF37;
+  border-radius: 2px;
+  border: 2px solid #ff9900;
   box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
 }
 
@@ -941,7 +989,7 @@ button.danger:hover {
 .points-input-group input {
   padding: 1rem;
   border: 2px solid #ddd;
-  border-radius: 8px;
+  border-radius: 2px;
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.3s ease;
@@ -949,16 +997,16 @@ button.danger:hover {
 
 .points-input-group input:focus {
   outline: none;
-  border-color: #D4AF37;
+  border-color: #ff9900;
   box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
 }
 
 .points-input-group button {
   padding: 1rem 1.5rem;
   background: #121212;
-  color: #D4AF37;
-  border: 2px solid #D4AF37;
-  border-radius: 8px;
+  color: #ff9900;
+  border: 2px solid #ff9900;
+  border-radius: 2px;
   font-weight: bold;
   font-size: 0.95rem;
   cursor: pointer;
@@ -966,15 +1014,15 @@ button.danger:hover {
 }
 
 .points-input-group button:hover {
-  background: #D4AF37;
+  background: #ff9900;
   color: #121212;
 }
 
 .members-section {
-  background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+  background: linear-gradient(135deg, #ffffff 0%, rgba(26, 35, 50, 0.5) 100%);
   padding: 1.5rem;
-  border-radius: 8px;
-  border: 2px solid #D4AF37;
+  border-radius: 2px;
+  border: 2px solid #ff9900;
   box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
 }
 
@@ -982,7 +1030,7 @@ button.danger:hover {
   margin-top: 0;
   color: #121212;
   font-size: 1.1rem;
-  border-bottom: 3px solid #D4AF37;
+  border-bottom: 3px solid #ff9900;
   padding-bottom: 0.75rem;
   font-weight: bold;
 }
@@ -995,10 +1043,10 @@ button.danger:hover {
 }
 
 .member-badge {
-  background: linear-gradient(135deg, #D4AF37 0%, #b8941f 100%);
+  background: linear-gradient(135deg, #ff9900 0%, #b8941f 100%);
   color: #121212;
   padding: 1.25rem;
-  border-radius: 8px;
+  border-radius: 2px;
   text-align: center;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
@@ -1024,7 +1072,7 @@ button.danger:hover {
 
 .no-members {
   text-align: center;
-  color: #999;
+  color: #7a8289;
   padding: 2rem 1rem;
   font-style: italic;
   margin: 0;
@@ -1034,9 +1082,9 @@ button.danger:hover {
 .add-players-section {
   margin-top: 1.5rem;
   padding: 1rem;
-  background: linear-gradient(135deg, #f0f0f0 0%, #fafafa 100%);
-  border-radius: 8px;
-  border: 2px dashed #D4AF37;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.5) 0%, rgba(26, 35, 50, 0.5) 100%);
+  border-radius: 2px;
+  border: 2px dashed #ff9900;
   display: flex;
   justify-content: center;
 }
@@ -1061,9 +1109,10 @@ button.danger:hover {
 }
 
 .modal-content {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.95) 0%, rgba(42, 63, 95, 0.85) 100%);
+  border-radius: 2px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 153, 0, 0.2);
   max-width: 500px;
   width: 90%;
   max-height: 85vh;
@@ -1076,8 +1125,8 @@ button.danger:hover {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 2px solid #D4AF37;
-  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  border-bottom: 2px solid #ff9900;
+  background: linear-gradient(135deg, rgba(42, 63, 95, 0.4) 0%, rgba(26, 35, 50, 0.6) 100%);
 }
 
 .modal-header h3 {
@@ -1094,7 +1143,7 @@ button.danger:hover {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #666;
+  color: #7a8289;
   padding: 0;
   width: 30px;
   height: 30px;
@@ -1106,7 +1155,7 @@ button.danger:hover {
 }
 
 .close-btn:hover {
-  background: #D4AF37;
+  background: #ff9900;
   color: #121212;
 }
 
@@ -1123,9 +1172,10 @@ button.danger:hover {
 }
 
 .selection-info {
-  color: #666;
-  font-size: 0.85rem;
+  color: #b0b8c1;
+  font-size: 0.9rem;
   margin: 0;
+  letter-spacing: 0.3px;
 }
 
 .search-players-section {
@@ -1136,21 +1186,21 @@ button.danger:hover {
 .search-players-section .search-input {
   flex: 1;
   padding: 0.7rem;
-  border: 1px solid #D4AF37;
+  border: 1px solid rgba(255, 153, 0, 0.3);
   border-radius: 4px;
   font-size: 0.9rem;
-  color: #121212;
-  background: white;
+  color: #b0b8c1;
+  background: rgba(26, 35, 50, 0.5);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .search-players-section .search-input::placeholder {
-  color: #999;
+  color: #7a8289;
 }
 
 .search-players-section .search-input:focus {
   outline: none;
-  border-color: #D4AF37;
+  border-color: #ff9900;
   box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
 }
 
@@ -1171,32 +1221,32 @@ button.danger:hover {
 }
 
 .checkbox-item:hover {
-  background: #f5f5f5;
+  background: rgba(42, 63, 95, 0.3);
 }
 
 .checkbox-item input[type="checkbox"] {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #D4AF37;
+  accent-color: #ff9900;
 }
 
 .checkbox-item span {
-  color: #121212;
+  color: #b0b8c1;
   font-size: 0.9rem;
 }
 
 .selected-players-assignments {
-  background: #f9f9f9;
+  background: rgba(26, 35, 50, 0.5);
   padding: 0.8rem;
-  border-radius: 8px;
-  border: 1px solid #D4AF37;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 153, 0, 0.3);
   margin-top: 0.8rem;
 }
 
 .selected-players-assignments h4 {
   margin: 0 0 0.5rem 0;
-  color: #121212;
+  color: #b0b8c1;
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.3px;
@@ -1208,14 +1258,14 @@ button.danger:hover {
   align-items: center;
   gap: 1rem;
   padding: 0.8rem 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid rgba(255, 153, 0, 0.1);
   margin-bottom: 0.8rem;
 }
 
 .toggle-label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #121212;
+  color: #b0b8c1;
   white-space: nowrap;
 }
 
@@ -1223,68 +1273,76 @@ button.danger:hover {
   display: flex;
   gap: 0.5rem;
   border-radius: 4px;
-  background: #f5f5f5;
+  background: rgba(26, 35, 50, 0.4);
   padding: 0.25rem;
 }
 
 .toggle-btn {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  background: transparent;
-  color: #333;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 153, 0, 0.3);
+  background: rgba(26, 35, 50, 0.3);
+  color: #b0b8c1;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 2px;
   transition: all 0.2s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .toggle-btn:hover {
-  background: #e0e0e0;
+  background: rgba(42, 63, 95, 0.5);
+  border-color: rgba(255, 153, 0, 0.5);
 }
 
 .toggle-btn.active {
-  background: #D4AF37;
-  color: #121212;
+  background: #ff9900;
+  color: #0d1117;
   font-weight: 600;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-color: #ff9900;
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.4);
 }
 
 .player-assignment-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  padding: 0.6rem;
-  margin-bottom: 0.6rem;
-  background: white;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: rgba(26, 35, 50, 0.4);
+  border-radius: 2px;
+  border: 1px solid rgba(255, 153, 0, 0.15);
   align-items: center;
+  transition: all 0.2s ease;
+}
+
+.player-assignment-row:hover {
+  background: rgba(42, 63, 95, 0.5);
+  border-color: rgba(255, 153, 0, 0.3);
 }
 
 .player-name {
   font-weight: 500;
-  color: #121212;
+  color: #b0b8c1;
   font-size: 0.85rem;
   word-break: break-word;
 }
 
 .assignment-select {
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 153, 0, 0.2);
   border-radius: 4px;
   font-size: 0.85rem;
-  background: white;
-  color: #121212;
+  background: rgba(26, 35, 50, 0.7);
+  color: #b0b8c1;
   cursor: pointer;
   font-family: inherit;
 }
 
 .assignment-select:focus {
   outline: none;
-  border-color: #D4AF37;
+  border-color: #ff9900;
   box-shadow: 0 0 6px rgba(212, 175, 55, 0.2);
 }
 
@@ -1293,8 +1351,8 @@ button.danger:hover {
   gap: 1rem;
   justify-content: flex-end;
   padding: 1rem 1.5rem;
-  border-top: 2px solid #D4AF37;
-  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  border-top: 2px solid #ff9900;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.5) 0%, #ffffff 100%);
 }
 
 .modal-footer button {
@@ -1307,14 +1365,14 @@ button.danger:hover {
 }
 
 .btn-secondary {
-  background: #f0f0f0;
+  background: rgba(26, 35, 50, 0.5);
   border: 2px solid #ccc;
   color: #121212;
 }
 
 .btn-secondary:hover {
   background: #e0e0e0;
-  border-color: #999;
+  border-color: #7a8289;
 }
 
 .modal-footer button:disabled {

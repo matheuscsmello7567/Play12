@@ -2,15 +2,17 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #2a3f5f 100%);
 }
 
 .ranking-header {
-  background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(31, 41, 55, 0.85)), url('../../public/images/MilSim_5.webp') center/cover no-repeat;
+  background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(26, 35, 50, 0.85)), url('../../public/images/MilSim_5.webp') center/cover no-repeat;
   background-attachment: fixed;
   color: #fff;
   padding: 3rem 2rem;
   text-align: center;
-  border-bottom: 4px solid #D4AF37;
+  border-bottom: 4px solid #ff9900;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.2);
 }
 
 .ranking-header h1 {
@@ -19,12 +21,14 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
+  color: #ff9900;
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .ranking-header p {
   font-size: 1.1rem;
   margin: 0;
-  color: #D4AF37;
+  color: #b0b8c1;
 }
 
 .ranking-container {
@@ -36,11 +40,11 @@
 }
 
 .ranking-error {
-  background: #ffe4e6;
-  color: #9f1239;
-  border: 1px solid #fda4af;
+  background: #4d1a1a;
+  color: #ff6b6b;
+  border: 1px solid #ff7777;
   padding: 1rem;
-  border-radius: 4px;
+  border-radius: 2px;
   margin-bottom: 1rem;
 }
 
@@ -48,23 +52,30 @@
   text-align: center;
   padding: 2rem;
   font-size: 1.1rem;
-  color: #666;
+  color: #b0b8c1;
 }
 
 .ranking-table {
-  background: white;
-  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border-radius: 2px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
+  border: 1px solid rgba(255, 153, 0, 0.2);
 }
 
 .ranking-row {
   display: grid;
   grid-template-columns: 80px 2fr 1fr 1fr 1fr;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   align-items: center;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.ranking-row:hover:not(.ranking-header) {
+  background: rgba(42, 63, 95, 0.3);
+  border-bottom-color: rgba(255, 153, 0, 0.2);
 }
 
 .ranking-row:last-child {
@@ -72,10 +83,13 @@
 }
 
 .ranking-row.ranking-header {
-  background: #f5f5f5;
+  background: rgba(26, 35, 50, 0.8);
   font-weight: bold;
-  color: #333;
-  border-bottom: 2px solid #D4AF37;
+  color: #ff9900;
+  border-bottom: 2px solid #ff9900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
 }
 
 .rank-position {
@@ -84,7 +98,7 @@
 
 .medal {
   display: inline-block;
-  background: #D4AF37;
+  background: #ff9900;
   color: white;
   width: 40px;
   height: 40px;
@@ -97,7 +111,7 @@
 }
 
 .rank-row:nth-child(2) .medal {
-  background: #ffd700;
+  background: #ff9900;
   color: black;
 }
 
@@ -112,14 +126,14 @@
 }
 
 .rank-name {
-  color: #333;
+  color: #b0b8c1;
   font-size: 1.05rem;
 }
 
 .rank-stat {
   text-align: center;
   font-size: 0.95rem;
-  color: #666;
+  color: #7a8289;
 }
 
 .rank-points {
@@ -127,7 +141,7 @@
   font-weight: bold;
   color: #2d5e2d;
   font-size: 1.1rem;
-  background: #f0f0f0;
+  background: rgba(26, 35, 50, 0.5);
   padding: 0.5rem;
   border-radius: 4px;
 }
@@ -135,7 +149,7 @@
 .ranking-empty {
   text-align: center;
   padding: 3rem 1rem;
-  color: #999;
+  color: #7a8289;
   font-size: 1.1rem;
 }
 
@@ -154,3 +168,4 @@
     display: none;
   }
 }
+

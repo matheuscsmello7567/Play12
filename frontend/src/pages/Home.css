@@ -1,10 +1,10 @@
 .home {
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #2a3f5f 100%);
 }
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(rgba(18, 18, 18, 0.8), rgba(31, 41, 55, 0.8)), url('../../public/images/MilSim_1.jpeg') center/cover no-repeat;
+  background: linear-gradient(rgba(13, 17, 23, 0.7), rgba(26, 35, 50, 0.8)), url('../../public/images/evolucao_operadores.jpeg') center/cover no-repeat;
   color: white;
   padding: 6rem 2rem;
   display: flex;
@@ -16,6 +16,20 @@
   gap: 2rem;
   background-attachment: fixed;
   min-height: 500px;
+  border-bottom: 3px solid rgba(255, 153, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 153, 0, 0.05) 50%, transparent 100%);
+  pointer-events: none;
 }
 
 .hero-content {
@@ -29,82 +43,109 @@
   font-size: 3.5rem;
   font-weight: bold;
   margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.3), 2px 2px 8px rgba(0, 0, 0, 0.5);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
 .hero-content p {
   font-size: 1.3rem;
   margin: 0;
-  color: #D4AF37;
+  color: #ff9900;
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
+  letter-spacing: 1px;
 }
 
-.hero-btn {
+.hero-btn,
+.about-btn {
   align-self: flex-start;
-  padding: 0.8rem 2rem;
+  padding: 1rem 2rem;
   font-size: 1rem;
-  background-color: #D4AF37;
-  color: #121212;
+  background: linear-gradient(135deg, #ff9900 0%, #ff9900 100%);
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.4);
 }
 
-.hero-btn:hover {
-  background-color: #f5d547;
+.hero-btn:hover,
+.about-btn:hover {
+  background: linear-gradient(135deg, #ff9900 0%, #ff9900 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 30px rgba(255, 153, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Próximo Jogo Section */
+.hero-btn:focus,
+.about-btn:focus {
+  outline: 3px solid rgba(255, 153, 0, 0.6);
+  outline-offset: 3px;
+}
+
+.hero-btn:active,
+.about-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.6);
+}
 .proximo-jogo-hero {
-  background: rgba(0, 0, 0, 0.6);
-  border: 2px solid #D4AF37;
-  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(13, 17, 23, 0.8) 0%, rgba(26, 35, 50, 0.8) 100%);
+  border: 2px solid #ff9900;
+  border-radius: 2px;
   padding: 2rem;
   max-width: 500px;
   color: white;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
 .proximo-jogo-hero h2 {
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
-  color: #D4AF37;
+  color: #ff9900;
   text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
 }
 
 .jogo-info h3 {
   margin: 0 0 1rem 0;
   font-size: 1.8rem;
   color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .jogo-info p {
   margin: 0.5rem 0;
   font-size: 1rem;
-  color: #ddd;
+  color: #b0b8c1;
   line-height: 1.6;
 }
 
 .jogo-info strong {
-  color: #D4AF37;
+  color: #ff9900;
+  text-transform: uppercase;
 }
 
 .jogo-info .location-link {
-  color: #D4AF37;
+  color: #ff9900;
   text-decoration: underline;
   font-weight: 600;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
 
 .jogo-info .location-link:hover {
-  color: #f5d547;
+  color: #ff9900;
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.4);
 }
 
 /* About Section */
 .about {
-  background: linear-gradient(rgba(255, 255, 255, 0.93), rgba(255, 255, 255, 0.93)), url('../../public/images/MilSim_2.jpg') right/cover no-repeat;
+  background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(26, 35, 50, 0.85)), url('../../public/images/MilSim_2.jpg') right/cover no-repeat;
   padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
@@ -114,6 +155,7 @@
   max-width: 100%;
   margin: 0 auto;
   background-attachment: fixed;
+  border-top: 2px solid rgba(255, 153, 0, 0.2);
 }
 
 .about-content {
@@ -126,53 +168,38 @@
 
 .about-content h2 {
   font-size: 2.5rem;
-  color: #121212;
+  color: #ff9900;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .about-content p {
   font-size: 1rem;
-  color: #555;
+  color: #b0b8c1;
   line-height: 1.8;
   margin: 0;
 }
 
 
-/* Unifica about-btn com hero-btn */
-.about-btn {
-  align-self: flex-start;
-  padding: 0.8rem 2rem;
-  font-size: 1rem;
-  background-color: #D4AF37;
-  color: #121212;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s;
-}
-
-.about-btn:hover {
-  background-color: #f5d547;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
+/* Unifica about-btn com hero-btn - Removido, agora consolidado acima */
 
 /* Features Section */
 .features {
-  background-color: #f9f9f9;
+  background: linear-gradient(135deg, #1a2332 0%, #2a3f5f 100%);
   padding: 4rem 2rem;
   text-align: center;
+  border-top: 2px solid rgba(255, 153, 0, 0.2);
 }
 
 .features h2 {
   font-size: 2.5rem;
-  color: #121212;
+  color: #ff9900;
   margin-bottom: 3rem;
   text-transform: uppercase;
   letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .features-grid {
@@ -184,35 +211,40 @@
 }
 
 .feature-card {
-  background-color: white;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 153, 0, 0.05);
   transition: all 0.3s;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  border: 1px solid rgba(255, 153, 0, 0.2);
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(255, 153, 0, 0.2), 0 0 20px rgba(255, 153, 0, 0.3);
+  border-color: rgba(255, 153, 0, 0.5);
 }
 
 .feature-icon {
   font-size: 3rem;
+  color: #ff9900;
 }
 
 .feature-card h3 {
   font-size: 1.3rem;
-  color: #121212;
+  color: #ff9900;
   margin: 0;
   text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.2);
 }
 
 .feature-card p {
-  color: #666;
+  color: #b0b8c1;
   margin: 0;
   line-height: 1.6;
   font-size: 0.95rem;

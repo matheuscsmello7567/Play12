@@ -1,7 +1,7 @@
 
 .games-page {
   padding: 2rem;
-  background: #f8f9fa;
+  background: rgba(26, 35, 50, 0.6);
   min-height: 100vh;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .game-card {
-  background: #fff;
+  background: rgba(26, 35, 50, 0.6);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   padding: 1.5rem;
@@ -89,3 +89,4 @@
   align-items: center;
   justify-content: center;
 }
+

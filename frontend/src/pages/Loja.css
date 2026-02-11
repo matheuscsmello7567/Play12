@@ -2,15 +2,17 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #2a3f5f 100%);
 }
 
 .loja-header {
-  background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(31, 41, 55, 0.85)), url('../../public/images/MilSim_4.jpeg') center/cover no-repeat;
+  background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(26, 35, 50, 0.85)), url('../../public/images/MilSim_4.jpeg') center/cover no-repeat;
   background-attachment: fixed;
   color: white;
   padding: 3rem 2rem;
   text-align: center;
-  border-bottom: 4px solid #D4AF37;
+  border-bottom: 4px solid #ff9900;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.2);
 }
 
 .loja-header h1 {
@@ -19,17 +21,19 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: bold;
+  color: #ff9900;
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .loja-header p {
   font-size: 1.1rem;
   margin: 0;
-  color: #D4AF37;
+  color: #b0b8c1;
 }
 
 .loja-content {
   flex: 1;
-  background: linear-gradient(rgba(245, 245, 245, 0.92), rgba(245, 245, 245, 0.92)), url('../../public/images/MilSim_4.jpeg') center/cover no-repeat;
+  background: linear-gradient(135deg, #1a2332 0%, #2a3f5f 100%);
   background-attachment: fixed;
   padding: 2.5rem 1.5rem;
 }
@@ -50,9 +54,19 @@
 .loja-filters input,
 .loja-filters select {
   padding: 0.8rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  border: 2px solid rgba(255, 153, 0, 0.2);
+  border-radius: 2px;
   font-size: 0.95rem;
+  background-color: rgba(26, 35, 50, 0.5);
+  color: #fff;
+  transition: all 0.3s;
+}
+
+.loja-filters input:focus,
+.loja-filters select:focus {
+  outline: none;
+  border-color: #ff9900;
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.3);
 }
 
 .loja-grid {
@@ -64,51 +78,53 @@
 }
 
 .loja-error {
-  background: #ffe4e6;
-  color: #9f1239;
-  border: 1px solid #fda4af;
+  background: #4d1a1a;
+  color: #ff6b6b;
+  border: 1px solid #ff7777;
   padding: 0.6rem 0.8rem;
-  border-radius: 6px;
+  border-radius: 2px;
   margin: 0 auto 1rem auto;
   max-width: 900px;
 }
 
 .loja-loading {
-  background: #fff3cd;
-  color: #664d03;
-  border: 1px solid #ffecb5;
+  background: #3d3d1a;
+  color: #ffd43b;
+  border: 1px solid #ffe066;
   padding: 0.6rem 0.8rem;
-  border-radius: 6px;
+  border-radius: 2px;
   margin: 0 auto 1rem auto;
   max-width: 900px;
 }
 
 .product-card {
-  background: #fff;
-  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border-radius: 2px;
   padding: 1.2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
   transition: all 0.3s;
+  border: 1px solid rgba(255, 153, 0, 0.2);
 }
 
 .product-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(255, 153, 0, 0.2), 0 0 20px rgba(255, 153, 0, 0.3);
+  border-color: rgba(255, 153, 0, 0.5);
 }
 
 .product-thumb {
   width: 100%;
   height: 140px;
-  background: #eee;
-  border-radius: 8px;
+  background: rgba(255, 153, 0, 0.1);
+  border-radius: 2px;
 }
 
 .product-category {
   font-size: 0.85rem;
-  color: #666;
+  color: #7a8289;
 }
 
 .product-price {
@@ -129,3 +145,4 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+

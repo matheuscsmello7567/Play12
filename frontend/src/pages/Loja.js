@@ -9,13 +9,13 @@ export default function Loja() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const categories = ['Todos', ...Array.from(new Set(products.map(p => p.categoria)))];
+  const categories = Array.isArray(products) && products.length > 0 ? ['Todos', ...Array.from(new Set(products.map(p => p.categoria)))] : ['Todos'];
 
   useEffect(() => {
     setLoading(true);
     setError('');
     apiFetch('/produtos')
-      .then((data) => setProducts(data))
+      .then((data) => setProducts(Array.isArray(data) ? data : []))
       .catch((err) => {
         setProducts([]);
         setError(err.message || 'Erro ao carregar produtos');
@@ -24,13 +24,14 @@ export default function Loja() {
   }, []);
 
   const filtered = useMemo(() => {
+    if (!Array.isArray(products)) return [];
     const term = search.trim().toLowerCase();
     return products.filter((p) => {
       const matchTerm = term ? p.nome.toLowerCase().includes(term) : true;
       const matchCategory = category === 'Todos' ? true : p.categoria === category;
       return matchTerm && matchCategory;
     });
-  }, [search, category]);
+  }, [search, category, products]);
 
   return (
     <div className="loja-page">

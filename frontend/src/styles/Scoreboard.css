@@ -1,7 +1,7 @@
 .scoreboard-container {
   background: rgba(18, 18, 18, 0.8);
   padding: 1.5rem 1rem;
-  border-radius: 8px;
+  border-radius: 2px;
   margin: 0;
   width: 100%;
   box-sizing: border-box;
@@ -19,7 +19,7 @@
 /* Team Styling */
 .scoreboard-team {
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
+  border-radius: 2px;
   overflow: visible;
   border-top: 4px solid;
   display: flex;
@@ -33,7 +33,7 @@
 }
 
 .scoreboard-opfor {
-  border-top-color: #D4AF37;
+  border-top-color: #ff9900;
   box-shadow: 0 0 12px rgba(212, 175, 55, 0.15);
 }
 
@@ -68,14 +68,14 @@
 }
 
 .scoreboard-opfor .team-header h2 {
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 .team-stats {
   display: flex;
   gap: 2rem;
   font-size: 0.95rem;
-  color: #999;
+  color: #7a8289;
   flex-wrap: wrap;
   margin-top: 0.5rem;
 }
@@ -97,7 +97,7 @@
 }
 
 .scoreboard-opfor .team-stats .total-points {
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 /* Squads Container */
@@ -172,7 +172,7 @@
   background: rgba(255, 255, 255, 0.08);
   border: none;
   border-radius: 4px;
-  color: #999;
+  color: #7a8289;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -195,12 +195,12 @@
 
 .scoreboard-opfor .collapse-btn {
   background: rgba(212, 175, 55, 0.12);
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 .scoreboard-opfor .collapse-btn:hover {
   background: rgba(212, 175, 55, 0.2);
-  color: #f5d547;
+  color: #ff9900;
 }
 
 .squad-badge {
@@ -234,7 +234,7 @@
 
 .scoreboard-opfor .squad-badge {
   background: rgba(212, 175, 55, 0.15);
-  color: #D4AF37;
+  color: #ff9900;
   border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
@@ -255,7 +255,7 @@
   align-items: center;
   gap: 0.3rem;
   font-size: 0.9rem;
-  color: #999;
+  color: #7a8289;
   font-weight: 500;
 }
 
@@ -275,7 +275,7 @@
 }
 
 .scoreboard-opfor .squad-points {
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 /* Operadores List */
@@ -288,7 +288,7 @@
 .empty-squad {
   padding: 1rem 0.8rem;
   text-align: center;
-  color: #666;
+  color: #7a8289;
   font-size: 0.9rem;
   font-style: italic;
 }
@@ -318,7 +318,7 @@
   background: rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   font-size: 0.75rem;
-  color: #999;
+  color: #7a8289;
   font-weight: bold;
 }
 
@@ -329,7 +329,7 @@
 
 .scoreboard-opfor .op-position {
   background: rgba(212, 175, 55, 0.12);
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 .op-nickname {
@@ -353,7 +353,7 @@
 }
 
 .scoreboard-opfor .op-points {
-  color: #D4AF37;
+  color: #ff9900;
   font-size: 1rem;
 }
 
@@ -380,7 +380,7 @@
 .divider-text {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #D4AF37;
+  color: #ff9900;
   text-transform: uppercase;
   letter-spacing: 2px;
   background: rgba(0, 0, 0, 0.4);

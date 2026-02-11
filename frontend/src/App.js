@@ -14,6 +14,7 @@ import Operadores from './pages/Operadores';
 import RankingTimes from './pages/RankingTimes';
 import Times from './pages/Times';
 import CreateTeam from './pages/CreateTeam';
+import Evolucao from './pages/Evolucao';
 import Loja from './pages/Loja';
 import AdminPanel from './pages/AdminPanel';
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="/ranking-times" element={<RankingTimes />} />
           <Route path="/manual-airsoft" element={<ManualAirsoft />} />
           <Route path="/jogos" element={<Games />} />
+          <Route path="/evolucao" element={<Evolucao />} />
           <Route path="/loja" element={<Loja />} />
           <Route
             path="/admin"

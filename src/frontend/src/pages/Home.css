@@ -1,7 +1,7 @@
 
 .home-page {
   min-height: 100vh;
-  background: #f8f9fa;
+  background: rgba(26, 35, 50, 0.6);
   display: flex;
   flex-direction: column;
 }
@@ -66,12 +66,12 @@
 .hero-content p {
   font-size: 1.3rem;
   margin: 0;
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 .hero-btn {
   background: #1976d2;
-  color: #fff;
+  color: rgba(26, 35, 50, 0.6);
   border: none;
   border-radius: 6px;
   padding: 0.8rem 2rem;
@@ -83,3 +83,4 @@
 .hero-btn:hover {
   background: #1565c0;
 }
+

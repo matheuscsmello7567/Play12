@@ -1,16 +1,17 @@
 .games-page {
   min-height: 100vh;
-  background: linear-gradient(rgba(245, 245, 245, 0.92), rgba(245, 245, 245, 0.92)), url('../../public/images/MilSim_3.jpg') center/cover no-repeat;
+  background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #2a3f5f 100%);
   background-attachment: fixed;
 }
 
 .games-header {
-  background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(31, 41, 55, 0.85)), url('../../public/images/MilSim_5.webp') center/cover no-repeat;
+  background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(26, 35, 50, 0.85)), url('../../public/images/MilSim_5.webp') center/cover no-repeat;
   color: white;
   padding: 3rem 2rem;
   text-align: center;
-  border-bottom: 4px solid #D4AF37;
+  border-bottom: 4px solid #ff9900;
   background-attachment: fixed;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.2);
 }
 
 .games-header h1 {
@@ -18,12 +19,14 @@
   margin: 0 0 0.5rem 0;
   text-transform: uppercase;
   letter-spacing: 2px;
+  color: #ff9900;
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .games-header p {
   font-size: 1.1rem;
   margin: 0;
-  color: #D4AF37;
+  color: #b0b8c1;
 }
 
 .games-container {
@@ -39,9 +42,9 @@
 
 /* Calendário */
 .calendar-section {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 153, 0, 0.1);
   padding: 1.5rem;
   height: fit-content;
   position: sticky;
@@ -49,6 +52,7 @@
   min-width: 340px;
   max-width: 400px;
   margin-right: 2rem;
+  border: 1px solid rgba(255, 153, 0, 0.2);
 }
 
 .calendar {
@@ -56,7 +60,7 @@
 }
 
 .calendar-header h2 {
-  color: #121212;
+  color: #ff9900;
   margin: 0;
   font-size: 1.3rem;
 }
@@ -67,11 +71,11 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #D4AF37;
+  border-bottom: 2px solid rgba(255, 153, 0, 0.3);
 }
 
 .nav-btn {
-  color: #D4AF37;
+  color: #ff9900;
   border: none;
   width: 40px;
   height: 40px;
@@ -79,12 +83,14 @@
   cursor: pointer;
   font-size: 1.2rem;
   transition: all 0.3s;
+  background: rgba(255, 153, 0, 0.1);
 }
 
 .nav-btn:hover {
-  background-color: #D4AF37;
-  color: #121212;
+  background: linear-gradient(135deg, rgba(255, 153, 0, 0.3) 0%, rgba(255, 102, 0, 0.2) 100%);
+  color: #ff9900;
   transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.4);
 }
 
 .weekdays {
@@ -114,9 +120,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px solid #eee;
+  border: 2px solid rgba(255, 153, 0, 0.1);
   border-radius: 4px;
-  background-color: #f9f9f9;
+  background-color: rgba(26, 35, 50, 0.5);
   cursor: pointer;
   transition: all 0.3s;
   position: relative;
@@ -136,12 +142,12 @@
 
 .calendar-day.active:hover {
   background-color: #121212;
-  color: #D4AF37;
-  border-color: #D4AF37;
+  color: #ff9900;
+  border-color: #ff9900;
 }
 
 .calendar-day.has-event {
-  border-color: #D4AF37;
+  border-color: #ff9900;
   background-color: #fef8f0;
 }
 
@@ -152,7 +158,7 @@
 .event-indicator {
   position: absolute;
   bottom: 3px;
-  color: #D4AF37;
+  color: #ff9900;
   font-size: 0.8rem;
 }
 
@@ -161,7 +167,7 @@
 
 .games-list-section {
   background-color: white;
-  border-radius: 8px;
+  border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   flex: 1;
@@ -185,7 +191,7 @@
 }
 
 .events-error {
-  background: #ffe4e6;
+  background: rgba(255, 153, 0, 0.08);
   color: #9f1239;
   border: 1px solid #fda4af;
   padding: 0.6rem 0.8rem;
@@ -194,7 +200,7 @@
 }
 
 .events-loading {
-  background: #fff3cd;
+  background: rgba(255, 153, 0, 0.08);
   color: #664d03;
   border: 1px solid #ffecb5;
   padding: 0.6rem 0.8rem;
@@ -204,8 +210,8 @@
 
 .clear-filters-btn {
   background: #121212;
-  color: #D4AF37;
-  border: 2px solid #D4AF37;
+  color: #ff9900;
+  border: 2px solid #ff9900;
   padding: 0.7rem 1rem;
   border-radius: 6px;
   font-weight: bold;
@@ -221,7 +227,7 @@
 }
 
 .clear-filters-btn:not(:disabled):hover {
-  background: #D4AF37;
+  background: #ff9900;
   color: #121212;
 }
 
@@ -234,8 +240,8 @@
 
 .upcoming-card {
   background: #fffdf5;
-  border: 2px solid #D4AF37;
-  border-radius: 10px;
+  border: 2px solid #ff9900;
+  border-radius: 2px;
   padding: 1.5rem 1.7rem;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -288,22 +294,23 @@
 }
 
 .game-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
+  padding: 2rem;
   min-width: 260px;
   max-width: 320px;
-  transition: box-shadow 0.2s;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  border: 1px solid rgba(255, 153, 0, 0.2);
 }
 
 .game-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border-color: #D4AF37;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(255, 153, 0, 0.2), 0 0 20px rgba(255, 153, 0, 0.3);
+  border-color: rgba(255, 153, 0, 0.4);
 }
 
 .game-card-header {
@@ -315,9 +322,9 @@
 
 .game-type {
   background-color: #121212;
-  color: #D4AF37;
+  color: #ff9900;
   padding: 0.3rem 0.8rem;
-  border-radius: 20px;
+  border-radius: 50%;
   font-size: 0.8rem;
   font-weight: bold;
   text-transform: uppercase;
@@ -325,10 +332,10 @@
 }
 
 .game-status {
-  background-color: #D4AF37;
+  background-color: #ff9900;
   color: #121212;
   padding: 0.3rem 0.8rem;
-  border-radius: 20px;
+  border-radius: 50%;
   font-size: 0.8rem;
   font-weight: bold;
   text-transform: uppercase;
@@ -364,8 +371,8 @@
 
 .game-btn {
   background-color: #121212;
-  color: #D4AF37;
-  border: 2px solid #D4AF37;
+  color: #ff9900;
+  border: 2px solid #ff9900;
   padding: 0.8rem 1.5rem;
   border-radius: 4px;
   cursor: pointer;
@@ -384,7 +391,7 @@
 }
 
 .game-btn:hover {
-  background-color: #D4AF37;
+  background-color: #ff9900;
   color: #121212;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -427,3 +434,4 @@
     padding: 1rem;
   }
 }
+

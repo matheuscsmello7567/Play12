@@ -34,6 +34,9 @@ export default function Navbar({ user, onLogout }) {
             <Link to="/manual-airsoft" className="nav-link">MANUAL DO AIRSOFT</Link>
           </li>
           <li className="nav-item">
+            <Link to="/evolucao" className="nav-link">EVOLUÇÃO</Link>
+          </li>
+          <li className="nav-item">
             <Link to="/loja" className="nav-link">LOJA</Link>
           </li>
           {user && user.isAdmin && (

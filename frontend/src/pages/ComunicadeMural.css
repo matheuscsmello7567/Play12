@@ -10,7 +10,7 @@
   color: white;
   padding: 3rem 2rem;
   text-align: center;
-  border-bottom: 4px solid #D4AF37;
+  border-bottom: 4px solid #ff9900;
 }
 
 .mural-header h1 {
@@ -24,7 +24,7 @@
 .mural-header p {
   font-size: 1.1rem;
   margin: 0;
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 .mural-content {
@@ -39,7 +39,7 @@
 }
 
 .mural-error {
-  background: #ffe4e6;
+  background: rgba(255, 153, 0, 0.08);
   color: #9f1239;
   border: 1px solid #fda4af;
   padding: 0.6rem 0.8rem;
@@ -50,7 +50,7 @@
 }
 
 .mural-loading {
-  background: #fff3cd;
+  background: rgba(255, 153, 0, 0.08);
   color: #664d03;
   border: 1px solid #ffecb5;
   padding: 0.6rem 0.8rem;
@@ -71,7 +71,7 @@
 
 .mural-photo {
   background: none;
-  border-radius: 8px;
+  border-radius: 2px;
   box-shadow: none;
   padding: 0;
   display: flex;
@@ -87,7 +87,7 @@
 .mural-photo img {
   width: 100%;
   height: 100%;
-  border-radius: 8px;
+  border-radius: 2px;
   object-fit: cover;
 }
 
@@ -122,7 +122,7 @@
   border-radius: 50%;
   border: none;
   background: #121212;
-  color: #D4AF37;
+  color: #ff9900;
   cursor: pointer;
 }
 
@@ -141,28 +141,36 @@
 }
 
 .news-carousel::-webkit-scrollbar-thumb {
-  background: #d4af37;
-  border-radius: 10px;
+  background: #ff9900;
+  border-radius: 2px;
 }
 
 .news-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 0.8rem;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 153, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.news-card:hover {
+  box-shadow: 0 8px 24px rgba(255, 153, 0, 0.2), 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .news-card h3 {
-  font-size: 1rem;
-  margin: 0.8rem 0 0;
-  color: #121212;
+  font-size: 1.1rem;
+  margin: 1rem 0 0;
+  color: #ff9900;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .news-video {
   position: relative;
   width: 100%;
   padding-top: 56.25%;
-  border-radius: 8px;
+  border-radius: 2px;
   overflow: hidden;
   background: #000;
 }
@@ -190,7 +198,7 @@
   max-width: 90vw;
   max-height: 90vh;
   background: #000;
-  border-radius: 8px;
+  border-radius: 2px;
   padding: 0.5rem;
 }
 
@@ -206,15 +214,24 @@
   position: absolute;
   top: -12px;
   right: -12px;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: none;
-  background: #fff;
-  color: #111;
-  font-size: 1.2rem;
+  border: 2px solid #ff9900;
+  background: rgba(13, 17, 23, 0.95);
+  color: #ff9900;
+  font-size: 1.5rem;
+  font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 153, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.mural-close:hover {
+  background: #ff9900;
+  color: #0d1117;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 153, 0, 0.4), 0 0 30px rgba(255, 153, 0, 0.5);
 }
 
 @media (max-width: 768px) {
@@ -230,3 +247,4 @@
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }
+

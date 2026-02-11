@@ -1,16 +1,17 @@
 .rules-page {
   min-height: 100vh;
-  background: linear-gradient(rgba(245, 245, 245, 0.92), rgba(245, 245, 245, 0.92)), url('../../public/images/MilSim_6_License.jpg') center/cover no-repeat;
+  background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #2a3f5f 100%);
   background-attachment: fixed;
 }
 
 .rules-header {
-  background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(31, 41, 55, 0.85)), url('../../public/images/MilSim_4.jpeg') center/cover no-repeat;
+  background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(26, 35, 50, 0.85)), url('../../public/images/MilSim_4.jpeg') center/cover no-repeat;
   color: white;
   padding: 3rem 2rem;
   text-align: center;
-  border-bottom: 4px solid #D4AF37;
+  border-bottom: 4px solid #ff9900;
   background-attachment: fixed;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.2);
 }
 
 .rules-header h1 {
@@ -18,12 +19,14 @@
   margin: 0 0 0.5rem 0;
   text-transform: uppercase;
   letter-spacing: 2px;
+  color: #ff9900;
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .rules-header p {
   font-size: 1.1rem;
   margin: 0;
-  color: #D4AF37;
+  color: #b0b8c1;
 }
 
 .rules-container {
@@ -42,9 +45,9 @@
 .rule-section {
   background-color: white;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #D4AF37;
+  border-left: 4px solid #ff9900;
   transition: all 0.3s;
 }
 
@@ -60,7 +63,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   padding-bottom: 0.8rem;
-  border-bottom: 2px solid #D4AF37;
+  border-bottom: 2px solid #ff9900;
 }
 
 .rule-list {
@@ -72,7 +75,7 @@
 .rule-list li {
   padding: 0.8rem 0;
   color: #555;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(255, 153, 0, 0.1);
   position: relative;
   padding-left: 1.5rem;
 }
@@ -81,7 +84,7 @@
   content: "✓";
   position: absolute;
   left: 0;
-  color: #D4AF37;
+  color: #ff9900;
   font-weight: bold;
 }
 
@@ -92,7 +95,7 @@
 .rules-additional {
   background-color: white;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -104,14 +107,14 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #D4AF37;
+  border-bottom: 2px solid #ff9900;
 }
 
 .info-box {
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background-color: #f9f9f9;
-  border-left: 4px solid #D4AF37;
+  background-color: rgba(26, 35, 50, 0.5);
+  border-left: 4px solid #ff9900;
   border-radius: 4px;
 }
 
@@ -124,7 +127,7 @@
 }
 
 .info-box p {
-  color: #666;
+  color: #7a8289;
   margin: 0;
   line-height: 1.8;
 }
@@ -155,3 +158,4 @@
     padding: 1.5rem;
   }
 }
+

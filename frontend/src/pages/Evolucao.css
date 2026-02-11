@@ -1,0 +1,51 @@
+.evolucao-page {
+  min-height: 100vh;
+  padding-top: 80px;
+  background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #2a3f5f 100%);
+  color: #fff;
+}
+
+.evolucao-header {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, rgba(13, 17, 23, 0.8) 0%, rgba(26, 35, 50, 0.8) 100%);
+  border-bottom: 2px solid #ff9900;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.evolucao-header h1 {
+  font-size: 3rem;
+  margin: 0;
+  color: #ff9900;
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.3), 2px 2px 8px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.evolucao-header p {
+  font-size: 1.2rem;
+  margin: 10px 0 0 0;
+  color: #b0b8c1;
+  letter-spacing: 0.5px;
+}
+
+.evolucao-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.evolucao-content {
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.5) 0%, rgba(42, 63, 95, 0.3) 100%);
+  border: 2px solid rgba(255, 153, 0, 0.3);
+  border-radius: 2px;
+  padding: 40px;
+  text-align: center;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.1), inset 0 0 10px rgba(255, 153, 0, 0.05);
+  color: #b0b8c1;
+}

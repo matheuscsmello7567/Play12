@@ -11,7 +11,7 @@
   color: white;
   padding: 3rem 2rem;
   text-align: center;
-  border-bottom: 4px solid #D4AF37;
+  border-bottom: 4px solid #ff9900;
 }
 
 .squads-header-section h1 {
@@ -25,7 +25,7 @@
 .squads-header-section p {
   font-size: 1.1rem;
   margin: 0;
-  color: #D4AF37;
+  color: #ff9900;
 }
 
 .squads-content {
@@ -42,15 +42,15 @@
 .squads-table {
   max-width: 1100px;
   margin: 0 auto;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
   overflow: hidden;
-  border: 2px solid #D4AF37;
+  border: 1px solid rgba(255, 153, 0, 0.3);
 }
 
 .squads-error {
-  background: #ffe4e6;
+  background: rgba(255, 153, 0, 0.08);
   color: #9f1239;
   border: 1px solid #fda4af;
   padding: 0.6rem 0.8rem;
@@ -60,7 +60,7 @@
 }
 
 .squads-loading {
-  background: #fff3cd;
+  background: rgba(255, 153, 0, 0.08);
   color: #664d03;
   border: 1px solid #ffecb5;
   padding: 0.6rem 0.8rem;
@@ -73,7 +73,7 @@
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(255, 153, 0, 0.1);
   align-items: center;
   font-size: 1rem;
 }
@@ -84,7 +84,7 @@
 
 .squads-header {
   background: #121212;
-  color: #D4AF37;
+  color: #ff9900;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -116,3 +116,4 @@
     display: none;
   }
 }
+

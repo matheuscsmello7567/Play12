@@ -2,16 +2,17 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f5f5;
+  background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #2a3f5f 100%);
 }
 
 .create-team-header {
-  background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(31, 41, 55, 0.85)), url('../../public/images/MilSim_3.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(26, 35, 50, 0.85)), url('../../public/images/MilSim_3.jpg') center/cover no-repeat;
   background-attachment: fixed;
   color: #fff;
   padding: 3rem 2rem;
   text-align: center;
-  border-bottom: 4px solid #D4AF37;
+  border-bottom: 4px solid #ff9900;
+  box-shadow: 0 0 20px rgba(255, 153, 0, 0.2);
 }
 
 .create-team-header h1 {
@@ -20,12 +21,14 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
+  color: #ff9900;
+  text-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
 }
 
 .create-team-header p {
   font-size: 1.1rem;
   margin: 0;
-  color: #D4AF37;
+  color: #b0b8c1;
 }
 
 .create-team-container {
@@ -37,11 +40,11 @@
 }
 
 .team-error {
-  background: #ffe4e6;
-  color: #9f1239;
-  border: 1px solid #fda4af;
+  background: #4d1a1a;
+  color: #ff6b6b;
+  border: 1px solid #ff7777;
   padding: 1rem;
-  border-radius: 4px;
+  border-radius: 2px;
   margin-bottom: 1rem;
 }
 
@@ -55,16 +58,17 @@
 }
 
 .team-form {
-  background: white;
-  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(42, 63, 95, 0.4) 100%);
+  border-radius: 2px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 153, 0, 0.1);
+  border: 1px solid rgba(255, 153, 0, 0.2);
 }
 
 .form-section {
   margin-bottom: 2.5rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(255, 153, 0, 0.1);
 }
 
 .form-section:last-of-type {
@@ -73,17 +77,18 @@
 
 .form-section h2 {
   font-size: 1.3rem;
-  color: #1a1a1a;
+  color: #ff9900;
   margin: 0 0 1rem 0;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border-left: 4px solid #D4AF37;
+  border-left: 4px solid #ff9900;
   padding-left: 1rem;
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.2);
 }
 
 .form-section p {
-  color: #666;
+  color: #b0b8c1;
   margin: 0 0 1rem 0;
   font-size: 0.95rem;
 }
@@ -106,19 +111,19 @@
 .logo-placeholder {
   width: 180px;
   height: 180px;
-  border: 2px dashed #D4AF37;
-  border-radius: 8px;
+  border: 2px dashed #ff9900;
+  border-radius: 2px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #fafafa;
+  background: rgba(26, 35, 50, 0.6);
   transition: all 0.3s ease;
 }
 
 .logo-placeholder:hover {
   border-color: #e6b800;
-  background: #f5f0e8;
+  background: rgba(26, 35, 50, 0.6);
   transform: scale(1.02);
 }
 
@@ -128,7 +133,7 @@
 }
 
 .logo-placeholder p {
-  color: #999;
+  color: #7a8289;
   font-size: 0.9rem;
   text-align: center;
   margin: 0;
@@ -138,8 +143,8 @@
   width: 180px;
   height: 180px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 2px solid #D4AF37;
+  border-radius: 2px;
+  border: 2px solid #ff9900;
 }
 
 /* Form Groups */
@@ -154,7 +159,7 @@
 .form-group label {
   display: block;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #b0b8c1;
   margin-bottom: 0.5rem;
   font-size: 0.95rem;
 }
@@ -173,7 +178,7 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #D4AF37;
+  border-color: #ff9900;
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
 }
 
@@ -184,16 +189,16 @@
 
 /* Members Section */
 .members-info {
-  color: #666;
+  color: #7a8289;
   font-size: 0.95rem;
   margin: 0 0 1rem 0;
 }
 
 .no-members {
   text-align: center;
-  color: #999;
+  color: #7a8289;
   padding: 2rem;
-  background: #f9f9f9;
+  background: rgba(26, 35, 50, 0.5);
   border-radius: 4px;
 }
 
@@ -207,23 +212,23 @@
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
+  border: 2px solid rgba(255, 153, 0, 0.3);
+  border-radius: 2px;
   cursor: pointer;
   transition: all 0.3s ease;
   align-items: center;
-  background: white;
+  background: rgba(26, 35, 50, 0.6);
 }
 
 .member-card:hover {
-  border-color: #D4AF37;
+  border-color: #ff9900;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
 
 .member-card.selected {
-  background: #fffaf0;
-  border-color: #D4AF37;
+  background: rgba(255, 153, 0, 0.15);
+  border-color: #ff9900;
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
@@ -235,7 +240,7 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  accent-color: #D4AF37;
+  accent-color: #ff9900;
 }
 
 .member-info {
@@ -255,7 +260,7 @@
 
 .member-info p {
   margin: 0 0 0.5rem 0;
-  color: #666;
+  color: #7a8289;
   font-size: 0.85rem;
   white-space: nowrap;
   overflow: hidden;
@@ -264,10 +269,10 @@
 
 .member-role {
   display: inline-block;
-  background: #f0f0f0;
-  color: #666;
+  background: rgba(255, 153, 0, 0.1);
+  color: #b0b8c1;
   padding: 0.25rem 0.75rem;
-  border-radius: 20px;
+  border-radius: 50%;
   font-size: 0.75rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -280,7 +285,7 @@
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid rgba(255, 153, 0, 0.1);
 }
 
 .btn-submit,
@@ -298,7 +303,7 @@
 }
 
 .btn-submit {
-  background: #D4AF37;
+  background: #ff9900;
   color: white;
 }
 
@@ -344,3 +349,4 @@
     width: 100%;
   }
 }
+
