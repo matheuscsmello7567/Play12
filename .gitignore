@@ -1,54 +1,24 @@
-# Maven
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-.flattened-pom.xml
-
-# IDEs
-.idea/
-.vscode/
-*.iml
-*.iws
-*.ipr
-*.cls
-.classpath
-.project
-.settings/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
+# Logs
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Application specific
-.env
-.env.local
-.env.*.local
+node_modules
+dist
+dist-ssr
+*.local
 
-# Database
-*.db
-*.sqlite
-
-# Spring Boot
-application-local.properties
-application-prod.properties.local
-
-# Build
-*.jar
-*.class
-
-# Node (if using webpack)
-node_modules/
-package-lock.json
-yarn.lock
-
-# Git
-.git/
-.gitignore
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
