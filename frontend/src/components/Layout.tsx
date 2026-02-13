@@ -139,7 +139,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <span>Encryption: AES-256</span>
           </div>
           <div className="mt-2 md:mt-0">
-            &copy; 2026 SILENT ECHO PROTOCOL // PLAY12 MILSIM
+            &copy; 2026 SILENT ECHO PROTOCOL // PLAY12
           </div>
         </div>
       </footer>

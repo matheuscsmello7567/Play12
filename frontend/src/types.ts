@@ -51,6 +51,7 @@ export interface Evento {
     maps_url: string;
   };
   confirmados: number;
+  total: number; // Capacidade total esperada
   intel?: string; // Briefing text
 }
 
