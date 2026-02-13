@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # ── PostgreSQL ─────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: play12_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: play12_user
+      POSTGRES_PASSWORD: play12_password
+      POSTGRES_DB: play12_dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docs/database_init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U play12_user -d play12_dev']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Backend API ────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: play12_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://play12_user:play12_password@postgres:5432/play12_dev?schema=public
+      JWT_SECRET: ${JWT_SECRET:-change_me_in_production_super_long_key_1234567890}
+      JWT_EXPIRATION: 7d
+      PORT: 3333
+      NODE_ENV: production
+      CORS_ORIGINS: http://localhost:3000
+      ASAAS_API_KEY: ${ASAAS_API_KEY:-}
+      ASAAS_ENVIRONMENT: ${ASAAS_ENVIRONMENT:-sandbox}
+      ASAAS_BASE_URL: ${ASAAS_BASE_URL:-https://sandbox.asaas.com/api/v3}
+    ports:
+      - '3333:3333'
+
+volumes:
+  postgres_data:

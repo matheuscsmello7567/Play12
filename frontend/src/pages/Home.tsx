@@ -6,11 +6,13 @@ const Home: React.FC = () => {
   const nextEvent = {
     nome: 'OPERAÇÃO RED WINGS',
     data: '15/02/2026',
-    horario: '0100Z',
+    horario: '0100H',
     local: 'Serra do Rola Moça',
     coord: '20°03\'22"S 44°02\'03"W',
     mapsUrl: 'https://google.com/maps',
-    tipo: 'MILSIM'
+    tipo: 'MILSIM',
+    confirmados: 6,
+    total: 20
   };
 
   return (
@@ -38,12 +40,20 @@ const Home: React.FC = () => {
             
             <div className="flex flex-wrap gap-6 text-hud-blue font-mono text-sm mb-8">
                <span className="flex items-center gap-2"><Clock className="w-4 h-4" /> {nextEvent.data} - {nextEvent.horario}</span>
-               <span className="flex items-center gap-2"><MapPin className="w-4 h-4" /> {nextEvent.local}</span>
+               <a 
+                 href={nextEvent.mapsUrl} 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 className="flex items-center gap-2 hover:text-tactical-amber transition-colors"
+                 title="Abrir localização no Google Maps"
+               >
+                  <MapPin className="w-4 h-4" /> {nextEvent.local}
+               </a>
                <span className="text-zinc-500">// {nextEvent.coord}</span>
             </div>
 
             <div className="flex gap-4">
-              <Link to="/eventos" className="bg-tactical-amber text-black hover:bg-white px-8 py-3 font-header font-bold uppercase tracking-widest clip-corner-br transition-all flex items-center gap-2 group">
+              <Link to="/inscricao" className="bg-tactical-amber text-black hover:bg-white px-8 py-3 font-header font-bold uppercase tracking-widest clip-corner-br transition-all flex items-center gap-2 group">
                 Confirmar Deslocamento
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -52,9 +62,12 @@ const Home: React.FC = () => {
 
           <div className="hidden md:block w-64 border-l border-white/10 pl-8 space-y-6">
              <div>
-                <div className="text-xs text-zinc-500 uppercase tracking-widest mb-1">Status do Squad</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-widest mb-1">Status do Jogo</div>
                 <div className="text-vision-green font-mono font-bold text-xl flex items-center gap-2">
-                   <Activity className="w-4 h-4" /> 92% PRONTO
+                   <Activity className="w-4 h-4" /> {Math.round((nextEvent.confirmados / nextEvent.total) * 100)}% CONFIRMADOS
+                </div>
+                <div className="text-zinc-500 font-mono text-xs mt-1">
+                   {nextEvent.confirmados} de {nextEvent.total} participantes
                 </div>
              </div>
              <div>

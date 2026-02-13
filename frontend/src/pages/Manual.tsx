@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, AlertTriangle, Crosshair, CheckCircle } from 'lucide-react';
+import { Shield, AlertTriangle, Crosshair, CheckCircle, Scale, BookOpen } from 'lucide-react';
 
 const Manual: React.FC = () => {
   return (
@@ -27,16 +27,24 @@ const Manual: React.FC = () => {
                    <span className="text-zinc-300">O respeito é imprescindível entre todos os operadores, organizadores e equipe de apoio.</span>
                  </li>
                  <li className="flex items-start gap-3">
-                   <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
-                   <span className="text-zinc-300 font-bold">NUNCA remova seus óculos de proteção dentro da área de jogo (Safe Zone é a única exceção).</span>
-                 </li>
-                 <li className="flex items-start gap-3">
                    <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
                    <span className="text-zinc-300">Siga estritamente as instruções dos Rangers/Juízes de campo.</span>
                  </li>
                  <li className="flex items-start gap-3">
                    <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
                    <span className="text-zinc-300">Respeite os limites de FPS estabelecidos para cada categoria de armamento.</span>
+                 </li>
+                 <li className="flex items-start gap-3">
+                   <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
+                   <span className="text-zinc-300">O uso de granadas é restrito conforme as regras de segurança.</span>
+                 </li>
+                 <li className="flex items-start gap-3">
+                   <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
+                   <span className="text-zinc-300">Proibido armas com projéteis de metal.</span>
+                 </li>
+                 <li className="flex items-start gap-3">
+                   <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
+                   <span className="text-zinc-300 font-bold">NUNCA remova seus óculos de proteção dentro da área de jogo (Safe Zone é a única exceção).</span>
                  </li>
                </ul>
             </div>
@@ -68,6 +76,48 @@ const Manual: React.FC = () => {
                   <div className="text-3xl font-black text-orange-500">Até 500 FPS</div>
                   <p className="text-zinc-500 text-sm mt-2">Medido com BBs 0.20g. Distância mínima obrigatória: 20 metros. Obrigatório secundária.</p>
                </div>
+            </div>
+          </section>
+
+          <section>
+             <div className="flex items-center gap-3 mb-6">
+               <Scale className="w-8 h-8 text-orange-500" />
+               <h2 className="text-2xl font-bold text-white">Legislação e Responsabilidade</h2>
+            </div>
+            
+            <div className="space-y-6">
+              {/* Legislação e Transporte */}
+              <div className="bg-zinc-900 rounded-xl p-8 border-l-4 border-orange-600 shadow-lg">
+                <div className="flex items-center gap-2 mb-4">
+                  <BookOpen className="w-6 h-6 text-orange-500" />
+                  <h3 className="text-xl font-bold text-white">Legislação e Transporte</h3>
+                </div>
+                <p className="text-zinc-300 leading-relaxed">
+                  O Airsoft no Brasil é regulamentado pelo Exército (COLOG) e Leis Federais. As armas de pressão (AEG/GBB) devem possuir a ponta laranja ou vermelho vivo obrigatoriamente. O transporte só é permitido em malas ou cases fechados (jamais ostensivo), acompanhado sempre da Nota Fiscal de origem. A prática é restrita a locais autorizados e privados.
+                </p>
+              </div>
+
+              {/* Segurança e Operacional */}
+              <div className="bg-zinc-900 rounded-xl p-8 border-l-4 border-orange-600 shadow-lg">
+                <div className="flex items-center gap-2 mb-4">
+                  <BookOpen className="w-6 h-6 text-orange-500" />
+                  <h3 className="text-xl font-bold text-white">Segurança e Operacional (FPS)</h3>
+                </div>
+                <p className="text-zinc-300 leading-relaxed">
+                  A segurança é inegociável. O uso de óculos de proteção homologados é obrigatório durante todo o jogo. Todas as armas passarão por cronagem (medição de FPS) e devem respeitar os limites de energia (Joules) da classe de jogo. Operadores menores de 18 anos só podem participar com autorização e/ou acompanhamento dos responsáveis, conforme a legislação vigente.
+                </p>
+              </div>
+
+              {/* Código de Conduta */}
+              <div className="bg-zinc-900 rounded-xl p-8 border-l-4 border-orange-600 shadow-lg">
+                <div className="flex items-center gap-2 mb-4">
+                  <BookOpen className="w-6 h-6 text-orange-500" />
+                  <h3 className="text-xl font-bold text-white">Código de Conduta e Responsabilidade</h3>
+                </div>
+                <p className="text-zinc-300 leading-relaxed">
+                  O Airsoft é um esporte de honra (Fair Play). O operador é civilmente responsável por seus atos e equipamentos. Desrespeito, agressividade ou violação das regras de segurança resultarão em expulsão imediata e possível banimento da plataforma Play12. A organização não se responsabiliza por acidentes decorrentes de imprudência ou negligência do operador.
+                </p>
+              </div>
             </div>
           </section>
 

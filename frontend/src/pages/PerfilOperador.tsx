@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Shield, Target, Activity, Calendar, Mail, Users, ArrowLeft, Crosshair, Zap, Award } from 'lucide-react';
+import { Shield, Target, Activity, Calendar, Mail, Users, ArrowLeft, Crosshair, Zap, Award, UserPlus, CheckCircle } from 'lucide-react';
 import { operadores } from '../services/data';
 import { times } from '../services/data';
 
@@ -11,6 +11,7 @@ const formatDateBR = (dateStr: string) => {
 
 const PerfilOperador: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const [alistamentoPendente, setAlistamentoPendente] = useState(false);
   const operador = operadores.find(op => op.id === id);
 
   if (!operador) {
@@ -35,6 +36,15 @@ const PerfilOperador: React.FC = () => {
   };
 
   const status = statusConfig[operador.status];
+
+  const handleAlistamento = () => {
+    // TODO: Quando o sistema de notificações for implementado, enviar para o líder do squad
+    setAlistamentoPendente(true);
+    alert(`Solicitação de alistamento enviada para o líder(a) de ${squad?.nome}. Você receberá uma notificação em breve.`);
+    
+    // Simular resetar após alguns segundos
+    setTimeout(() => setAlistamentoPendente(false), 3000);
+  };
 
   return (
     <div className="space-y-8">
@@ -176,6 +186,31 @@ const PerfilOperador: React.FC = () => {
                   <div className="font-bold text-white font-mono">{squad.jogos_participados}</div>
                 </div>
               </div>
+
+              {/* Botão de Alistamento */}
+              <button
+                onClick={handleAlistamento}
+                disabled={alistamentoPendente}
+                className={`
+                  w-full mt-4 py-3 px-4 font-header font-bold uppercase tracking-widest transition-all clip-corner-br flex items-center justify-center gap-2
+                  ${alistamentoPendente 
+                    ? 'bg-vision-green text-black' 
+                    : 'bg-tactical-amber text-black hover:bg-white'
+                  }
+                `}
+              >
+                {alistamentoPendente ? (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    Solicitação Enviada
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="w-5 h-5" />
+                    Alistar-se nesta Unidade
+                  </>
+                )}
+              </button>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-8 text-center">

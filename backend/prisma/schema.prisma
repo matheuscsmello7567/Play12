@@ -1,0 +1,221 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+// =====================================================
+// Operadores / Jogadores
+// =====================================================
+model Operator {
+  id              Int       @id @default(autoincrement())
+  nickname        String    @unique @db.VarChar(30)
+  email           String    @unique @db.VarChar(255)
+  password        String    @db.VarChar(255)
+  fullName        String?   @map("full_name") @db.VarChar(255)
+  phone           String?   @db.VarChar(20)
+  avatarUrl       String?   @map("avatar_url") @db.VarChar(500)
+  role            Role      @default(PLAYER)
+  totalGames      Int       @default(0) @map("total_games")
+  engagementScore Float     @default(0.0) @map("engagement_score")
+  verified        Boolean   @default(false)
+  isActive        Boolean   @default(true) @map("is_active")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  ledSquads       Squad[]         @relation("SquadLeader")
+  squads          SquadMember[]
+
+  @@map("operators")
+}
+
+enum Role {
+  PLAYER
+  SQUAD_LEADER
+  ORGANIZER
+  ADMIN
+}
+
+// =====================================================
+// Squads / Equipes
+// =====================================================
+model Squad {
+  id               Int          @id @default(autoincrement())
+  name             String       @unique @db.VarChar(255)
+  tag              String?      @db.VarChar(10)
+  description      String?      @db.VarChar(500)
+  logoUrl          String?      @map("logo_url") @db.VarChar(500)
+  specialty        Specialty    @default(ASSALTO)
+  state            String?      @db.VarChar(2)
+  leaderId         Int          @map("leader_id")
+  totalMembers     Int          @default(1) @map("total_members")
+  totalGamesPlayed Int          @default(0) @map("total_games_played")
+  totalWins        Int          @default(0) @map("total_wins")
+  rankingPosition  Int?         @map("ranking_position")
+  status           SquadStatus  @default(ACTIVE)
+  isActive         Boolean      @default(true) @map("is_active")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  // Relations
+  leader           Operator     @relation("SquadLeader", fields: [leaderId], references: [id])
+  members          SquadMember[]
+  gameSquads       GameSquad[]
+  ranking          Ranking?
+
+  @@map("squads")
+}
+
+enum SquadStatus {
+  ACTIVE
+  INACTIVE
+  DISBANDED
+  ON_HOLD
+}
+
+enum Specialty {
+  ASSALTO
+  RECONHECIMENTO
+  SUPORTE
+}
+
+// =====================================================
+// Membros de Squad (many-to-many)
+// =====================================================
+model SquadMember {
+  squadId    Int      @map("squad_id")
+  operatorId Int      @map("operator_id")
+  joinedAt   DateTime @default(now()) @map("joined_at")
+
+  squad    Squad    @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  operator Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+  @@id([squadId, operatorId])
+  @@map("squad_members")
+}
+
+// =====================================================
+// Games / Eventos
+// =====================================================
+model Game {
+  id              Int        @id @default(autoincrement())
+  name            String     @db.VarChar(255)
+  startDate       DateTime   @map("start_date")
+  endDate         DateTime   @map("end_date")
+  description     String?    @db.VarChar(1000)
+  location        String?    @db.VarChar(500)
+  locationCoords  String?    @map("location_coords") @db.VarChar(100)
+  locationMapsUrl String?    @map("location_maps_url") @db.VarChar(500)
+  maxPlayers      Int?       @map("max_players")
+  currentPlayers  Int        @default(0) @map("current_players")
+  status          GameStatus @default(SCHEDULED)
+  gameType        GameType   @default(MILSIM) @map("game_type")
+  winningSquadId  Int?       @map("winning_squad_id")
+  registrationFee Float      @default(0.0) @map("registration_fee")
+  isActive        Boolean    @default(true) @map("is_active")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+
+  // Relations
+  gameSquads GameSquad[]
+
+  @@map("games")
+}
+
+enum GameStatus {
+  SCHEDULED
+  REGISTRATION_OPEN
+  REGISTRATION_CLOSED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum GameType {
+  MILSIM
+  CQB
+  WOODLAND
+  SKIRMISH
+  SCENARIO
+  CTF
+}
+
+// =====================================================
+// Squad ↔ Game (many-to-many)
+// =====================================================
+model GameSquad {
+  gameId   Int      @map("game_id")
+  squadId  Int      @map("squad_id")
+  joinedAt DateTime @default(now()) @map("joined_at")
+
+  game  Game  @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  squad Squad @relation(fields: [squadId], references: [id], onDelete: Cascade)
+
+  @@id([gameId, squadId])
+  @@map("game_squads")
+}
+
+// =====================================================
+// Ranking
+// =====================================================
+model Ranking {
+  id                          Int      @id @default(autoincrement())
+  squadId                     Int      @unique @map("squad_id")
+  position                    Int      @default(1)
+  totalPoints                 Int      @default(0) @map("total_points")
+  gamesPlayed                 Int      @default(0) @map("games_played")
+  gamesWon                    Int      @default(0) @map("games_won")
+  gamesLost                   Int      @default(0) @map("games_lost")
+  winRate                     Float    @default(0.0) @map("win_rate")
+  totalEliminations           Int      @default(0) @map("total_eliminations")
+  averageEliminationsPerGame  Float    @default(0.0) @map("average_eliminations_per_game")
+  isActive                    Boolean  @default(true) @map("is_active")
+  createdAt                   DateTime @default(now()) @map("created_at")
+  updatedAt                   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  squad Squad @relation(fields: [squadId], references: [id], onDelete: Cascade)
+
+  @@map("rankings")
+}
+
+// =====================================================
+// Pagamentos (preparado para Asaas)
+// =====================================================
+model Payment {
+  id              Int           @id @default(autoincrement())
+  operatorId      Int           @map("operator_id")
+  gameId          Int?          @map("game_id")
+  externalId      String?       @map("external_id") @db.VarChar(255)
+  amount          Float
+  method          PaymentMethod @default(PIX)
+  status          PaymentStatus @default(PENDING)
+  invoiceUrl      String?       @map("invoice_url") @db.VarChar(500)
+  pixQrCode       String?       @map("pix_qr_code") @db.Text
+  pixCopyPaste    String?       @map("pix_copy_paste") @db.Text
+  paidAt          DateTime?     @map("paid_at")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  @@map("payments")
+}
+
+enum PaymentMethod {
+  PIX
+  CREDIT_CARD
+  BOLETO
+  CASH
+}
+
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  RECEIVED
+  OVERDUE
+  REFUNDED
+  CANCELLED
+}

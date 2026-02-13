@@ -110,7 +110,7 @@ export const eventos: Evento[] = [
     id: 'evt1',
     nome: 'OPERAÇÃO RED WINGS',
     data: '2026-02-15',
-    horario: '0100Z',
+    horario: '0100H',
     tipo: EventoTipo.MILSIM,
     status: EventoStatus.BRIEFING,
     local: {
@@ -125,7 +125,7 @@ export const eventos: Evento[] = [
     id: 'evt2',
     nome: 'TREINO TÁTICO: C.Q.B.',
     data: '2026-02-22',
-    horario: '0800Z',
+    horario: '0800H',
     tipo: EventoTipo.CQB,
     status: EventoStatus.BRIEFING,
     local: {
@@ -140,7 +140,7 @@ export const eventos: Evento[] = [
     id: 'evt3',
     nome: 'BENEFICENTE: IRON RAIN',
     data: '2026-01-15',
-    horario: '0900Z',
+    horario: '0900H',
     tipo: EventoTipo.WOODLAND,
     status: EventoStatus.DEBRIEFING,
     local: {

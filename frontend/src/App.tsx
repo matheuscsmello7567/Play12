@@ -10,8 +10,10 @@ import Manual from './pages/Manual';
 import Evolucao from './pages/Evolucao';
 import Loja from './pages/Loja';
 import Login from './pages/Login';
+import Inscricao from './pages/Inscricao';
 import PerfilOperador from './pages/PerfilOperador';
 import PerfilTime from './pages/PerfilTime';
+import CriarUnidade from './pages/CriarUnidade';
 
 const App: React.FC = () => {
   return (
@@ -23,12 +25,14 @@ const App: React.FC = () => {
           <Route path="/operadores/:id" element={<PerfilOperador />} />
           <Route path="/times" element={<Times />} />
           <Route path="/times/:id" element={<PerfilTime />} />
+          <Route path="/times/criar" element={<CriarUnidade />} />
           <Route path="/eventos" element={<Eventos />} />
           <Route path="/ranking-times" element={<Ranking />} />
           <Route path="/manual-airsoft" element={<Manual />} />
           <Route path="/evolucao" element={<Evolucao />} />
           <Route path="/loja" element={<Loja />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/inscricao" element={<Inscricao />} />
         </Routes>
       </Layout>
     </HashRouter>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Calendar, MapPin, Clock, Target, AlertTriangle } from 'lucide-react';
 import { eventos } from '../services/data';
 import { EventoStatus } from '../types';
@@ -55,9 +56,12 @@ const Eventos: React.FC = () => {
                            </div>
                         </div>
                         
-                        <button className="bg-white/5 hover:bg-tactical-amber hover:text-black border border-white/20 px-6 py-3 font-mono text-xs font-bold uppercase tracking-widest transition-all clip-corner-tl">
+                        <Link 
+                          to={evt.status === EventoStatus.BRIEFING ? '/inscricao' : '#'}
+                          className="bg-white/5 hover:bg-tactical-amber hover:text-black border border-white/20 px-6 py-3 font-mono text-xs font-bold uppercase tracking-widest transition-all clip-corner-tl inline-block"
+                        >
                            {evt.status === EventoStatus.BRIEFING ? 'INICIAR INSCRIÇÃO' : 'VER RELATÓRIO'}
-                        </button>
+                        </Link>
                      </div>
 
                      {/* Intel Box */}

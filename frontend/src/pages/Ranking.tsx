@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Trophy, Medal, Crown, Users } from 'lucide-react';
 import { ranking } from '../services/data';
 
 const Ranking: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-zinc-950 min-h-screen py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,7 +34,11 @@ const Ranking: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-zinc-800">
                 {ranking.map((entry, index) => (
-                  <tr key={entry.time.id} className={`group hover:bg-zinc-800/50 transition-colors ${index === 0 ? 'bg-gradient-to-r from-orange-900/10 to-transparent' : ''}`}>
+                  <tr 
+                    key={entry.time.id} 
+                    onClick={() => navigate(`/times/${entry.time.id}`)}
+                    className={`group hover:bg-zinc-800/50 transition-colors cursor-pointer ${index === 0 ? 'bg-gradient-to-r from-orange-900/10 to-transparent' : ''}`}
+                  >
                     
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-lg ${
