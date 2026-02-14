@@ -12,6 +12,10 @@ export class SquadsService {
     const existing = await this.prisma.squad.findUnique({ where: { name: dto.name } });
     if (existing) throw new ConflictException('Nome de unidade já existe');
 
+    // Check if operator already leads a squad
+    const alreadyLeads = await this.prisma.squad.findFirst({ where: { leaderId, isActive: true } });
+    if (alreadyLeads) throw new ConflictException('Você já é líder de uma unidade. Cada operador só pode liderar uma unidade.');
+
     const squad = await this.prisma.squad.create({
       data: {
         name: dto.name,
@@ -159,5 +163,90 @@ export class SquadsService {
     const squad = await this.prisma.squad.findUnique({ where: { id } });
     if (!squad) throw new NotFoundException('Unidade não encontrada');
     return squad;
+  }
+
+  // ==================== Join Requests ====================
+
+  async createJoinRequest(squadId: number, operatorId: number) {
+    const squad = await this.ensureExists(squadId);
+
+    // Can't request to join own squad as leader
+    if (squad.leaderId === operatorId) {
+      throw new ConflictException('Você já é o líder desta unidade');
+    }
+
+    // Check if already a member
+    const existingMember = await this.prisma.squadMember.findUnique({
+      where: { squadId_operatorId: { squadId, operatorId } },
+    });
+    if (existingMember) throw new ConflictException('Você já é membro desta unidade');
+
+    // Check if already has a pending request
+    const existingRequest = await this.prisma.joinRequest.findUnique({
+      where: { squadId_operatorId: { squadId, operatorId } },
+    });
+    if (existingRequest && existingRequest.status === 'PENDING') {
+      throw new ConflictException('Você já tem uma solicitação pendente para esta unidade');
+    }
+
+    // Upsert: if rejected before, allow re-requesting
+    if (existingRequest) {
+      return this.prisma.joinRequest.update({
+        where: { id: existingRequest.id },
+        data: { status: 'PENDING', updatedAt: new Date() },
+      });
+    }
+
+    return this.prisma.joinRequest.create({
+      data: { squadId, operatorId },
+    });
+  }
+
+  async getJoinRequests(squadId: number, userId: number) {
+    const squad = await this.ensureExists(squadId);
+    if (squad.leaderId !== userId) {
+      throw new ForbiddenException('Apenas o comandante pode ver solicitações');
+    }
+
+    return this.prisma.joinRequest.findMany({
+      where: { squadId, status: 'PENDING' },
+      include: {
+        operator: {
+          select: { id: true, nickname: true, fullName: true, avatarUrl: true, totalGames: true, createdAt: true },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async respondJoinRequest(requestId: number, userId: number, accept: boolean) {
+    const request = await this.prisma.joinRequest.findUnique({
+      where: { id: requestId },
+      include: { squad: true },
+    });
+
+    if (!request) throw new NotFoundException('Solicitação não encontrada');
+    if (request.squad.leaderId !== userId) {
+      throw new ForbiddenException('Apenas o comandante pode responder solicitações');
+    }
+    if (request.status !== 'PENDING') {
+      throw new ConflictException('Esta solicitação já foi processada');
+    }
+
+    if (accept) {
+      // Add as member
+      await this.prisma.squadMember.create({
+        data: { squadId: request.squadId, operatorId: request.operatorId },
+      });
+      await this.prisma.squad.update({
+        where: { id: request.squadId },
+        data: { totalMembers: { increment: 1 } },
+      });
+    }
+
+    return this.prisma.joinRequest.update({
+      where: { id: requestId },
+      data: { status: accept ? 'ACCEPTED' : 'REJECTED' },
+    });
   }
 }

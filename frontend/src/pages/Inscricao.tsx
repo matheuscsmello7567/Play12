@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AlertTriangle, CreditCard, Smartphone, DollarSign, CheckCircle, ShieldAlert, User } from 'lucide-react';
+import { AlertTriangle, CreditCard, Smartphone, CheckCircle, ShieldAlert, User } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const Inscricao: React.FC = () => {
-  // TODO: Quando o sistema de autenticação estiver implementado, trocar por verificação real
-  const [isLoggedIn] = useState(false); // Simula usuário não logado
+  const { isAuthenticated: isLoggedIn } = useAuth();
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -32,14 +32,6 @@ const Inscricao: React.FC = () => {
       descricao: 'Parcelado em até 3x sem juros',
       desconto: null,
       valorFinal: evento.valor
-    },
-    {
-      id: 'dinheiro',
-      nome: 'Dinheiro',
-      icon: <DollarSign className="w-8 h-8" />,
-      descricao: 'Pagamento no local do evento',
-      desconto: '10% de desconto',
-      valorFinal: evento.valor * 0.90
     }
   ];
 

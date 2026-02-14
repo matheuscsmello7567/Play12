@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Crosshair, Radio, Shield, Map, Users, BarChart2, ShoppingBag, LogOut } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Crosshair, Radio, Shield, Map, Users, BarChart2, ShoppingBag, LogOut, User, ChevronDown } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,7 +9,16 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { operator, isAuthenticated, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    setIsUserMenuOpen(false);
+    navigate('/login');
+  };
 
   const navLinks = [
     { name: 'LINHA DE FRENTE', path: '/', icon: Crosshair },
@@ -42,7 +52,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <Crosshair className="w-6 h-6 animate-pulse" />
               </div>
               <div>
-                <h1 className="font-header font-bold text-xl tracking-widest text-white leading-none">PLAY12</h1>
+                <h1 className="font-header font-bold text-xl tracking-widest text-white leading-none">BATTLE MANAGER</h1>
                 <div className="flex items-center gap-2 text-[10px] text-vision-green uppercase tracking-wider">
                   <div className="w-2 h-2 bg-vision-green rounded-full animate-blink"></div>
                   System Online // v2.0
@@ -75,10 +85,63 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* User / Login */}
             <div className="hidden md:flex items-center">
-               <Link to="/login" className="flex items-center gap-2 border border-white/20 px-4 py-2 hover:bg-white/5 hover:border-tactical-amber/50 transition-all clip-corner-br text-xs font-bold text-hud-blue">
+              {isAuthenticated && operator ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-3 border border-white/20 px-3 py-1.5 hover:bg-white/5 hover:border-tactical-amber/50 transition-all clip-corner-br group"
+                  >
+                    {/* Avatar */}
+                    {operator.avatarUrl ? (
+                      <img
+                        src={operator.avatarUrl}
+                        alt={operator.nickname}
+                        className="w-8 h-8 rounded-full object-cover border-2 border-tactical-amber/60"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-tactical-amber/20 border-2 border-tactical-amber/60 flex items-center justify-center">
+                        <User className="w-4 h-4 text-tactical-amber" />
+                      </div>
+                    )}
+                    <div className="text-left">
+                      <div className="text-xs font-bold text-white leading-none">{operator.nickname}</div>
+                      <div className="text-[9px] font-mono text-vision-green uppercase">Online</div>
+                    </div>
+                    <ChevronDown className={`w-3 h-3 text-zinc-500 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-56 bg-armor-gray border border-white/10 backdrop-blur-md z-50 shadow-xl">
+                      <div className="px-4 py-3 border-b border-white/10">
+                        <div className="text-xs font-mono text-zinc-500 uppercase">Operador Ativo</div>
+                        <div className="text-sm text-white font-bold mt-1">{operator.nickname}</div>
+                        <div className="text-[10px] font-mono text-zinc-500 mt-0.5">{operator.email}</div>
+                      </div>
+                      <div className="py-1">
+                        <Link
+                          to={`/operadores/${operator.id}`}
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2.5 text-xs font-mono text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+                        >
+                          <User className="w-3.5 h-3.5" /> PERFIL DO OPERADOR
+                        </Link>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-xs font-mono text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+                        >
+                          <LogOut className="w-3.5 h-3.5" /> ENCERRAR SESSÃO
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link to="/login" className="flex items-center gap-2 border border-white/20 px-4 py-2 hover:bg-white/5 hover:border-tactical-amber/50 transition-all clip-corner-br text-xs font-bold text-hud-blue">
                   <Radio className="w-4 h-4" />
                   LINK_START
-               </Link>
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -111,13 +174,37 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   {link.name}
                 </Link>
               ))}
-              <Link
-                to="/login"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-3 py-3 mt-4 text-sm font-header font-bold text-hud-blue border border-hud-blue/30 text-center bg-hud-blue/10"
-              >
-                INICIAR LINK
-              </Link>
+              {isAuthenticated && operator ? (
+                <>
+                  <div className="flex items-center gap-3 px-3 py-3 mt-4 border-t border-white/10">
+                    {operator.avatarUrl ? (
+                      <img src={operator.avatarUrl} alt={operator.nickname} className="w-8 h-8 rounded-full object-cover border-2 border-tactical-amber/60" />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-tactical-amber/20 border-2 border-tactical-amber/60 flex items-center justify-center">
+                        <User className="w-4 h-4 text-tactical-amber" />
+                      </div>
+                    )}
+                    <div>
+                      <div className="text-sm font-bold text-white">{operator.nickname}</div>
+                      <div className="text-[9px] font-mono text-vision-green uppercase">Online</div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
+                    className="block w-full px-3 py-3 text-sm font-header font-bold text-red-400 border border-red-500/30 text-center bg-red-500/10 mt-2"
+                  >
+                    ENCERRAR SESSÃO
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-3 mt-4 text-sm font-header font-bold text-hud-blue border border-hud-blue/30 text-center bg-hud-blue/10"
+                >
+                  INICIAR LINK
+                </Link>
+              )}
             </div>
           </div>
         )}

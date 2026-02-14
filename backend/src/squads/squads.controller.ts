@@ -67,4 +67,50 @@ export class SquadsController {
   ) {
     return this.squadsService.removeMember(id, operatorId, userId);
   }
+
+  // ==================== Join Requests ====================
+
+  @Post(':id/join-requests')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Solicitar ingresso na unidade' })
+  createJoinRequest(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser('id') userId: number,
+  ) {
+    return this.squadsService.createJoinRequest(id, userId);
+  }
+
+  @Get(':id/join-requests')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Listar solicitações pendentes (apenas líder)' })
+  getJoinRequests(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser('id') userId: number,
+  ) {
+    return this.squadsService.getJoinRequests(id, userId);
+  }
+
+  @Patch('join-requests/:requestId/accept')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Aceitar solicitação de ingresso' })
+  acceptJoinRequest(
+    @Param('requestId', ParseIntPipe) requestId: number,
+    @CurrentUser('id') userId: number,
+  ) {
+    return this.squadsService.respondJoinRequest(requestId, userId, true);
+  }
+
+  @Patch('join-requests/:requestId/reject')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Rejeitar solicitação de ingresso' })
+  rejectJoinRequest(
+    @Param('requestId', ParseIntPipe) requestId: number,
+    @CurrentUser('id') userId: number,
+  ) {
+    return this.squadsService.respondJoinRequest(requestId, userId, false);
+  }
 }

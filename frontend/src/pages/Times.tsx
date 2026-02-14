@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Crosshair, BarChart, ChevronLeft, ChevronRight, Camera } from 'lucide-react';
-import { times } from '../services/data';
+import { Users, Crosshair, BarChart, ChevronLeft, ChevronRight, Camera, Settings } from 'lucide-react';
+import { times as mockTimes } from '../services/data';
+import { Time } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 
 // Fotos de operações das unidades
 const allUnitPhotos = [
@@ -25,6 +27,46 @@ const shufflePhotos = (arr: typeof allUnitPhotos, count: number) => {
 const Times: React.FC = () => {
   const [photos] = useState(() => shufflePhotos(allUnitPhotos, 10));
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [times, setTimes] = useState<Time[]>(mockTimes);
+  const { operator: authOperator } = useAuth();
+  const [mySquad, setMySquad] = useState<{ id: number; name: string; tag: string } | null>(null);
+
+  // Fetch operator's squad info
+  useEffect(() => {
+    if (!authOperator) return;
+    fetch(`http://localhost:3333/api/v1/operators/${authOperator.id}`, { credentials: 'include' })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.squads?.length > 0) {
+          setMySquad(data.squads[0].squad);
+        }
+      })
+      .catch(() => {});
+  }, [authOperator]);
+
+  // Fetch real squads from API and merge with mock
+  useEffect(() => {
+    fetch('http://localhost:3333/api/v1/squads', { credentials: 'include' })
+      .then(res => res.ok ? res.json() : null)
+      .then(result => {
+        if (result?.data) {
+          const apiSquads: Time[] = result.data.map((sq: any) => ({
+            id: String(sq.id),
+            nome: sq.name,
+            tag: sq.tag || sq.name.substring(0, 3).toUpperCase(),
+            descricao: sq.description || 'Unidade tática registrada.',
+            membros_count: sq._count?.members || sq.totalMembers || 1,
+            pontos_totais: 0,
+            jogos_participados: sq.totalGamesPlayed || 0,
+            lider_id: String(sq.leaderId),
+          }));
+          const apiIds = new Set(apiSquads.map((s: Time) => s.id));
+          const merged = [...apiSquads, ...mockTimes.filter(m => !apiIds.has(m.id))];
+          setTimes(merged);
+        }
+      })
+      .catch(() => { /* keep mock data */ });
+  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % photos.length);
@@ -47,9 +89,15 @@ const Times: React.FC = () => {
             <h1 className="font-header text-3xl font-bold text-white uppercase tracking-widest">Unidades Táticas</h1>
             <p className="font-mono text-xs text-zinc-500 uppercase mt-1">Squads registrados e ativos</p>
          </div>
-         <Link to="/times/criar" className="bg-tactical-amber text-black px-6 py-2 font-mono text-xs font-bold uppercase tracking-widest clip-corner-br hover:bg-white transition-colors">
-            + Nova Unidade
-         </Link>
+         {mySquad ? (
+           <Link to={`/times/${mySquad.id}`} className="flex items-center gap-2 border border-hud-blue/50 text-hud-blue px-5 py-2 font-mono text-xs font-bold uppercase tracking-widest hover:bg-hud-blue hover:text-black transition-all clip-corner-br">
+             <Settings className="w-3.5 h-3.5" /> Gerenciar Unidade
+           </Link>
+         ) : (
+           <Link to="/times/criar" className="bg-tactical-amber text-black px-6 py-2 font-mono text-xs font-bold uppercase tracking-widest clip-corner-br hover:bg-white transition-colors">
+              + Nova Unidade
+           </Link>
+         )}
        </div>
 
        {/* Carousel de Fotos das Unidades */}

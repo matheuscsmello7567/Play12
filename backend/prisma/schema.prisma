@@ -29,6 +29,7 @@ model Operator {
   // Relations
   ledSquads       Squad[]         @relation("SquadLeader")
   squads          SquadMember[]
+  joinRequests    JoinRequest[]
 
   @@map("operators")
 }
@@ -64,6 +65,7 @@ model Squad {
   // Relations
   leader           Operator     @relation("SquadLeader", fields: [leaderId], references: [id])
   members          SquadMember[]
+  joinRequests     JoinRequest[]
   gameSquads       GameSquad[]
   ranking          Ranking?
 
@@ -96,6 +98,30 @@ model SquadMember {
 
   @@id([squadId, operatorId])
   @@map("squad_members")
+}
+
+// =====================================================
+// Solicitações de Ingresso em Squad
+// =====================================================
+model JoinRequest {
+  id          Int              @id @default(autoincrement())
+  squadId     Int              @map("squad_id")
+  operatorId  Int              @map("operator_id")
+  status      JoinRequestStatus @default(PENDING)
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  squad    Squad    @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  operator Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+  @@unique([squadId, operatorId])
+  @@map("join_requests")
+}
+
+enum JoinRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 // =====================================================

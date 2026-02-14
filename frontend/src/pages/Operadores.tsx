@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Shield, Zap, Target, MoreHorizontal, ChevronLeft, ChevronRight, Camera } from 'lucide-react';
-import { operadores } from '../services/data';
+import { operadores as mockOperadores } from '../services/data';
 import { Operador } from '../types';
 
 // Fotos aleatórias de jogos anteriores (seeds garantem imagens consistentes)
@@ -28,6 +28,35 @@ const Operadores: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [photos] = useState(() => shufflePhotos(allGamePhotos, 10));
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [operadores, setOperadores] = useState<Operador[]>(mockOperadores);
+
+  // Fetch real operators from API and merge with mock
+  useEffect(() => {
+    fetch('http://localhost:3333/api/v1/operators', { credentials: 'include' })
+      .then(res => res.ok ? res.json() : null)
+      .then(result => {
+        if (result?.data) {
+          const apiOps: Operador[] = result.data.map((op: any) => ({
+            id: String(op.id),
+            apelido: op.nickname,
+            nome_completo: op.fullName || op.nickname,
+            email: op.email,
+            patente: op.role === 'SQUAD_LEADER' ? 'Líder de Squad' : op.role === 'ADMIN' ? 'Administrador' : 'Recruta',
+            squad_id: null,
+            jogos_participados: op.totalGames || 0,
+            pontos: Math.round(op.engagementScore || 0),
+            data_cadastro: op.createdAt,
+            loadout: [],
+            status: 'ONLINE' as const,
+          }));
+          // Merge: API ops + mock ops (avoid ID collisions)
+          const apiIds = new Set(apiOps.map((o: Operador) => o.id));
+          const merged = [...apiOps, ...mockOperadores.filter(m => !apiIds.has(m.id))];
+          setOperadores(merged);
+        }
+      })
+      .catch(() => { /* keep mock data */ });
+  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % photos.length);

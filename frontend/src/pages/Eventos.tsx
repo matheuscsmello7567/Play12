@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, Clock, Target, AlertTriangle } from 'lucide-react';
+import { Calendar, MapPin, Clock, Target, AlertTriangle, Users, CheckCircle } from 'lucide-react';
 import { eventos } from '../services/data';
 import { EventoStatus } from '../types';
 
@@ -83,7 +83,14 @@ const Eventos: React.FC = () => {
                {/* Coordinates footer */}
                <div className="bg-black px-6 py-2 border-t border-white/10 flex justify-between items-center text-[10px] font-mono text-zinc-600">
                   <span>COORDS: {evt.local.coords}</span>
-                  <span>CONFIRMED_OPS: {evt.confirmados}</span>
+                  <span className="flex items-center gap-2">
+                    <Users className="w-3 h-3" />
+                    <span className={evt.confirmados > 0 ? 'text-vision-green' : ''}>
+                      {evt.confirmados}
+                    </span>
+                    <span>OPERADORES CONFIRMADOS</span>
+                    {evt.confirmados > 0 && <CheckCircle className="w-3 h-3 text-vision-green" />}
+                  </span>
                </div>
             </div>
          ))}

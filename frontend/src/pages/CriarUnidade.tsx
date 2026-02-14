@@ -1,20 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Crosshair, Users, Target, Save, ArrowLeft, Search, Plus, X } from 'lucide-react';
+import { Shield, Crosshair, Users, Target, Save, ArrowLeft, Search, Plus, X, CheckCircle, AlertTriangle, ImagePlus, Trash2 } from 'lucide-react';
 import { operadores } from '../services/data';
+import { useAuth } from '../contexts/AuthContext';
 
-const BRAZILIAN_STATES = [
-  'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 
-  'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 
-  'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
-];
+
 
 const CriarUnidade: React.FC = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [formData, setFormData] = useState({
     nome: '',
     lema: '',
-    estado: '',
+    tag: '',
     descricao: '',
     tipo: 'Assalto',
     imagemUrl: '',
@@ -22,6 +22,34 @@ const CriarUnidade: React.FC = () => {
   });
   
   const [searchTerm, setSearchTerm] = useState('');
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setToast({ type: 'error', message: 'Selecione um arquivo de imagem válido.' });
+      setTimeout(() => setToast(null), 3000);
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setToast({ type: 'error', message: 'Imagem deve ter no máximo 2MB.' });
+      setTimeout(() => setToast(null), 3000);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const result = ev.target?.result as string;
+      setLogoPreview(result);
+      setFormData(prev => ({ ...prev, imagemUrl: result }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeLogo = () => {
+    setLogoPreview(null);
+    setFormData(prev => ({ ...prev, imagemUrl: '' }));
+  };
 
   const filteredOperators = useMemo(() => {
     if (!searchTerm) return [];
@@ -56,16 +84,78 @@ const CriarUnidade: React.FC = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
-    console.log('Dados da Nova Unidade:', formData);
-    alert('Solicitação de criação de unidade enviada com sucesso! Aguarde a aprovação do comando.');
-    navigate('/times');
+
+    if (!isAuthenticated) {
+      setToast({ type: 'error', message: 'Você precisa estar logado para criar uma unidade.' });
+      setTimeout(() => setToast(null), 4000);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const specialtyMap: Record<string, string> = {
+        'Assalto': 'ASSALTO',
+        'Reconhecimento': 'RECONHECIMENTO',
+        'Suporte': 'SUPORTE',
+      };
+
+      const res = await fetch('http://localhost:3333/api/v1/squads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          name: formData.nome,
+          tag: formData.tag,
+          description: formData.descricao,
+          specialty: specialtyMap[formData.tipo] || 'ASSALTO',
+        }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json().catch(() => ({}));
+        throw new Error(error.message || 'Falha ao criar unidade.');
+      }
+
+      setToast({ type: 'success', message: `Unidade "${formData.nome}" criada com sucesso! Você é o Comandante.` });
+      setTimeout(() => navigate('/times'), 2000);
+    } catch (err: any) {
+      setToast({ type: 'error', message: err?.message || 'Erro ao criar unidade. Tente novamente.' });
+      setTimeout(() => setToast(null), 5000);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[100] w-full max-w-md">
+          <div className={`mx-4 flex items-start gap-3 p-4 border backdrop-blur-md rounded-sm clip-corner-br ${
+            toast.type === 'success'
+              ? 'bg-vision-green/10 border-vision-green/40 text-vision-green'
+              : 'bg-red-500/10 border-red-500/40 text-red-400'
+          }`}>
+            {toast.type === 'success'
+              ? <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              : <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+            }
+            <div className="flex-1">
+              <div className="font-mono text-[10px] uppercase tracking-widest mb-1 opacity-70">
+                {toast.type === 'success' ? '// UNIDADE REGISTRADA' : '// FALHA NO REGISTRO'}
+              </div>
+              <p className="font-mono text-sm">{toast.message}</p>
+            </div>
+            <button onClick={() => setToast(null)} className="opacity-50 hover:opacity-100 transition-opacity">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center gap-4 border-b border-white/10 pb-6">
         <button 
@@ -96,30 +186,67 @@ const CriarUnidade: React.FC = () => {
               Identificação da Unidade
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-zinc-400 uppercase">Nome do Squad</label>
-                <input
-                  type="text"
-                  name="nome"
-                  required
-                  value={formData.nome}
-                  onChange={handleChange}
-                  placeholder="Ex: Bravo Team"
-                  className="w-full bg-black/40 border border-white/10 px-4 py-3 text-white focus:border-tactical-amber focus:outline-none focus:ring-1 focus:ring-tactical-amber/50 font-mono text-sm"
-                />
+            {/* Logo + Nome/Lema row */}
+            <div className="flex flex-col md:flex-row gap-6">
+              
+              {/* Logo Upload */}
+              <div className="flex flex-col items-center gap-2 flex-shrink-0">
+                <label className="text-xs font-mono text-zinc-400 uppercase">Logo da Unidade</label>
+                <div className="relative group">
+                  {logoPreview ? (
+                    <div className="w-28 h-28 border-2 border-tactical-amber/50 bg-zinc-900 overflow-hidden">
+                      <img src={logoPreview} alt="Logo" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={removeLogo}
+                        className="absolute top-1 right-1 bg-black/70 p-1 text-critical-red hover:bg-critical-red hover:text-white transition-all opacity-0 group-hover:opacity-100"
+                        title="Remover logo"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="w-28 h-28 border-2 border-dashed border-white/20 bg-black/30 flex flex-col items-center justify-center cursor-pointer hover:border-tactical-amber/50 hover:bg-tactical-amber/5 transition-all">
+                      <ImagePlus className="w-8 h-8 text-zinc-600 mb-1" />
+                      <span className="text-[9px] font-mono text-zinc-500 uppercase">Upload</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
+                </div>
+                <p className="text-[9px] font-mono text-zinc-600 text-center">JPG/PNG · Máx 2MB</p>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-zinc-400 uppercase">Lema (Motto)</label>
-                <input
-                  type="text"
-                  name="lema"
-                  value={formData.lema}
-                  onChange={handleChange}
-                  placeholder="Ex: Semper Fidelis"
-                  className="w-full bg-black/40 border border-white/10 px-4 py-3 text-white focus:border-tactical-amber focus:outline-none focus:ring-1 focus:ring-tactical-amber/50 font-mono text-sm"
-                />
+              {/* Nome e Lema */}
+              <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-mono text-zinc-400 uppercase">Nome do Squad</label>
+                  <input
+                    type="text"
+                    name="nome"
+                    required
+                    value={formData.nome}
+                    onChange={handleChange}
+                    placeholder="Ex: Bravo Team"
+                    className="w-full bg-black/40 border border-white/10 px-4 py-3 text-white focus:border-tactical-amber focus:outline-none focus:ring-1 focus:ring-tactical-amber/50 font-mono text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-mono text-zinc-400 uppercase">Lema (Motto)</label>
+                  <input
+                    type="text"
+                    name="lema"
+                    value={formData.lema}
+                    onChange={handleChange}
+                    placeholder="Ex: Semper Fidelis"
+                    className="w-full bg-black/40 border border-white/10 px-4 py-3 text-white focus:border-tactical-amber focus:outline-none focus:ring-1 focus:ring-tactical-amber/50 font-mono text-sm"
+                  />
+                </div>
               </div>
             </div>
 
@@ -208,24 +335,23 @@ const CriarUnidade: React.FC = () => {
                 )}
               </div>
 
-              {/* State Selection */}
+              {/* Tag */}
               <div className="space-y-2">
-                <label className="text-xs font-mono text-zinc-400 uppercase">Estado</label>
-                <div className="relative">
-                  <select
-                    name="estado"
-                    required
-                    value={formData.estado}
-                    onChange={handleChange}
-                    className="w-full bg-black/40 border border-white/10 px-4 py-3 text-white focus:border-tactical-amber focus:outline-none focus:ring-1 focus:ring-tactical-amber/50 font-mono text-sm appearance-none uppercase"
-                  >
-                    <option value="" disabled>Selecione UF</option>
-                    {BRAZILIAN_STATES.map(uf => (
-                        <option key={uf} value={uf}>{uf}</option>
-                    ))}
-                  </select>
-                  <Target className="absolute right-3 top-3 w-4 h-4 text-zinc-500 pointer-events-none" />
-                </div>
+                <label className="text-xs font-mono text-zinc-400 uppercase">Tag (3 letras)</label>
+                <input
+                  type="text"
+                  name="tag"
+                  required
+                  maxLength={3}
+                  value={formData.tag}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 3);
+                    setFormData(prev => ({ ...prev, tag: val }));
+                  }}
+                  placeholder="Ex: BRV"
+                  className="w-full bg-black/40 border border-white/10 px-4 py-3 text-white focus:border-tactical-amber focus:outline-none focus:ring-1 focus:ring-tactical-amber/50 font-mono text-sm uppercase tracking-widest"
+                />
+                <p className="text-[10px] font-mono text-zinc-600">{formData.tag.length}/3 caracteres</p>
               </div>
 
               <div className="space-y-2">
@@ -272,11 +398,12 @@ const CriarUnidade: React.FC = () => {
             <div className="mt-8 pt-8 border-t border-white/10">
               <button
                 type="submit"
-                className="w-full group relative bg-tactical-amber text-black font-bold uppercase py-4 px-6 tracking-widest clip-corner-br hover:bg-white transition-all duration-300"
+                disabled={submitting}
+                className="w-full group relative bg-tactical-amber text-black font-bold uppercase py-4 px-6 tracking-widest clip-corner-br hover:bg-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                  <span className="relative z-10 flex items-center justify-center gap-2">
                     <Save className="w-5 h-5" />
-                    Registrar Unidade
+                    {submitting ? 'REGISTRANDO...' : 'Registrar Unidade'}
                  </span>
                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               </button>

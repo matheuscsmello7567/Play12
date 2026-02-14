@@ -1,5 +1,6 @@
 import React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Operadores from './pages/Operadores';
@@ -17,6 +18,7 @@ import CriarUnidade from './pages/CriarUnidade';
 
 const App: React.FC = () => {
   return (
+    <AuthProvider>
     <HashRouter>
       <Layout>
         <Routes>
@@ -36,6 +38,7 @@ const App: React.FC = () => {
         </Routes>
       </Layout>
     </HashRouter>
+    </AuthProvider>
   );
 };
 
