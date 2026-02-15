@@ -11,6 +11,7 @@ import { GamesModule } from './games/games.module';
 import { RankingsModule } from './rankings/rankings.module';
 import { PaymentsModule } from './payments/payments.module';
 import { HealthModule } from './health/health.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { HealthModule } from './health/health.module';
     GamesModule,
     RankingsModule,
     PaymentsModule,
+    AdminModule,
   ],
   providers: [
     // Global rate limiting guard

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Crosshair, Radio, Shield, Map, Users, BarChart2, ShoppingBag, LogOut, User, ChevronDown } from 'lucide-react';
+import { Menu, X, Crosshair, Radio, Shield, Map, Users, BarChart2, ShoppingBag, LogOut, User, ChevronDown, Crown } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface LayoutProps {
@@ -126,6 +126,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         >
                           <User className="w-3.5 h-3.5" /> PERFIL DO OPERADOR
                         </Link>
+                        {operator.role === 'ADMIN' && (
+                          <Link
+                            to="/admin"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="flex items-center gap-2 px-4 py-2.5 text-xs font-mono text-tactical-amber hover:text-white hover:bg-tactical-amber/10 transition-colors"
+                          >
+                            <Crown className="w-3.5 h-3.5" /> DASHBOARD
+                          </Link>
+                        )}
                         <button
                           onClick={handleLogout}
                           className="w-full flex items-center gap-2 px-4 py-2.5 text-xs font-mono text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
@@ -195,6 +204,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   >
                     ENCERRAR SESSÃO
                   </button>
+                  {operator.role === 'ADMIN' && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-3 py-3 mt-2 text-sm font-header font-bold text-tactical-amber border border-tactical-amber/30 text-center bg-tactical-amber/10"
+                    >
+                      DASHBOARD
+                    </Link>
+                  )}
                 </>
               ) : (
                 <Link

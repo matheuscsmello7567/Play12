@@ -1,20 +1,48 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AlertTriangle, CreditCard, Smartphone, CheckCircle, ShieldAlert, User } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { AlertTriangle, CreditCard, Smartphone, CheckCircle, ShieldAlert, User, Loader } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+
+const API = 'http://localhost:3333/api/v1';
+
+interface Game {
+  id: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  location: string | null;
+  locationMapsUrl: string | null;
+  registrationFee: number;
+  gameType: string;
+  status: string;
+}
 
 const Inscricao: React.FC = () => {
   const { isAuthenticated: isLoggedIn } = useAuth();
+  const { gameId } = useParams<{ gameId: string }>();
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
+  const [game, setGame] = useState<Game | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const evento = {
-    nome: 'OPERAÇÃO RED WINGS',
-    data: '15/02/2026',
-    horario: '0100H',
-    local: 'Serra do Rola Moça, Sector 7',
-    valor: 80.00
-  };
+  useEffect(() => {
+    if (!gameId) return;
+    const fetchGame = async () => {
+      try {
+        const res = await fetch(`${API}/games/${gameId}`, { credentials: 'include' });
+        if (!res.ok) throw new Error('Operação não encontrada');
+        setGame(await res.json());
+      } catch (e: any) {
+        setError(e.message || 'Erro ao carregar operação');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchGame();
+  }, [gameId]);
+
+  const valor = game?.registrationFee ?? 0;
 
   const formasPagamento = [
     {
@@ -23,7 +51,7 @@ const Inscricao: React.FC = () => {
       icon: <Smartphone className="w-8 h-8" />,
       descricao: 'Pagamento instantâneo via PIX',
       desconto: '5% de desconto',
-      valorFinal: evento.valor * 0.95
+      valorFinal: valor * 0.95
     },
     {
       id: 'cartao',
@@ -31,7 +59,7 @@ const Inscricao: React.FC = () => {
       icon: <CreditCard className="w-8 h-8" />,
       descricao: 'Parcelado em até 3x sem juros',
       desconto: null,
-      valorFinal: evento.valor
+      valorFinal: valor
     }
   ];
 
@@ -44,6 +72,32 @@ const Inscricao: React.FC = () => {
     alert('Inscrição confirmada! Você receberá mais detalhes por email.');
     navigate('/eventos');
   };
+
+  // Loading state
+  if (loading && isLoggedIn) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="text-center">
+          <Loader className="w-8 h-8 text-tactical-amber animate-spin mx-auto mb-4" />
+          <p className="font-mono text-sm text-zinc-500 uppercase">Carregando operação...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error && isLoggedIn) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="bg-armor-gray border border-critical-red/30 p-8 text-center max-w-md">
+          <AlertTriangle className="w-10 h-10 text-critical-red mx-auto mb-4" />
+          <h2 className="font-header text-xl text-white uppercase mb-2">Operação Não Encontrada</h2>
+          <p className="font-mono text-sm text-zinc-500 mb-6">{error}</p>
+          <Link to="/eventos" className="bg-tactical-amber text-black font-header font-bold uppercase px-6 py-3 tracking-widest">Voltar às Missões</Link>
+        </div>
+      </div>
+    );
+  }
 
   // Se o usuário não estiver logado, mostrar tela de aviso
   if (!isLoggedIn) {
@@ -109,22 +163,26 @@ const Inscricao: React.FC = () => {
               <div className="space-y-3 mb-6">
                 <div>
                   <div className="text-xs text-zinc-500 uppercase mb-1">Missão</div>
-                  <div className="text-white font-bold">{evento.nome}</div>
+                  <div className="text-white font-bold">{game?.name ?? '—'}</div>
                 </div>
                 <div>
                   <div className="text-xs text-zinc-500 uppercase mb-1">Data / Horário</div>
-                  <div className="text-zinc-300 font-mono text-sm">{evento.data} - {evento.horario}</div>
+                  <div className="text-zinc-300 font-mono text-sm">
+                    {game ? new Date(game.startDate).toLocaleDateString('pt-BR') : '—'}
+                    {' - '}
+                    {game ? new Date(game.startDate).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : ''}
+                  </div>
                 </div>
                 <div>
                   <div className="text-xs text-zinc-500 uppercase mb-1">Local</div>
-                  <div className="text-zinc-300 font-mono text-sm">{evento.local}</div>
+                  <div className="text-zinc-300 font-mono text-sm">{game?.location ?? '—'}</div>
                 </div>
               </div>
 
               <div className="border-t border-white/10 pt-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-zinc-400 text-sm">Valor Base</span>
-                  <span className="text-zinc-300 font-mono">R$ {evento.valor.toFixed(2)}</span>
+                  <span className="text-zinc-300 font-mono">R$ {valor.toFixed(2)}</span>
                 </div>
                 
                 {selectedPayment && formasPagamento.find(f => f.id === selectedPayment)?.desconto && (
@@ -141,7 +199,7 @@ const Inscricao: React.FC = () => {
                   <span className="text-tactical-amber font-header font-bold text-2xl">
                     R$ {selectedPayment 
                       ? formasPagamento.find(f => f.id === selectedPayment)?.valorFinal.toFixed(2)
-                      : evento.valor.toFixed(2)
+                      : valor.toFixed(2)
                     }
                   </span>
                 </div>

@@ -30,6 +30,7 @@ model Operator {
   ledSquads       Squad[]         @relation("SquadLeader")
   squads          SquadMember[]
   joinRequests    JoinRequest[]
+  gameOperators   GameOperator[]
 
   @@map("operators")
 }
@@ -147,7 +148,8 @@ model Game {
   updatedAt       DateTime   @updatedAt @map("updated_at")
 
   // Relations
-  gameSquads GameSquad[]
+  gameSquads    GameSquad[]
+  gameOperators GameOperator[]
 
   @@map("games")
 }
@@ -183,6 +185,21 @@ model GameSquad {
 
   @@id([gameId, squadId])
   @@map("game_squads")
+}
+
+// =====================================================
+// Operator ↔ Game (individual registration)
+// =====================================================
+model GameOperator {
+  gameId     Int      @map("game_id")
+  operatorId Int      @map("operator_id")
+  joinedAt   DateTime @default(now()) @map("joined_at")
+
+  game     Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  operator Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+  @@id([gameId, operatorId])
+  @@map("game_operators")
 }
 
 // =====================================================

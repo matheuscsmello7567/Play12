@@ -15,6 +15,8 @@ import Inscricao from './pages/Inscricao';
 import PerfilOperador from './pages/PerfilOperador';
 import PerfilTime from './pages/PerfilTime';
 import CriarUnidade from './pages/CriarUnidade';
+import Admin from './pages/Admin';
+import AdminRoute from './components/AdminRoute';
 
 const App: React.FC = () => {
   return (
@@ -34,7 +36,8 @@ const App: React.FC = () => {
           <Route path="/evolucao" element={<Evolucao />} />
           <Route path="/loja" element={<Loja />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/inscricao" element={<Inscricao />} />
+          <Route path="/inscricao/:gameId" element={<Inscricao />} />
+          <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
         </Routes>
       </Layout>
     </HashRouter>

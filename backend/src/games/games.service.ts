@@ -139,6 +139,70 @@ export class GamesService {
     return { message: 'Inscrição do squad cancelada' };
   }
 
+  // ── Individual Operator registration ──
+
+  async registerOperator(gameId: number, operatorId: number) {
+    const game = await this.ensureExists(gameId);
+
+    if (game.status !== 'REGISTRATION_OPEN' && game.status !== 'SCHEDULED') {
+      throw new BadRequestException('Inscrições não estão abertas para este evento');
+    }
+
+    const existing = await this.prisma.gameOperator.findUnique({
+      where: { gameId_operatorId: { gameId, operatorId } },
+    });
+    if (existing) throw new BadRequestException('Operador já inscrito neste evento');
+
+    const operator = await this.prisma.operator.findUnique({ where: { id: operatorId } });
+    if (!operator) throw new NotFoundException('Operador não encontrado');
+
+    if (game.maxPlayers && game.currentPlayers + 1 > game.maxPlayers) {
+      throw new BadRequestException('Evento lotado, não há vagas suficientes');
+    }
+
+    await this.prisma.gameOperator.create({ data: { gameId, operatorId } });
+
+    await this.prisma.game.update({
+      where: { id: gameId },
+      data: { currentPlayers: { increment: 1 } },
+    });
+
+    return { message: 'Operador inscrito com sucesso no evento' };
+  }
+
+  async unregisterOperator(gameId: number, operatorId: number) {
+    await this.ensureExists(gameId);
+
+    const operator = await this.prisma.operator.findUnique({ where: { id: operatorId } });
+    if (!operator) throw new NotFoundException('Operador não encontrado');
+
+    await this.prisma.gameOperator.delete({
+      where: { gameId_operatorId: { gameId, operatorId } },
+    });
+
+    await this.prisma.game.update({
+      where: { id: gameId },
+      data: { currentPlayers: { decrement: 1 } },
+    });
+
+    return { message: 'Inscrição do operador cancelada' };
+  }
+
+  async listGameOperators(gameId: number) {
+    await this.ensureExists(gameId);
+
+    return this.prisma.gameOperator.findMany({
+      where: { gameId },
+      select: {
+        operatorId: true,
+        joinedAt: true,
+        operator: {
+          select: { id: true, nickname: true, fullName: true, avatarUrl: true },
+        },
+      },
+    });
+  }
+
   private async ensureExists(id: number) {
     const game = await this.prisma.game.findUnique({ where: { id } });
     if (!game) throw new NotFoundException('Evento não encontrado');

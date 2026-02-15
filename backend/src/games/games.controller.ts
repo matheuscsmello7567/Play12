@@ -69,4 +69,36 @@ export class GamesController {
   ) {
     return this.gamesService.unregisterSquad(gameId, squadId);
   }
+
+  // ── Individual Operator registration ──
+
+  @Post(':id/register-operator/:operatorId')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Inscrever operador individual em um evento' })
+  registerOperator(
+    @Param('id', ParseIntPipe) gameId: number,
+    @Param('operatorId', ParseIntPipe) operatorId: number,
+  ) {
+    return this.gamesService.registerOperator(gameId, operatorId);
+  }
+
+  @Delete(':id/register-operator/:operatorId')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Cancelar inscrição de operador individual' })
+  unregisterOperator(
+    @Param('id', ParseIntPipe) gameId: number,
+    @Param('operatorId', ParseIntPipe) operatorId: number,
+  ) {
+    return this.gamesService.unregisterOperator(gameId, operatorId);
+  }
+
+  @Get(':id/operators')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Listar operadores inscritos individualmente' })
+  listGameOperators(@Param('id', ParseIntPipe) gameId: number) {
+    return this.gamesService.listGameOperators(gameId);
+  }
 }
